@@ -136,6 +136,12 @@
             text-overflow: ellipsis;
             height: 3.5rem; /* Adjust based on font-size and line-height to fit 2 lines */
         }
+        .product-description-text {
+            white-space: pre-wrap; /* This will respect newlines and wrap text */
+        }
+        .text-shadow {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
         /* Modern Scrollbar Styles */
         ::-webkit-scrollbar {
             width: 10px;
@@ -155,43 +161,65 @@
         ::-webkit-scrollbar-thumb:hover {
             background-color: #34d399; /* emerald-400 */
         }
+        .category-tab-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 9999px; /* pill shape */
+            font-weight: 600;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #475569; /* slate-600 */
+            transition: all 0.2s ease-in-out;
+            white-space: nowrap; /* prevent line breaks */
+            flex-shrink: 0;
+            border: 1px solid #e2e8f0; /* slate-200 */
+        }
+        .category-tab-btn:hover {
+            background-color: #e2e8f0; /* slate-200 */
+            color: #1e293b; /* slate-800 */
+            border-color: #cbd5e1; /* slate-300 */
+        }
+        .category-tab-btn.active {
+            background-color: #10b981; /* emerald-600 */
+            color: white;
+            border-color: #34d399; /* emerald-400 */
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+        }
     </style>
 </head>
 <body class="text-slate-700 bg-slate-50">
 
-    <div id="video-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; overflow: hidden; opacity: 0.1;">
-        <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
-            <source src="https://videos.pexels.com/video-files/7578540/7578540-hd_1920_1080_25fps.mp4" type="video/mp4">
-        </video>
-    </div>
+    <!-- تم حذف خلفية الفيديو -->
 
     <header class="sticky top-0 z-50">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#home" id="logo-btn" class="text-center">
+            <a href="#home" id="logo-btn" class="text-center flex-shrink-0">
                 <h1 class="brand-title text-2xl font-black text-slate-800 leading-none">جدار</h1>
                 <p class="text-[10px] text-slate-500 tracking-widest uppercase">للديكورات الحديثة</p>
             </a>
             
-            <!-- Desktop Navigation -->
-            <nav class="hidden md:flex items-center space-x-6 space-x-reverse">
+            <!-- Search Bar (Center) -->
+            <form id="header-search-form" class="relative search-form hidden md:block flex-grow max-w-xl mx-6">
+                <input type="text" placeholder="ابحث عن منتجات، أقسام..." class="bg-slate-200/60 text-slate-800 placeholder-slate-500 rounded-full py-2 pl-10 pr-4 w-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                    <i data-feather="search" class="w-5 h-5"></i>
+                </span>
+            </form>
+
+            <!-- Left Navigation -->
+            <nav class="hidden md:flex items-center space-x-6 space-x-reverse flex-shrink-0">
                 <a href="#home" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">الرئيسية</a>
                 <a href="#main-footer" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">تواصل معنا</a>
                 
                 <div id="auth-section-desktop">
-                    <a href="#" class="open-payment-modal-btn bg-emerald-100 text-emerald-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-emerald-200 transition-colors">طرق الدفع</a>
+                    <a href="#" class="open-payment-modal-btn inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-sm font-bold py-2 px-5 rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+                        <i data-feather="credit-card" class="w-4 h-4"></i>
+                        <span>طرق الدفع</span>
+                    </a>
                 </div>
                 <div id="user-section-desktop" class="hidden items-center space-x-4 space-x-reverse">
                     <img id="user-avatar-desktop" class="w-10 h-10 rounded-full" src="" alt="User Avatar">
                     <span id="user-name-desktop" class="font-semibold text-slate-800"></span>
                     <button id="logout-btn-desktop" class="bg-red-100 text-red-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-red-200 transition-colors">تسجيل الخروج</button>
                 </div>
-
-                <form id="header-search-form" class="relative search-form">
-                    <input type="text" placeholder="ابحث..." class="bg-slate-200/60 text-slate-800 placeholder-slate-500 rounded-full py-2 pl-10 pr-4 w-48 transition-all duration-300 focus:w-64 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
-                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-                        <i data-feather="search" class="w-5 h-5"></i>
-                    </span>
-                </form>
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -209,7 +237,10 @@
                 <a href="#main-footer" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">تواصل معنا</a>
 
                 <div id="auth-section-mobile" class="w-full text-center">
-                    <a href="#" class="open-payment-modal-btn bg-emerald-100 text-emerald-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-emerald-200 transition-colors">طرق الدفع</a>
+                    <a href="#" class="open-payment-modal-btn inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-sm font-bold py-2 px-5 rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+                        <i data-feather="credit-card" class="w-4 h-4"></i>
+                        <span>طرق الدفع</span>
+                    </a>
                 </div>
                 <div id="user-section-mobile" class="hidden flex-col items-center gap-4">
                    <img id="user-avatar-mobile" class="w-12 h-12 rounded-full" src="" alt="User Avatar">
@@ -230,7 +261,12 @@
     <div id="main-content">
         <main>
             <section id="home" class="relative min-h-screen flex items-center justify-center text-white overflow-hidden -mt-[88px] pb-24">
-                 <div class="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-slate-50/50 to-green-50/50 -z-10"></div>
+                 <!-- Background Container -->
+                 <div class="absolute inset-0 -z-20 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2158&auto=format&fit=crop');">
+                 </div>
+
+                 <!-- White Foggy Overlay for Readability -->
+                 <div class="absolute inset-0 bg-white/80 -z-10"></div>
                 <div class="relative z-10 container mx-auto px-6 text-center reveal">
                     <h1 class="pt-4 font-black text-7xl sm:text-8xl md:text-9xl bg-gradient-to-r from-emerald-500 to-green-600 text-transparent bg-clip-text drop-shadow-sm">
                         جدار
@@ -244,29 +280,30 @@
                 </div>
             
                 <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
-                    <a href="#categories" class="text-slate-500/70 hover:text-slate-700 transition-colors">
+                    <a href="#products-section" class="text-slate-500/70 hover:text-slate-700 transition-colors">
                         <i data-feather="chevron-down" class="w-10 h-10 animate-bounce"></i>
                     </a>
                 </div>
             </section>
             
-            <section id="categories" class="py-20 sm:py-24 overflow-hidden">
+            <section id="products-section" class="py-20 sm:py-24 overflow-hidden">
                 <div class="container mx-auto px-6 reveal">
                     <div class="bg-white/70 backdrop-blur-md rounded-3xl p-4 sm:p-8 md:p-12">
                         <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-4 text-slate-900">تصفح منتجاتنا</h2>
                         <p class="text-slate-600 text-center max-w-2xl mx-auto mb-12 sm:mb-16">اختر المنتجات التي تلهمك لتبدأ رحلة تصميم مساحتك الخاصة.</p>
-                        <div class="relative">
-                            <div id="categories-container" class="flex items-center gap-6 sm:gap-8 overflow-x-auto py-4 -mx-6 px-6">
-                                <!-- Categories will be dynamically injected here -->
-                                <div id="add-category-card" class="admin-only group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl border-2 border-dashed border-slate-300 hover:border-emerald-500 transition-colors flex items-center justify-center cursor-pointer">
-                                    <div class="text-center text-slate-400 group-hover:text-emerald-500">
-                                        <i data-feather="plus-circle" class="w-12 h-12 mx-auto"></i>
-                                        <p class="mt-4 font-bold">إضافة قسم جديد</p>
-                                    </div>
+                        
+                        <div class="flex flex-col gap-8">
+                            <!-- Category Tabs -->
+                            <div id="category-tabs-container" class="border-b-2 border-slate-200">
+                                <div id="category-tabs" class="flex items-center gap-3 overflow-x-auto scrollbar-hide pb-4">
+                                    <!-- Category tabs will be dynamically injected here -->
                                 </div>
                             </div>
-                            <button id="scroll-right-btn" class="absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 bg-white hover:bg-slate-100 text-slate-600 rounded-full p-2 shadow-md transition hidden sm:block"><i data-feather="chevron-left"></i></button>
-                            <button id="scroll-left-btn" class="absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 bg-white hover:bg-slate-100 text-slate-600 rounded-full p-2 shadow-md transition hidden sm:block"><i data-feather="chevron-right"></i></button>
+
+                            <!-- Products Display -->
+                            <main id="category-products-display" class="w-full">
+                                <!-- Products for the selected category will be shown here -->
+                            </main>
                         </div>
                     </div>
                 </div>
@@ -349,7 +386,7 @@
 
             <section id="portfolio" class="py-20 sm:py-24 bg-slate-100/70 backdrop-blur-md overflow-hidden">
                 <div class="container mx-auto px-6 text-center reveal">
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-slate-900">شاهد إبداعنا على أرض الواقع</h2>
+                    <h2 class="text-3xl sm-text-4xl md:text-5xl font-extrabold mb-4 text-slate-900">شاهد إبداعنا على أرض الواقع</h2>
                     <p class="text-slate-600 mb-12 sm:mb-16 max-w-2xl mx-auto">تصفح مجموعة من أحدث مشاريعنا التي نفخر بتنفيذها. كل مشروع يحكي قصة نجاح وجودة.</p>
                     <div class="relative">
                         <div id="portfolio-container" class="flex items-stretch gap-6 overflow-x-auto py-4 scrollbar-hide -mx-6 px-6">
@@ -404,52 +441,64 @@
                 </div>
             </section>
         </main>
-
-        <footer id="main-footer" class="py-4 sm:py-8 border-t border-slate-200">
-            <div class="container mx-auto px-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-right">
-                    <div class="md:col-span-1">
-                         <h3 class="text-lg font-bold text-slate-800 mb-2">نبذة عن جدار</h3>
-                         <p class="text-slate-600 leading-relaxed text-sm">
-                            موقع جدار أكبر موقع للتشطيبات وتاسيس المنشأت في مصر , كل ما تحلم به تجده علي موقع جدار.
-                         </p>
-                    </div>
-                     <div class="md:col-span-1">
-                         <h3 class="text-lg font-bold text-slate-800 mb-2">الفرع الرئيسي</h3>
-                         <p class="text-slate-600 leading-relaxed text-sm">
-                            الفيوم - اخر سور المستشفي العام ، امام مطعم ابو صلاح وبجوار المغسلة الأمريكية .
-                         </p>
-                    </div>
-                     <div class="md:col-span-1 flex flex-col items-center md:items-end">
-                         <h3 class="text-lg font-bold text-slate-800 mb-4">تواصل معنا</h3>
-                         <div class="flex flex-col items-center md:items-end gap-3">
-                             <a href="https://wa.me/201014175070" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-slate-600 hover:text-emerald-600 transition-colors text-base font-medium">
-                                    <span dir="ltr">01014175070</span>
-                                    <i data-feather="message-circle" class="w-5 h-5"></i>
-                                </a>
-                                <a href="mailto:gedar.fayoum@gmail.com" class="flex items-center gap-3 text-slate-600 hover:text-emerald-600 transition-colors text-base font-medium">
-                                    <span>gedar.fayoum@gmail.com</span>
-                                    <i data-feather="mail" class="w-5 h-5"></i>
-                                </a>
-                         </div>
-                    </div>
+        <div id="product-detail-container" class="hidden">
+            <!-- Product Detail Page will be dynamically injected here -->
+        </div>
+    </div>
+    <footer id="main-footer" class="py-4 sm:py-8 border-t border-slate-200">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-right">
+                <div class="md:col-span-1">
+                     <h3 class="text-lg font-bold text-slate-800 mb-2">نبذة عن جدار</h3>
+                     <p class="text-slate-600 leading-relaxed text-sm">
+                        موقع جدار أكبر موقع للتشطيبات وتاسيس المنشأت في مصر , كل ما تحلم به تجده علي موقع جدار.
+                     </p>
                 </div>
-                <div class="mt-6 border-t border-slate-200 pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p class="text-slate-500 text-sm">&copy; 2025 جدار. جميع الحقوق محفوظة.</p>
-                    <div class="flex items-center gap-5">
+                 <div class="md:col-span-1">
+                     <h3 class="text-lg font-bold text-slate-800 mb-2">الفرع الرئيسي</h3>
+                     <p class="text-slate-600 leading-relaxed text-sm">
+                        الفيوم - اخر سور المستشفي العام ، امام مطعم ابو صلاح وبجوار المغسلة الأمريكية .
+                     </p>
+                </div>
+                 <div id="contact-details" class="md:col-span-1 flex flex-col items-center md:items-end">
+                     <h3 class="text-lg font-bold text-slate-800 mb-4">تواصل معنا</h3>
+                     <div class="flex flex-col items-center md:items-end gap-3">
+                         <a href="https://wa.me/201014175070" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-slate-600 hover:text-emerald-600 transition-colors text-lg font-medium">
+                                <span dir="ltr">01014175070</span>
+                                <i data-feather="message-circle" class="w-5 h-5"></i>
+                            </a>
+                            <a href="mailto:gedar.fayoum@gmail.com" class="flex items-center gap-3 text-slate-600 hover:text-emerald-600 transition-colors text-lg font-medium">
+                                <span>gedar.fayoum@gmail.com</span>
+                                <i data-feather="mail" class="w-5 h-5"></i>
+                            </a>
+                     </div>
+                    <div class="flex items-center gap-5 mt-4">
                          <a href="https://www.instagram.com/gedar_fayoum/" target="_blank" aria-label="Instagram" class="text-slate-500 hover:text-slate-800 transition-colors"><i data-feather="instagram" class="w-5 h-5"></i></a>
-                        <a href="https://www.facebook.com/gedar.fayoum/" target="_blank" aria-label="Facebook" class="text-slate-500 hover:text-slate-800 transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                        <a href="https://www.facebook.com/gedar_fayoum/" target="_blank" aria-label="Facebook" class="text-slate-500 hover:text-slate-800 transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
                     </div>
                 </div>
             </div>
-        </footer>
-    </div>
+            <div class="mt-6 border-t border-slate-200 pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-slate-500 text-sm">&copy; 2025 جدار. جميع الحقوق محفوظة.</p>
+                
+                <!-- Developer Info -->
+                <div class="text-center sm:text-left text-sm">
+                    <p class="text-slate-600">تم التطوير بواسطة: <span class="font-semibold">Badr E Mohameed</span></p>
+                    <div class="flex items-center justify-center sm:justify-start gap-4 mt-1">
+                        <a href="tel:01069913150" class="flex items-center gap-1.5 text-slate-500 hover:text-emerald-600 transition-colors" dir="ltr">
+                            <i data-feather="phone" class="w-4 h-4"></i>
+                            <span>01069913150</span>
+                        </a>
+                        <a href="https://badre.site/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-slate-500 hover:text-emerald-600 transition-colors">
+                            <i data-feather="globe" class="w-4 h-4"></i>
+                            <span>موقع المطور</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     
-    <div id="category-pages-container" class="hidden">
-        <!-- Static category pages from original HTML have been removed. 
-             They are now fully generated dynamically by JavaScript -->
-    </div>
-
     <div id="product-detail-container" class="hidden">
         <!-- Product Detail Page will be dynamically injected here -->
     </div>
@@ -578,8 +627,6 @@
             <form id="add-category-form" class="space-y-4">
                 <input type="text" name="name" placeholder="اسم القسم" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
                 <input type="text" name="pageId" placeholder="معرّف القسم (مثال: natural-designs)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
-                <input type="text" name="icon" placeholder="أيقونة Feather (مثال: feather)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
-                <input type="url" name="imageUrl" placeholder="رابط صورة الخلفية" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
                 <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-bold">إضافة القسم</button>
             </form>
         </div>
@@ -592,7 +639,10 @@
             <h2 id="product-admin-modal-title" class="text-3xl font-extrabold text-slate-900 mb-6 p-8 pb-0">إضافة منتج جديد</h2>
             <form id="product-admin-form" class="space-y-4 overflow-y-auto p-8 pt-4">
                 <input type="text" name="title" placeholder="اسم المنتج (نبذة)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
-                <input type="text" name="type" placeholder="نوع المنتج" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" name="type" placeholder="نوع المنتج" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                    <input type="text" name="productCode" placeholder="كود المنتج (SKU)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
+                </div>
                 <textarea name="desc" placeholder="تفاصيل المنتج" rows="3" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required></textarea>
                 <input type="url" name="mainImageUrl" placeholder="رابط الصورة الخارجية للمنتج" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
                 <div class="grid grid-cols-2 gap-4">
@@ -703,6 +753,8 @@
         // --- DOM Elements ---
         const logoBtn = document.getElementById('logo-btn');
         const mainContent = document.getElementById('main-content');
+        const mainPageContent = document.querySelector('#main-content > main');
+        const productsSection = document.getElementById('products-section');
         // Modals
         const loginModal = document.getElementById('login-modal');
         const loginModalContent = document.getElementById('login-modal-content');
@@ -728,10 +780,16 @@
         const galleryImagesContainer = document.getElementById('gallery-images-container');
         
         // Containers
-        const categoriesContainer = document.getElementById('categories-container');
-        const categoryPagesContainer = document.getElementById('category-pages-container');
+        const categoryTabs = document.getElementById('category-tabs');
+        const categoryProductsDisplay = document.getElementById('category-products-display');
         const productDetailContainer = document.getElementById('product-detail-container');
 
+        let allCategories = [];
+
+        const toArabicNumerals = (num) => {
+            const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+            return String(num).replace(/[0-9]/g, (w) => arabicNumerals[+w]).replace('.', '٫');
+        };
 
         // --- Authentication & Admin Logic ---
 
@@ -777,15 +835,25 @@
         function listenForCategories() {
             const categoriesRef = collection(db, "categories");
             onSnapshot(categoriesRef, (snapshot) => {
-                const categories = [];
-                snapshot.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
-                renderCategoriesAndPages(categories);
+                allCategories = [];
+                snapshot.forEach(doc => allCategories.push({ id: doc.id, ...doc.data() }));
+                renderCategoriesAndPages(allCategories);
             }, (error) => {
                 console.error("Error listening for categories:", error);
-                clearDynamicContent();
+                categoryTabs.innerHTML = '';
+                categoryProductsDisplay.innerHTML = '<p>حدث خطأ في تحميل الأقسام.</p>';
             });
         }
 
+        function listenForAllProducts(productGrid) {
+             const productsRef = collection(db, "products");
+             onSnapshot(productsRef, (snapshot) => {
+                const products = [];
+                snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+                renderProducts(products, 'all', productGrid);
+             });
+        }
+        
         function listenForProducts(categoryId, productGrid) {
              const productsRef = collection(db, "products");
              const q = query(productsRef, where("categoryId", "==", categoryId));
@@ -799,70 +867,109 @@
         // --- Dynamic Rendering ---
         
         function renderCategoriesAndPages(categories) {
-            document.querySelectorAll('.dynamic-category-card, .category-page').forEach(el => el.remove());
+            categoryTabs.innerHTML = '';
+            categoryProductsDisplay.innerHTML = '';
 
-            const addCategoryCard = document.getElementById('add-category-card');
+            // --- "All" Tab Setup ---
+            const allTab = document.createElement('button');
+            allTab.className = 'category-tab-btn';
+            allTab.textContent = 'الكل';
+            allTab.dataset.page = 'all';
+            categoryTabs.appendChild(allTab);
 
+            const allProductsContainer = document.createElement('div');
+            allProductsContainer.id = 'products-for-all';
+            allProductsContainer.className = 'product-container hidden';
+            
+            const allSearchInputHTML = `
+                <div class="mb-8 max-w-lg mx-auto relative">
+                    <input type="text" placeholder="ابحث في كل المنتجات..." class="category-search-input w-full bg-slate-100 rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base text-slate-800 placeholder-slate-500">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                        <i data-feather="search" class="w-6 h-6"></i>
+                    </span>
+                </div>`;
+            
+            allProductsContainer.innerHTML = `
+                ${allSearchInputHTML}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 product-grid">
+                    <!-- All products will be rendered here -->
+                </div>
+            `;
+            categoryProductsDisplay.appendChild(allProductsContainer);
+            const allProductGrid = allProductsContainer.querySelector('.product-grid');
+            listenForAllProducts(allProductGrid);
+
+            // Search functionality for "All" products
+            const allSearchInput = allProductsContainer.querySelector('.category-search-input');
+            allSearchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                const allProducts = allProductGrid.querySelectorAll('.product-card');
+                allProducts.forEach(card => {
+                    const productData = JSON.parse(card.dataset.product);
+                    const isVisible = productData.title.toLowerCase().includes(searchTerm);
+                    card.style.display = isVisible ? 'flex' : 'none';
+                });
+            });
+
+            // --- Individual Category Tabs Setup ---
             categories.forEach(cat => {
-                // Render category card on main page
-                const card = document.createElement('a');
-                card.href = '#';
-                card.className = 'category-card dynamic-category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2';
-                card.dataset.page = cat.pageId;
-                card.dataset.category = JSON.stringify(cat); // Store full category data
-                card.innerHTML = `
-                    <img src="${cat.imageUrl}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="${cat.name}">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                    <div class="absolute top-3 left-3 admin-only flex items-center gap-2 z-10">
-                        <button class="edit-category-btn p-2 bg-blue-500/80 backdrop-blur-sm rounded-full hover:bg-blue-600 transition-colors"><i data-feather="edit" class="w-4 h-4 text-white pointer-events-none"></i></button>
-                        <button class="delete-category-btn p-2 bg-red-500/80 backdrop-blur-sm rounded-full hover:bg-red-600 transition-colors"><i data-feather="trash-2" class="w-4 h-4 text-white pointer-events-none"></i></button>
-                    </div>
-                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                        <i data-feather="${cat.icon}" class="w-7 h-7 mb-2 text-emerald-300"></i>
-                        <h3 class="text-xl sm:text-2xl font-bold">${cat.name}</h3>
-                    </div>
-                `;
-                categoriesContainer.insertBefore(card, addCategoryCard);
+                const tabContainer = document.createElement('div');
+                tabContainer.className = 'relative group flex-shrink-0';
 
-                // Render the corresponding category page
-                const page = document.createElement('section');
-                page.id = `page-${cat.pageId}`;
-                page.className = 'category-page hidden min-h-screen py-16';
-                page.innerHTML = `
-                    <div class="container mx-auto px-6">
-                        <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-8 md:p-12">
-                            <button class="back-to-main-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-500 hover:text-slate-800 font-semibold transition-colors">
-                                <i data-feather="arrow-right" class="w-5 h-5"></i>
-                                <span>العودة للأقسام</span>
-                            </button>
-                             <div class="my-8 max-w-2xl mx-auto relative">
-                               <input type="text" placeholder="ابحث في ${cat.name}..." class="category-search-input w-full bg-slate-100 rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base text-slate-800 placeholder-slate-500">
-                               <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-                                   <i data-feather="search" class="w-6 h-6"></i>
-                               </span>
-                           </div>
-                            <h2 class="text-4xl font-extrabold text-center mb-6 text-slate-900">${cat.name}</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 product-grid">
-                                 <div class="add-product-card admin-only group relative bg-transparent border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl overflow-hidden transition-all duration-300 flex items-center justify-center cursor-pointer min-h-[350px]" data-category-id="${cat.pageId}">
-                                    <div class="text-center text-slate-400 group-hover:text-emerald-500">
-                                        <i data-feather="plus-circle" class="w-12 h-12 mx-auto"></i>
-                                        <p class="mt-4 font-bold">إضافة منتج جديد</p>
-                                    </div>
-                                </div>
+                // Render category tab
+                const tab = document.createElement('button');
+                tab.className = 'category-tab-btn';
+                tab.textContent = cat.name;
+                tab.dataset.page = cat.pageId;
+                tab.dataset.category = JSON.stringify(cat);
+
+                // Admin buttons
+                const adminControls = document.createElement('div');
+                adminControls.className = 'admin-only absolute top-[-10px] right-[-5px] flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity';
+                adminControls.innerHTML = `
+                    <button class="edit-category-btn p-1.5 bg-blue-500 text-white rounded-full hover:bg-blue-600 shadow-md transition-colors"><i data-feather="edit" class="w-3 h-3 pointer-events-none"></i></button>
+                    <button class="delete-category-btn p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 shadow-md transition-colors"><i data-feather="trash-2" class="w-3 h-3 pointer-events-none"></i></button>
+                `;
+                
+                tabContainer.appendChild(tab);
+                tabContainer.appendChild(adminControls);
+                categoryTabs.appendChild(tabContainer);
+
+
+                // Create the corresponding product grid container (initially hidden)
+                const productContainer = document.createElement('div');
+                productContainer.id = `products-for-${cat.pageId}`;
+                productContainer.className = 'product-container hidden';
+                
+                const searchInputHTML = `
+                    <div class="mb-8 max-w-lg mx-auto relative">
+                        <input type="text" placeholder="ابحث في ${cat.name}..." class="category-search-input w-full bg-slate-100 rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base text-slate-800 placeholder-slate-500">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                            <i data-feather="search" class="w-6 h-6"></i>
+                        </span>
+                    </div>`;
+
+                productContainer.innerHTML = `
+                    ${searchInputHTML}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 product-grid">
+                        <div class="add-product-card admin-only group relative bg-transparent border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl overflow-hidden transition-all duration-300 flex items-center justify-center cursor-pointer min-h-[350px]" data-category-id="${cat.pageId}">
+                            <div class="text-center text-slate-400 group-hover:text-emerald-500">
+                                <i data-feather="plus-circle" class="w-12 h-12 mx-auto"></i>
+                                <p class="mt-4 font-bold">إضافة منتج جديد</p>
                             </div>
                         </div>
-                    </div>`;
-                categoryPagesContainer.appendChild(page);
+                    </div>
+                `;
+                categoryProductsDisplay.appendChild(productContainer);
                 
-                const productGrid = page.querySelector('.product-grid');
+                const productGrid = productContainer.querySelector('.product-grid');
                 listenForProducts(cat.pageId, productGrid);
-
-                // Add search functionality for the newly created page
-                const searchInput = page.querySelector('.category-search-input');
+                
+                // Add search functionality for this container
+                const searchInput = productContainer.querySelector('.category-search-input');
                 searchInput.addEventListener('input', (e) => {
                     const searchTerm = e.target.value.toLowerCase().trim();
                     const allProducts = productGrid.querySelectorAll('.product-card');
-
                     allProducts.forEach(card => {
                         const productData = JSON.parse(card.dataset.product);
                         const isVisible = productData.title.toLowerCase().includes(searchTerm);
@@ -870,32 +977,77 @@
                     });
                 });
             });
+
+             // Add Admin "Add Category" button
+            if (isAdmin()) {
+                const addCategoryBtn = document.createElement('button');
+                addCategoryBtn.id = 'add-category-btn-tabs';
+                addCategoryBtn.className = 'category-tab-btn text-emerald-600 border-2 border-dashed border-slate-300 hover:border-emerald-500 hover:bg-emerald-50';
+                addCategoryBtn.innerHTML = '<i data-feather="plus" class="inline-block ml-2 w-5 h-5"></i> <span>إضافة قسم</span>';
+                categoryTabs.appendChild(addCategoryBtn);
+                addCategoryBtn.addEventListener('click', () => {
+                    currentEditingCategoryId = null;
+                    addCategoryForm.reset();
+                    document.querySelector('#add-category-modal h2').textContent = 'إضافة قسم جديد';
+                    document.querySelector('#add-category-form button[type="submit"]').textContent = 'إضافة القسم';
+                    openModal(addCategoryModal, addCategoryModalContent);
+                });
+            }
+
+            // Activate the "All" category by default
+            const firstTab = categoryTabs.querySelector('[data-page="all"]');
+            if (firstTab) {
+                firstTab.click();
+            }
+
             updateUIForAuthState(currentUser);
         }
+
+        categoryTabs.addEventListener('click', (e) => {
+            const tab = e.target.closest('.category-tab-btn');
+            if (tab && !tab.id.includes('add-category-btn')) {
+                const pageId = tab.dataset.page;
+                
+                // Toggle active class on sidebar links
+                document.querySelectorAll('#category-tabs .category-tab-btn').forEach(l => l.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Hide placeholder and all product containers
+                const placeholder = document.getElementById('products-placeholder');
+                if(placeholder) placeholder.classList.add('hidden');
+                document.querySelectorAll('#category-products-display .product-container').forEach(cont => cont.classList.add('hidden'));
+
+                // Show the selected product container
+                const targetContainer = document.getElementById(`products-for-${pageId}`);
+                if (targetContainer) {
+                    targetContainer.classList.remove('hidden');
+                }
+            }
+        });
 
         function renderProducts(products, categoryId, productGrid) {
             productGrid.querySelectorAll('.product-card').forEach(card => card.remove());
 
             products.forEach(prod => {
                 const card = document.createElement('div');
-                card.className = 'product-card flex flex-col group relative bg-white border border-slate-100 shadow-md rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2';
+                card.className = 'product-card flex flex-col group bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl border border-slate-200/60 text-center';
                 
                 const mainImage = prod.mainImageUrl || (prod.colors && prod.colors.length > 0 && prod.colors[0].imageUrl ? prod.colors[0].imageUrl : 'https://placehold.co/800x600/e2e8f0/475569?text=No+Image');
 
-                let priceHTML = `<p class="text-2xl font-black text-emerald-600 mb-4">${prod.price} <span class="text-sm font-semibold text-slate-500">جم</span></p>`;
+                let priceHTML = `<p class="text-xl font-bold text-emerald-600">${toArabicNumerals(prod.price)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>`;
                 if (prod.discount && prod.discount > 0) {
-                    const discountedPrice = prod.price * (1 - prod.discount / 100);
+                    const discountedPrice = (prod.price * (1 - prod.discount / 100)).toFixed(2);
                     priceHTML = `
-                        <div class="flex items-baseline gap-2 mb-4">
-                            <p class="text-lg font-bold text-slate-400 line-through">${prod.price} جم</p>
-                            <p class="text-2xl font-black text-emerald-600">${discountedPrice.toFixed(2)} <span class="text-sm font-semibold text-slate-500">جم</span></p>
+                        <div class="flex items-baseline justify-center gap-2">
+                            <p class="text-base font-medium text-slate-400 line-through">${toArabicNumerals(prod.price)} ج.م</p>
+                            <p class="text-xl font-bold text-emerald-600">${toArabicNumerals(discountedPrice)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>
                         </div>
                     `;
                 }
                 
                 const unavailableOverlay = !prod.isAvailable 
-                    ? `<div class="absolute inset-0 bg-slate-100/80 backdrop-blur-sm flex items-center justify-center">
-                           <span class="text-slate-800 font-bold text-xl border-2 border-slate-800 rounded-md px-4 py-2">غير متوفر حالياً</span>
+                    ? `<div class="absolute inset-0 bg-slate-100/80 backdrop-blur-sm flex items-center justify-center z-10">
+                           <span class="text-slate-800 font-bold text-xl border-2 border-slate-800 rounded-md px-4 py-2 bg-white/50">غير متوفر حالياً</span>
                        </div>` 
                     : '';
                 const buttonDisabled = !prod.isAvailable ? 'disabled' : '';
@@ -904,31 +1056,41 @@
                     : 'bg-emerald-500 hover:bg-emerald-600 text-white';
 
                 card.innerHTML = `
-                    <div class="relative">
-                        <img src="${mainImage}" alt="${prod.title}" class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-110">
+                    <div class="relative overflow-hidden p-4">
+                        <img src="${mainImage}" alt="${prod.title}" class="w-full h-56 object-contain transition-transform duration-500 group-hover:scale-105">
                         ${unavailableOverlay}
-                        ${prod.discount ? `<span class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">خصم ${prod.discount}%</span>` : ''}
+                        ${prod.discount ? `<span class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">خصم ${prod.discount}%</span>` : ''}
                     </div>
-                    <div class="p-5 flex flex-col flex-grow">
-                        <h3 class="product-title text-xl font-bold text-slate-800 mb-2">${prod.title}</h3>
-                        ${priceHTML}
-                        <div class="mt-auto">
-                            <button class="details-btn w-full py-2 px-4 rounded-full transition-colors ${buttonClasses}" ${buttonDisabled}>عرض التفاصيل</button>
-                            <div class="admin-only flex justify-between items-center mt-3">
-                                <button class="edit-product-btn text-blue-500 hover:text-blue-600"><i data-feather="edit" class="w-5 h-5"></i></button>
-                                <button class="delete-product-btn text-red-500 hover:text-red-600"><i data-feather="trash-2" class="w-5 h-5"></i></button>
+                    <div class="p-5 pt-0 flex flex-col flex-grow items-center">
+                        <h3 class="product-title text-lg font-bold text-slate-800 mb-2 h-14 flex items-center justify-center">${prod.title}</h3>
+                        <div class="my-4">
+                             ${priceHTML}
+                        </div>
+                        <div class="mt-auto w-full">
+                            <button class="details-btn w-full py-2.5 px-4 rounded-full transition-all duration-300 font-bold ${buttonClasses}" ${buttonDisabled}>
+                                عرض التفاصيل
+                            </button>
+                            <div class="admin-only flex justify-center items-center mt-4 gap-6">
+                                <button class="edit-product-btn text-blue-500 hover:text-blue-700 transition-colors"><i data-feather="edit" class="w-5 h-5 pointer-events-none"></i></button>
+                                <button class="delete-product-btn text-red-500 hover:text-red-700 transition-colors"><i data-feather="trash-2" class="w-5 h-5 pointer-events-none"></i></button>
                             </div>
                         </div>
                     </div>
                 `;
                 card.dataset.product = JSON.stringify({id: prod.id, ...prod});
-                productGrid.appendChild(card);
+                // Don't append admin-only cards to the "all" grid
+                if (isAdmin() || categoryId !== 'all') {
+                    productGrid.appendChild(card);
+                } else if (!isAdmin()) {
+                     productGrid.appendChild(card);
+                }
             });
             updateUIForAuthState(currentUser);
         }
 
         function clearDynamicContent() {
-             document.querySelectorAll('.dynamic-category-card, .category-page').forEach(el => el.remove());
+             categoryTabs.innerHTML = '';
+             categoryProductsDisplay.innerHTML = '<p>جاري التحميل...</p>';
         }
 
         // --- Add/Edit/Delete Product & Category Logic ---
@@ -938,26 +1100,16 @@
         let itemToDelete = { type: null, id: null };
         
         document.body.addEventListener('click', async (e) => {
-            // Add Category Card
-            if (e.target.closest('#add-category-card') && isAdmin()) {
-                currentEditingCategoryId = null;
-                addCategoryForm.reset();
-                document.querySelector('#add-category-modal h2').textContent = 'إضافة قسم جديد';
-                document.querySelector('#add-category-form button[type="submit"]').textContent = 'إضافة القسم';
-                openModal(addCategoryModal, addCategoryModalContent);
-            }
             // Edit Category Button
             const editCategoryBtn = e.target.closest('.edit-category-btn');
             if (editCategoryBtn && isAdmin()) {
                 e.preventDefault();
-                const card = editCategoryBtn.closest('.category-card');
+                const card = editCategoryBtn.closest('.relative.group').querySelector('.category-tab-btn');
                 const categoryData = JSON.parse(card.dataset.category);
                 
                 currentEditingCategoryId = categoryData.id;
                 addCategoryForm.name.value = categoryData.name;
                 addCategoryForm.pageId.value = categoryData.pageId;
-                addCategoryForm.icon.value = categoryData.icon;
-                addCategoryForm.imageUrl.value = categoryData.imageUrl;
 
                 document.querySelector('#add-category-modal h2').textContent = 'تعديل القسم';
                 document.querySelector('#add-category-form button[type="submit"]').textContent = 'حفظ التعديلات';
@@ -967,7 +1119,7 @@
             const deleteCategoryBtn = e.target.closest('.delete-category-btn');
             if (deleteCategoryBtn && isAdmin()) {
                 e.preventDefault();
-                const card = deleteCategoryBtn.closest('.category-card');
+                const card = deleteCategoryBtn.closest('.relative.group').querySelector('.category-tab-btn');
                 const categoryData = JSON.parse(card.dataset.category);
                 itemToDelete = { type: 'category', id: categoryData.id };
                 openModal(confirmDeleteModal, confirmDeleteModalContent);
@@ -1035,8 +1187,6 @@
             const categoryData = {
                 name: formData.get('name'),
                 pageId: formData.get('pageId').replace(/\s+/g, '-').toLowerCase(), // Sanitize pageId
-                icon: formData.get('icon'),
-                imageUrl: formData.get('imageUrl')
             };
             try {
                 if (currentEditingCategoryId) {
@@ -1065,6 +1215,7 @@
             const productData = {
                 title: formData.get('title'),
                 type: formData.get('type'),
+                productCode: formData.get('productCode'),
                 desc: formData.get('desc'),
                 mainImageUrl: formData.get('mainImageUrl'),
                 price: parseFloat(formData.get('price')),
@@ -1188,107 +1339,117 @@
 
 
         // Page Navigation
-        function showCategoryPage(pageId) {
-            mainContent.classList.add('hidden');
-            productDetailContainer.classList.add('hidden');
-            categoryPagesContainer.classList.remove('hidden');
-            document.querySelectorAll('.category-page').forEach(page => page.classList.add('hidden'));
-            const targetPage = document.getElementById(`page-${pageId}`);
-            if (targetPage) targetPage.classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
-
-        function showMainContent() {
-            mainContent.classList.remove('hidden');
-            categoryPagesContainer.classList.add('hidden');
-            productDetailContainer.classList.add('hidden');
-        }
-
         function showProductDetailPage(productData) {
-            mainContent.classList.add('hidden');
-            categoryPagesContainer.classList.add('hidden');
+            mainPageContent.classList.add('hidden');
             productDetailContainer.classList.remove('hidden');
             
             window.scrollTo(0, 0);
 
-            let allImages = [];
-            // Start with the main image if it exists
+            // Logic to gather images for the main gallery slider (main image + additional gallery images)
+            let galleryImages = [];
+            const addUniqueImageToGallery = (src) => {
+                if (src && !galleryImages.includes(src)) {
+                    galleryImages.push(src);
+                }
+            };
+            
             if (productData.mainImageUrl) {
-                allImages.push({ src: productData.mainImageUrl, id: 'main' });
+                addUniqueImageToGallery(productData.mainImageUrl);
             }
-            // Add color images
-            if (productData.colors && productData.colors.length > 0) {
-                productData.colors.forEach(color => {
-                    if (color.imageUrl) {
-                        allImages.push({ src: color.imageUrl, id: color.code || color.hex });
-                    }
-                });
-            }
-            // If no color images, add gallery images
-            if (allImages.length <= 1 && productData.galleryImages && productData.galleryImages.length > 0) {
-                productData.galleryImages.forEach((imgUrl, index) => {
-                     // Avoid re-adding the main image if it's also in the gallery
-                    if (imgUrl !== productData.mainImageUrl) {
-                        allImages.push({ src: imgUrl, id: `gallery-${index}` });
-                    }
-                });
+            if (productData.galleryImages) {
+                productData.galleryImages.forEach(src => addUniqueImageToGallery(src));
             }
 
-            if (allImages.length === 0) {
-                allImages.push({ src: 'https://placehold.co/1200x800/e2e8f0/475569?text=No+Image', id: 'placeholder' });
-            }
+            const mainImageSrc = galleryImages.length > 0 ? galleryImages[0] : (productData.colors && productData.colors[0]?.imageUrl) || 'https://placehold.co/1200x800/e2e8f0/475569?text=No+Image';
 
-            const thumbnailsHTML = allImages.map((img, index) => `
-                <img src="${img.src}" alt="صورة مصغرة للمنتج" class="thumbnail-img w-full h-24 object-cover rounded-lg cursor-pointer border-2 ${index === 0 ? 'border-emerald-500' : 'border-transparent'} hover:border-emerald-500 transition-colors" data-src="${img.src}" data-id="${img.id}">
-            `).join('');
+            // Conditionally create the thumbnails container only if there are additional gallery images.
+            const thumbnailsContainerHTML = galleryImages.length > 1 ? `
+                <div class="grid grid-cols-4 sm:grid-cols-5 gap-3" id="product-thumbnails-container">
+                    ${galleryImages.map((src, index) => `
+                        <img src="${src}" alt="صورة مصغرة للمنتج" class="thumbnail-img w-full h-24 object-cover rounded-lg cursor-pointer border-2 ${index === 0 ? 'border-emerald-500' : 'border-transparent'} hover:border-emerald-500 transition-colors" data-src="${src}">
+                    `).join('')}
+                </div>
+            ` : '';
 
-            let priceHTML = `<p class="text-4xl font-black text-emerald-600">${productData.price} <span class="text-lg font-semibold text-slate-500">جم</span></p>`;
+            let priceHTML = `<p class="text-4xl font-black text-emerald-600">${toArabicNumerals(productData.price)} <span class="text-lg font-semibold text-slate-500">ج.م</span></p>`;
             if (productData.discount && productData.discount > 0) {
-                const discountedPrice = productData.price * (1 - productData.discount / 100);
+                const discountedPrice = (productData.price * (1 - productData.discount / 100)).toFixed(2);
                 priceHTML = `
                     <div class="flex items-baseline gap-3">
-                        <p class="text-2xl font-bold text-slate-400 line-through">${productData.price} جم</p>
-                        <p class="text-4xl font-black text-emerald-600">${discountedPrice.toFixed(2)} <span class="text-lg font-semibold text-slate-500">جم</span></p>
+                        <p class="text-2xl font-bold text-slate-400 line-through">${toArabicNumerals(productData.price)} ج.م</p>
+                        <p class="text-4xl font-black text-emerald-600">${toArabicNumerals(discountedPrice)} <span class="text-lg font-semibold text-slate-500">ج.م</span></p>
                     </div>
                 `;
             }
 
             const colorsHTML = productData.colors && productData.colors.length > 0 
                 ? productData.colors.map(color => `
-                    <div class="color-swatch flex items-center gap-3 p-2 border border-slate-200 rounded-lg ${color.imageUrl ? 'cursor-pointer hover:bg-slate-100 transition' : ''}" data-id="${color.code || color.hex}">
-                        <span class="w-8 h-8 rounded-full border-2 border-slate-200 pointer-events-none" style="background-color: ${color.hex};"></span>
-                        <span class="font-semibold text-slate-700 pointer-events-none">${color.code || color.hex}</span>
+                    <div class="color-swatch group relative ${color.imageUrl ? 'cursor-pointer' : ''}" data-id="${color.code || color.hex}">
+                        <span class="w-10 h-10 block rounded-full border-2 border-slate-300 transition-transform group-hover:scale-110" style="background-color: ${color.hex};"></span>
+                        <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-3 py-1 bg-slate-800 text-white text-xs font-semibold rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 pointer-events-none">
+                            ${color.code || color.hex}
+                            <div class="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
+                        </div>
                     </div>
                 `).join('')
                 : '<p class="text-slate-500">لا توجد ألوان محددة.</p>';
 
             const pageHTML = `
-                <section id="page-product-detail" class="category-page min-h-screen py-16 text-slate-800">
+                <section id="page-product-detail" class="min-h-screen py-16 text-slate-800">
                     <div class="container mx-auto px-6">
-                        <button class="back-to-category-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-500 hover:text-slate-800 font-semibold transition-colors" data-category-id="${productData.categoryId}">
-                            <i data-feather="arrow-right" class="w-5 h-5"></i>
-                            <span>العودة للمنتجات</span>
-                        </button>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <div class="mb-8">
+                             <button class="back-to-products-btn inline-flex items-center space-x-2 space-x-reverse text-slate-500 hover:text-slate-800 font-semibold transition-colors" data-category-id="${productData.categoryId}">
+                                <i data-feather="arrow-right" class="w-5 h-5"></i>
+                                <span>العودة للمنتجات</span>
+                            </button>
+                        </div>
+                       
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                             <!-- Image Gallery -->
-                            <div class="flex flex-col gap-4">
+                            <div class="flex flex-col gap-4 lg:sticky top-24">
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-lg">
-                                    <img id="main-product-image" src="${allImages[0].src}" alt="صورة المنتج الرئيسية" class="w-full h-auto object-contain max-h-[60vh] transition-opacity duration-300">
+                                    <img id="main-product-image" src="${mainImageSrc}" alt="صورة المنتج الرئيسية" class="w-full h-auto object-contain max-h-[70vh] transition-opacity duration-300">
                                 </div>
-                                <div class="grid grid-cols-4 sm:grid-cols-5 gap-3" id="product-thumbnails-container">
-                                    ${thumbnailsHTML}
-                                </div>
+                                ${thumbnailsContainerHTML}
                             </div>
                             <!-- Product Details -->
-                            <div class="flex flex-col">
-                                <span class="text-emerald-600 font-semibold mb-2">${productData.type}</span>
-                                <h1 class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">${productData.title}</h1>
+                            <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-8 md:p-10">
+                                <span class="text-emerald-600 font-semibold mb-2 block">${productData.type}</span>
+                                <h1 class="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-4">${productData.title}</h1>
                                 <div class="mb-6">${priceHTML}</div>
-                                <p class="text-slate-600 leading-relaxed mb-8">${productData.desc}</p>
+
+                                <div class="space-y-3 text-sm text-slate-800 border-y border-slate-200 py-4 mb-6">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-semibold text-slate-500">الحالة:</span>
+                                        <span class="font-bold px-2 py-0.5 rounded-full ${productData.isAvailable ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}">${productData.isAvailable ? 'متوفر' : 'غير متوفر'}</span>
+                                    </div>
+                                    ${productData.productCode ? `
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-semibold text-slate-500">كود المنتج:</span>
+                                        <span class="font-mono tracking-wider">${productData.productCode}</span>
+                                    </div>` : ''}
+                                    ${(() => {
+                                        const category = allCategories.find(c => c.pageId === productData.categoryId);
+                                        return category ? `
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-semibold text-slate-500">التصنيف الرئيسي:</span>
+                                            <span>${category.name}</span>
+                                        </div>` : '';
+                                    })()}
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-semibold text-slate-500">نوع المنتج:</span>
+                                        <span>${productData.type}</span>
+                                    </div>
+                                </div>
                                 
-                                <div class="border-t border-slate-200 pt-6 mb-8">
+                                <div class="mb-8">
+                                    <h3 class="text-xl font-bold text-slate-900 mb-2">عن المنتج</h3>
+                                    <p class="text-slate-600 leading-relaxed break-words product-description-text">${productData.desc}</p>
+                                </div>
+
+                                <div class="mb-8">
                                     <h3 class="text-xl font-bold text-slate-900 mb-4">الألوان والأكواد المتاحة</h3>
-                                    <div class="grid grid-cols-2 gap-3" id="product-colors-container">
+                                    <div class="flex flex-wrap items-center gap-4" id="product-colors-container">
                                         ${colorsHTML}
                                     </div>
                                 </div>
@@ -1299,6 +1460,49 @@
                                         <span>اطلب الآن عبر واتساب</span>
                                     </a>
                                 </div>
+
+                                <!-- Return Policy Section -->
+                                <div class="mt-8 border-t border-slate-200 pt-6 space-y-5 text-sm">
+                                    <div class="flex items-center gap-4">
+                                        <div class="bg-slate-100 text-emerald-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">
+                                            <i data-feather="shield" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-800">إرجاع مجاني</h4>
+                                            <p class="text-xs text-slate-500">تطبق الشروط والأحكام</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="bg-slate-100 text-emerald-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">
+                                            <i data-feather="eye-off" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-800">تسوق بخصوصية</h4>
+                                            <p class="text-xs text-slate-500">نضمن خصوصية بياناتك.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="bg-slate-100 text-emerald-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">
+                                            <i data-feather="briefcase" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-800">البائع</h4>
+                                            <p class="text-xs text-slate-500">Gedar</p>
+                                        </div>
+                                    </div>
+                                     <div class="flex items-start gap-4">
+                                         <div class="bg-slate-100 text-emerald-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center mt-1">
+                                            <i data-feather="file-text" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-800">شروط سياسة الإسترجاع</h4>
+                                            <p class="text-xs text-slate-500 leading-relaxed">
+                                                يمكنك إرجاع المنتج خلال 14 يومًا من تاريخ الاستلام، بشرط أن يكون في حالته الأصلية وغير مستخدم.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -1315,8 +1519,15 @@
             const mainImage = detailPage.querySelector('#main-product-image');
             
             detailPage.addEventListener('click', e => {
-                if (e.target.closest('.back-to-category-btn')) {
-                    showCategoryPage(e.target.closest('.back-to-category-btn').dataset.categoryId);
+                const backBtn = e.target.closest('.back-to-products-btn');
+                if (backBtn) {
+                    productDetailContainer.classList.add('hidden');
+                    productDetailContainer.innerHTML = ''; // Clear content to prevent ID conflicts
+                    mainPageContent.classList.remove('hidden');
+                    
+                    // Optional: Re-select the correct category in the sidebar
+                    const categoryToSelect = categoryTabs.querySelector(`[data-page="${backBtn.dataset.categoryId}"]`);
+                    if(categoryToSelect) categoryToSelect.click();
                 }
                 
                 const thumbnail = e.target.closest('.thumbnail-img');
@@ -1334,18 +1545,22 @@
                 const colorSwatch = e.target.closest('.color-swatch');
                 if (colorSwatch) {
                     const colorId = colorSwatch.dataset.id;
-                    const matchingThumbnail = detailPage.querySelector(`.thumbnail-img[data-id="${colorId}"]`);
-                    if (matchingThumbnail) {
-                        matchingThumbnail.click();
+                    const colorData = productData.colors.find(c => (c.code || c.hex) === colorId);
+                    if (colorData && colorData.imageUrl) {
+                         mainImage.style.opacity = '0';
+                        setTimeout(() => {
+                            mainImage.src = colorData.imageUrl;
+                            mainImage.style.opacity = '1';
+                        }, 300);
+                        // Deselect any active thumbnail when a color is chosen
+                        detailPage.querySelectorAll('.thumbnail-img').forEach(t => t.classList.remove('border-emerald-500'));
                     }
                 }
             });
         }
         
         document.body.addEventListener('click', e => {
-            if (e.target.closest('.back-to-main-btn')) { e.preventDefault(); showMainContent(); }
-            const categoryCard = e.target.closest('.category-card:not(#add-category-card)');
-            if (categoryCard) { e.preventDefault(); showCategoryPage(categoryCard.dataset.page); }
+            // This logic is now handled by specific back buttons
         });
 
         // Other UI logic (mobile menu, scroll reveal, etc.)
@@ -1388,6 +1603,27 @@
             });
         }
         window.copyToClipboard = copyToClipboard; 
+
+        // Animate contact section on scroll
+        document.querySelectorAll('a[href="#main-footer"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const contactSection = document.getElementById('contact-details');
+                if (contactSection) {
+                    // Remove class first to re-trigger animation if clicked again quickly
+                    contactSection.classList.remove('animate-shake');
+                    // Use a tiny timeout to allow the browser to process the removal before adding it back
+                    setTimeout(() => {
+                        contactSection.classList.add('animate-shake');
+                    }, 10);
+                    
+                    // Remove the class after the animation is done
+                    setTimeout(() => {
+                        contactSection.classList.remove('animate-shake');
+                    }, 700); // Animation duration is 0.6s, add a little buffer
+                }
+            });
+        });
+        
     </script>
 </body>
 </html>
