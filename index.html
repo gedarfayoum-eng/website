@@ -159,6 +159,12 @@
 </head>
 <body class="text-slate-700 bg-slate-50">
 
+    <div id="video-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; overflow: hidden; opacity: 0.1;">
+        <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
+            <source src="https://videos.pexels.com/video-files/7578540/7578540-hd_1920_1080_25fps.mp4" type="video/mp4">
+        </video>
+    </div>
+
     <header class="sticky top-0 z-50">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
             <a href="#home" id="logo-btn" class="text-center">
@@ -224,7 +230,7 @@
     <div id="main-content">
         <main>
             <section id="home" class="relative min-h-screen flex items-center justify-center text-white overflow-hidden -mt-[88px] pb-24">
-                 <div class="absolute inset-0 bg-gradient-to-br from-emerald-50 via-slate-50 to-green-50 -z-10"></div>
+                 <div class="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-slate-50/50 to-green-50/50 -z-10"></div>
                 <div class="relative z-10 container mx-auto px-6 text-center reveal">
                     <h1 class="pt-4 font-black text-7xl sm:text-8xl md:text-9xl bg-gradient-to-r from-emerald-500 to-green-600 text-transparent bg-clip-text drop-shadow-sm">
                         جدار
@@ -246,7 +252,7 @@
             
             <section id="categories" class="py-20 sm:py-24 overflow-hidden">
                 <div class="container mx-auto px-6 reveal">
-                    <div class="p-4 sm:p-8 md:p-12">
+                    <div class="bg-white/70 backdrop-blur-md rounded-3xl p-4 sm:p-8 md:p-12">
                         <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-4 text-slate-900">تصفح منتجاتنا</h2>
                         <p class="text-slate-600 text-center max-w-2xl mx-auto mb-12 sm:mb-16">اختر المنتجات التي تلهمك لتبدأ رحلة تصميم مساحتك الخاصة.</p>
                         <div class="relative">
@@ -278,7 +284,7 @@
                         <div dir="ltr" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                             
                             <!-- Step 1 -->
-                            <div dir="rtl" class="text-center p-6 bg-white rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
+                            <div dir="rtl" class="text-center p-6 bg-white/70 backdrop-blur-md rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
                                 <div class="relative inline-block">
                                     <div class="bg-emerald-100 text-emerald-500 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-5">
                                         <i data-feather="clipboard" class="w-10 h-10"></i>
@@ -292,7 +298,7 @@
                             </div>
 
                             <!-- Step 2 -->
-                            <div dir="rtl" class="text-center p-6 bg-white rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
+                            <div dir="rtl" class="text-center p-6 bg-white/70 backdrop-blur-md rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
                                 <div class="relative inline-block">
                                     <div class="bg-emerald-100 text-emerald-500 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-5">
                                         <i data-feather="dollar-sign" class="w-10 h-10"></i>
@@ -306,7 +312,7 @@
                             </div>
 
                             <!-- Step 3 -->
-                            <div dir="rtl" class="text-center p-6 bg-white rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
+                            <div dir="rtl" class="text-center p-6 bg-white/70 backdrop-blur-md rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
                                <div class="relative inline-block">
                                     <div class="bg-emerald-100 text-emerald-500 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-5">
                                         <i data-feather="credit-card" class="w-10 h-10"></i>
@@ -323,7 +329,7 @@
                             </div>
 
                             <!-- Step 4 -->
-                            <div dir="rtl" class="text-center p-6 bg-white rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
+                            <div dir="rtl" class="text-center p-6 bg-white/70 backdrop-blur-md rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
                                 <div class="relative inline-block">
                                     <div class="bg-emerald-100 text-emerald-500 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-5">
                                         <i data-feather="truck" class="w-10 h-10"></i>
@@ -341,7 +347,7 @@
                 </div>
             </section>
 
-            <section id="portfolio" class="py-20 sm:py-24 bg-slate-100 overflow-hidden">
+            <section id="portfolio" class="py-20 sm:py-24 bg-slate-100/70 backdrop-blur-md overflow-hidden">
                 <div class="container mx-auto px-6 text-center reveal">
                     <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-slate-900">شاهد إبداعنا على أرض الواقع</h2>
                     <p class="text-slate-600 mb-12 sm:mb-16 max-w-2xl mx-auto">تصفح مجموعة من أحدث مشاريعنا التي نفخر بتنفيذها. كل مشروع يحكي قصة نجاح وجودة.</p>
@@ -609,6 +615,17 @@
                     </button>
                 </div>
 
+                <div class="border-b border-slate-200 py-4">
+                    <h4 class="font-bold text-lg text-slate-800 mb-3">صور إضافية للمعرض</h4>
+                    <div id="gallery-images-container" class="space-y-3">
+                        <!-- Gallery Image fields will be injected here -->
+                    </div>
+                    <button type="button" id="add-gallery-image-btn" class="mt-3 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-2">
+                        <i data-feather="plus"></i>
+                        <span>إضافة صورة للمعرض</span>
+                    </button>
+                </div>
+
                 <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-bold">حفظ المنتج</button>
             </form>
         </div>
@@ -667,7 +684,7 @@
             apiKey: "AIzaSyAWnvpPCcqBJggQd8OSXsdBGat-e2a9g2I",
             authDomain: "website-gedr.firebaseapp.com",
             projectId: "website-gedr",
-            storageBucket: "website-gedr.firebasestorage.app",
+            storageBucket: "website-gedr.appspot.com",
             messagingSenderId: "1000084151526",
             appId: "1:1000084151526:web:3131d3640cc5d2687b6f27",
             measurementId: "G-701Z5YNF0E"
@@ -708,6 +725,7 @@
         const productAdminForm = document.getElementById('product-admin-form');
         const addColorBtn = document.getElementById('add-color-btn');
         const colorsContainer = document.getElementById('colors-container');
+        const galleryImagesContainer = document.getElementById('gallery-images-container');
         
         // Containers
         const categoriesContainer = document.getElementById('categories-container');
@@ -812,7 +830,7 @@
                 page.className = 'category-page hidden min-h-screen py-16';
                 page.innerHTML = `
                     <div class="container mx-auto px-6">
-                        <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+                        <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-8 md:p-12">
                             <button class="back-to-main-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-500 hover:text-slate-800 font-semibold transition-colors">
                                 <i data-feather="arrow-right" class="w-5 h-5"></i>
                                 <span>العودة للأقسام</span>
@@ -961,6 +979,7 @@
                 currentCategoryId = addProductCard.dataset.categoryId;
                 productAdminForm.reset();
                 colorsContainer.innerHTML = '';
+                galleryImagesContainer.innerHTML = '';
                 document.getElementById('product-admin-modal-title').textContent = 'إضافة منتج جديد';
                 openModal(productAdminModal, productAdminModalContent);
             }
@@ -983,6 +1002,10 @@
                 colorsContainer.innerHTML = '';
                 if(productData.colors) {
                     productData.colors.forEach(color => addColorField(color));
+                }
+                galleryImagesContainer.innerHTML = '';
+                if(productData.galleryImages) {
+                    productData.galleryImages.forEach(imgUrl => addGalleryImageField(imgUrl));
                 }
                 document.getElementById('product-admin-modal-title').textContent = 'تعديل المنتج';
                 openModal(productAdminModal, productAdminModalContent);
@@ -1037,6 +1060,7 @@
                 code: formData.getAll('colorCode')[i],
                 imageUrl: formData.getAll('colorImageUrl')[i]
             }));
+            const galleryImages = Array.from(formData.getAll('galleryImageUrl')).filter(url => url.trim() !== '');
 
             const productData = {
                 title: formData.get('title'),
@@ -1047,7 +1071,8 @@
                 discount: formData.get('discount') ? parseFloat(formData.get('discount')) : null,
                 isAvailable: formData.get('isAvailable') === 'on',
                 categoryId: currentCategoryId,
-                colors: colors
+                colors: colors,
+                galleryImages: galleryImages
             };
 
             try {
@@ -1145,6 +1170,23 @@
             if (e.target.closest('.remove-color-btn')) e.target.closest('.grid').remove();
         });
 
+        // Dynamically add gallery image fields
+        document.getElementById('add-gallery-image-btn').addEventListener('click', () => addGalleryImageField());
+        function addGalleryImageField(imageUrl = '') {
+            const div = document.createElement('div');
+            div.className = 'flex gap-2 items-center';
+            div.innerHTML = `
+                <input type="url" name="galleryImageUrl" placeholder="رابط صورة المنتج" value="${imageUrl}" class="flex-grow bg-slate-100 rounded-lg py-2 px-4 focus:outline-none text-slate-800">
+                <button type="button" class="remove-gallery-image-btn text-red-500 hover:text-red-600"><i data-feather="trash-2" class="w-5 h-5"></i></button>
+            `;
+            galleryImagesContainer.appendChild(div);
+            feather.replace();
+        }
+        galleryImagesContainer.addEventListener('click', e => {
+            if (e.target.closest('.remove-gallery-image-btn')) e.target.closest('.flex').remove();
+        });
+
+
         // Page Navigation
         function showCategoryPage(pageId) {
             mainContent.classList.add('hidden');
@@ -1170,23 +1212,34 @@
             window.scrollTo(0, 0);
 
             let allImages = [];
+            // Start with the main image if it exists
             if (productData.mainImageUrl) {
-                allImages.push({ type: 'main', src: productData.mainImageUrl });
+                allImages.push({ src: productData.mainImageUrl, id: 'main' });
             }
+            // Add color images
             if (productData.colors && productData.colors.length > 0) {
                 productData.colors.forEach(color => {
-                    if(color.imageUrl) {
-                        allImages.push({ type: 'color', src: color.imageUrl, hex: color.hex, code: color.code });
+                    if (color.imageUrl) {
+                        allImages.push({ src: color.imageUrl, id: color.code || color.hex });
+                    }
+                });
+            }
+            // If no color images, add gallery images
+            if (allImages.length <= 1 && productData.galleryImages && productData.galleryImages.length > 0) {
+                productData.galleryImages.forEach((imgUrl, index) => {
+                     // Avoid re-adding the main image if it's also in the gallery
+                    if (imgUrl !== productData.mainImageUrl) {
+                        allImages.push({ src: imgUrl, id: `gallery-${index}` });
                     }
                 });
             }
 
             if (allImages.length === 0) {
-                allImages.push({ type: 'placeholder', src: 'https://placehold.co/1200x800/e2e8f0/475569?text=No+Image' });
+                allImages.push({ src: 'https://placehold.co/1200x800/e2e8f0/475569?text=No+Image', id: 'placeholder' });
             }
 
             const thumbnailsHTML = allImages.map((img, index) => `
-                <img src="${img.src}" alt="صورة مصغرة للمنتج ${index + 1}" class="thumbnail-img w-full h-24 object-cover rounded-lg cursor-pointer border-2 ${index === 0 ? 'border-emerald-500' : 'border-transparent'} hover:border-emerald-500 transition-colors" data-src="${img.src}">
+                <img src="${img.src}" alt="صورة مصغرة للمنتج" class="thumbnail-img w-full h-24 object-cover rounded-lg cursor-pointer border-2 ${index === 0 ? 'border-emerald-500' : 'border-transparent'} hover:border-emerald-500 transition-colors" data-src="${img.src}" data-id="${img.id}">
             `).join('');
 
             let priceHTML = `<p class="text-4xl font-black text-emerald-600">${productData.price} <span class="text-lg font-semibold text-slate-500">جم</span></p>`;
@@ -1202,9 +1255,9 @@
 
             const colorsHTML = productData.colors && productData.colors.length > 0 
                 ? productData.colors.map(color => `
-                    <div class="flex items-center gap-3 p-2 border border-slate-200 rounded-lg">
-                        <span class="w-8 h-8 rounded-full border-2 border-slate-200" style="background-color: ${color.hex};"></span>
-                        <span class="font-semibold text-slate-700">${color.code || color.hex}</span>
+                    <div class="color-swatch flex items-center gap-3 p-2 border border-slate-200 rounded-lg ${color.imageUrl ? 'cursor-pointer hover:bg-slate-100 transition' : ''}" data-id="${color.code || color.hex}">
+                        <span class="w-8 h-8 rounded-full border-2 border-slate-200 pointer-events-none" style="background-color: ${color.hex};"></span>
+                        <span class="font-semibold text-slate-700 pointer-events-none">${color.code || color.hex}</span>
                     </div>
                 `).join('')
                 : '<p class="text-slate-500">لا توجد ألوان محددة.</p>';
@@ -1222,7 +1275,7 @@
                                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-lg">
                                     <img id="main-product-image" src="${allImages[0].src}" alt="صورة المنتج الرئيسية" class="w-full h-auto object-contain max-h-[60vh] transition-opacity duration-300">
                                 </div>
-                                <div class="grid grid-cols-4 sm:grid-cols-5 gap-3">
+                                <div class="grid grid-cols-4 sm:grid-cols-5 gap-3" id="product-thumbnails-container">
                                     ${thumbnailsHTML}
                                 </div>
                             </div>
@@ -1235,7 +1288,7 @@
                                 
                                 <div class="border-t border-slate-200 pt-6 mb-8">
                                     <h3 class="text-xl font-bold text-slate-900 mb-4">الألوان والأكواد المتاحة</h3>
-                                    <div class="grid grid-cols-2 gap-3">
+                                    <div class="grid grid-cols-2 gap-3" id="product-colors-container">
                                         ${colorsHTML}
                                     </div>
                                 </div>
@@ -1276,6 +1329,15 @@
                     
                     detailPage.querySelectorAll('.thumbnail-img').forEach(t => t.classList.remove('border-emerald-500'));
                     thumbnail.classList.add('border-emerald-500');
+                }
+
+                const colorSwatch = e.target.closest('.color-swatch');
+                if (colorSwatch) {
+                    const colorId = colorSwatch.dataset.id;
+                    const matchingThumbnail = detailPage.querySelector(`.thumbnail-img[data-id="${colorId}"]`);
+                    if (matchingThumbnail) {
+                        matchingThumbnail.click();
+                    }
                 }
             });
         }
@@ -1329,8 +1391,4 @@
     </script>
 </body>
 </html>
-
-
-
-
 
