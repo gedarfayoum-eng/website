@@ -612,24 +612,27 @@
     </div>
 
     <!-- Payment Methods Modal -->
-    <div id="payment-modal" class="hidden fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="payment-modal-content" class="bg-stone-800/50 backdrop-blur-xl border border-white/10 text-slate-200 rounded-2xl shadow-2xl p-8 max-w-lg w-full relative transform transition-all duration-300 scale-95 opacity-0">
-            <button id="close-payment-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+    <div id="payment-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div id="payment-modal-content" class="bg-gray-900/40 backdrop-blur-2xl border border-white/10 text-slate-200 rounded-3xl shadow-2xl p-8 max-w-lg w-full relative transform transition-all duration-300 scale-95 opacity-0">
+            <button id="close-payment-modal" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors">
                 <i data-feather="x" class="w-7 h-7"></i>
             </button>
             <div class="text-center mb-8">
-                 <h2 class="text-3xl font-extrabold text-emerald-400">طرق دفع آمنة ومريحة</h2>
+                 <div class="inline-block p-3 bg-emerald-500/20 rounded-xl mb-4">
+                    <i data-feather="credit-card" class="w-8 h-8 text-emerald-300"></i>
+                 </div>
+                 <h2 class="text-3xl font-extrabold text-white">طرق دفع آمنة ومريحة</h2>
                  <p class="text-slate-300 mt-2">اختر الطريقة الأنسب لك لإتمام طلبك بكل سهولة.</p>
             </div>
             <div class="space-y-4 text-right">
-                <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/10">
+                <div class="flex items-start gap-4 p-4 bg-white/10 hover:bg-white/20 transition-colors rounded-xl border border-white/10">
                     <i data-feather="package" class="w-8 h-8 text-emerald-400 flex-shrink-0 mt-1"></i>
                     <div>
                         <h3 class="font-bold text-lg text-white">الدفع عند الاستلام</h3>
                         <p class="text-slate-300 text-sm">يمكن دفع القيمة كامله نقدا او دفع بقية المبلغ ، الجزء الثاني من المبلغ عند الإستلام.</p>
                     </div>
                 </div>
-                <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/10">
+                <div class="flex items-start gap-4 p-4 bg-white/10 hover:bg-white/20 transition-colors rounded-xl border border-white/10">
                     <i data-feather="smartphone" class="w-8 h-8 text-red-500 flex-shrink-0 mt-1"></i>
                     <div>
                         <h3 class="font-bold text-lg text-white">محفظة فودافون كاش</h3>
@@ -640,7 +643,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/10">
+                <div class="flex items-start gap-4 p-4 bg-white/10 hover:bg-white/20 transition-colors rounded-xl border border-white/10">
                      <i data-feather="zap" class="w-8 h-8 text-purple-400 flex-shrink-0 mt-1"></i>
                     <div>
                         <h3 class="font-bold text-lg text-white">تطبيق انستا باي (InstaPay)</h3>
@@ -651,7 +654,7 @@
                         </div>
                     </div>
                 </div>
-                 <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/10 opacity-60">
+                 <div class="flex items-start gap-4 p-4 bg-black/20 rounded-xl border border-white/10 opacity-60 cursor-not-allowed">
                     <i data-feather="credit-card" class="w-8 h-8 text-yellow-500 flex-shrink-0 mt-1"></i>
                     <div>
                         <h3 class="font-bold text-lg text-white">البطاقات الائتمانية</h3>
@@ -1157,6 +1160,7 @@
     </script>
 </body>
 </html>
+
 
 
 
