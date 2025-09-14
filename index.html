@@ -15,7 +15,7 @@
         }
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #111827; /* Fallback background */
+            background-color: #f8fafc; /* slate-50 */
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
@@ -34,11 +34,12 @@
             transform: translateY(0);
         }
         header {
-            transition: background-color 0.4s ease-out, backdrop-filter 0.4s ease-out;
+            transition: background-color 0.4s ease-out, box-shadow 0.4s ease-out, backdrop-filter 0.4s ease-out;
         }
         header.scrolled {
-             background-color: transparent;
-             backdrop-filter: none;
+             background-color: rgba(248, 250, 252, 0.8); /* slate-50 with opacity */
+             backdrop-filter: blur(8px);
+             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.98); }
@@ -81,8 +82,8 @@
             border-bottom-right-radius: 0.25rem;
         }
         .chat-message.bot .message-content {
-            background-color: #374151; /* gray-700 */
-            color: #e5e7eb; /* gray-200 */
+            background-color: #e2e8f0; /* slate-200 */
+            color: #334155; /* slate-700 */
             border-bottom-left-radius: 0.25rem;
         }
         
@@ -103,54 +104,84 @@
         .sort-btn {
             padding: 0.5rem 1.25rem;
             border-radius: 9999px;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #d1d5db; /* gray-300 */
+            background-color: #e2e8f0; /* slate-200 */
+            color: #475569; /* slate-600 */
             font-weight: 600;
             transition: all 0.2s ease-in-out;
             border: 1px solid transparent;
         }
         .sort-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
+            background-color: #cbd5e1; /* slate-300 */
+            color: #1e293b; /* slate-800 */
         }
         .sort-btn.active {
             background-color: #10b981; /* emerald-600 */
             color: white;
             border-color: #34d399; /* emerald-400 */
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
         }
         #mobile-menu {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.5s ease-in-out;
         }
+        .admin-only {
+            display: none;
+        }
+        .product-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* number of lines to show */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 3.5rem; /* Adjust based on font-size and line-height to fit 2 lines */
+        }
+        /* Modern Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #e2e8f0; /* slate-200 */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #6ee7b7; /* emerald-300 */
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #34d399; /* emerald-400 */
+        }
     </style>
 </head>
-<body class="text-slate-200">
-
-    <div class="fixed inset-0 -z-10">
-        <video autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1615874959474-d609969a20ed?q=80&w=2500&auto=format&fit=crop" class="w-full h-full object-cover">
-            <source src="https://videos.pexels.com/video-files/8310134/8310134-hd_1920_1080_25fps.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="absolute inset-0 bg-black/50"></div>
-    </div>
+<body class="text-slate-700 bg-slate-50">
 
     <header class="sticky top-0 z-50">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#home" class="flex flex-col items-center text-center">
-                <img src="https://i.ibb.co/67zCn4p8/image.png" alt="أيقونة شعار جدار" class="h-8 w-auto mb-1 brightness-200">
-                <h1 class="brand-title text-xl font-black text-white -mb-1">جدار</h1>
-                <p class="text-xs text-slate-300 tracking-tight">للديكورات الحديثة</p>
+            <a href="#home" id="logo-btn" class="text-center">
+                <h1 class="brand-title text-2xl font-black text-slate-800 leading-none">جدار</h1>
+                <p class="text-[10px] text-slate-500 tracking-widest uppercase">للديكورات الحديثة</p>
             </a>
             
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex items-center space-x-6 space-x-reverse">
-                <a href="#home" class="text-slate-200 hover:text-white font-semibold transition duration-300">الرئيسية</a>
-                <a href="#main-footer" class="text-slate-200 hover:text-white font-semibold transition duration-300">تواصل معنا</a>
-                <a href="#" class="open-payment-modal-btn bg-emerald-500/20 text-emerald-300 text-sm font-bold py-2 px-4 rounded-full hover:bg-emerald-500/30 transition-colors">طرق الدفع</a>
+                <a href="#home" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">الرئيسية</a>
+                <a href="#main-footer" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">تواصل معنا</a>
+                
+                <div id="auth-section-desktop">
+                    <a href="#" class="open-payment-modal-btn bg-emerald-100 text-emerald-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-emerald-200 transition-colors">طرق الدفع</a>
+                </div>
+                <div id="user-section-desktop" class="hidden items-center space-x-4 space-x-reverse">
+                    <img id="user-avatar-desktop" class="w-10 h-10 rounded-full" src="" alt="User Avatar">
+                    <span id="user-name-desktop" class="font-semibold text-slate-800"></span>
+                    <button id="logout-btn-desktop" class="bg-red-100 text-red-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-red-200 transition-colors">تسجيل الخروج</button>
+                </div>
+
                 <form id="header-search-form" class="relative search-form">
-                    <input type="text" placeholder="ابحث..." class="bg-white/10 text-white rounded-full py-2 pl-10 pr-4 w-48 transition-all duration-300 focus:w-64 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                    <input type="text" placeholder="ابحث..." class="bg-slate-200/60 text-slate-800 placeholder-slate-500 rounded-full py-2 pl-10 pr-4 w-48 transition-all duration-300 focus:w-64 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
                         <i data-feather="search" class="w-5 h-5"></i>
                     </span>
@@ -159,20 +190,29 @@
 
             <!-- Mobile Menu Button -->
             <div class="md:hidden">
-                <button id="mobile-menu-btn" class="text-white focus:outline-none">
+                <button id="mobile-menu-btn" class="text-slate-800 focus:outline-none">
                     <i data-feather="menu" class="w-7 h-7"></i>
                 </button>
             </div>
         </div>
         
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="md:hidden bg-transparent">
+        <div id="mobile-menu" class="md:hidden bg-slate-50/80 backdrop-blur-md">
             <div class="container mx-auto px-6 py-4 flex flex-col items-center gap-4">
-                <a href="#home" class="text-slate-200 hover:text-white font-semibold transition duration-300">الرئيسية</a>
-                <a href="#main-footer" class="text-slate-200 hover:text-white font-semibold transition duration-300">تواصل معنا</a>
-                <a href="#" class="open-payment-modal-btn bg-emerald-500/20 text-emerald-300 text-sm font-bold py-2 px-4 rounded-full hover:bg-emerald-500/30 transition-colors">طرق الدفع</a>
+                <a href="#home" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">الرئيسية</a>
+                <a href="#main-footer" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">تواصل معنا</a>
+
+                <div id="auth-section-mobile" class="w-full text-center">
+                    <a href="#" class="open-payment-modal-btn bg-emerald-100 text-emerald-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-emerald-200 transition-colors">طرق الدفع</a>
+                </div>
+                <div id="user-section-mobile" class="hidden flex-col items-center gap-4">
+                   <img id="user-avatar-mobile" class="w-12 h-12 rounded-full" src="" alt="User Avatar">
+                   <span id="user-name-mobile" class="font-semibold text-slate-800"></span>
+                   <button id="logout-btn-mobile" class="bg-red-100 text-red-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-red-200 transition-colors">تسجيل الخروج</button>
+               </div>
+
                 <form id="mobile-search-form" class="relative search-form w-full max-w-sm">
-                    <input type="text" placeholder="ابحث عن تصميم..." class="bg-white/10 text-white rounded-full py-3 pl-12 pr-4 w-full focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base">
+                    <input type="text" placeholder="ابحث عن تصميم..." class="bg-slate-200/60 text-slate-800 placeholder-slate-500 rounded-full py-3 pl-12 pr-4 w-full focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base">
                     <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
                         <i data-feather="search" class="w-6 h-6"></i>
                     </span>
@@ -183,25 +223,22 @@
 
     <div id="main-content">
         <main>
-            <section id="home" class="relative min-h-screen flex items-center justify-center text-white overflow-hidden -mt-[88px]">
+            <section id="home" class="relative min-h-screen flex items-center justify-center text-white overflow-hidden -mt-[88px] pb-24">
+                 <div class="absolute inset-0 bg-gradient-to-br from-emerald-50 via-slate-50 to-green-50 -z-10"></div>
                 <div class="relative z-10 container mx-auto px-6 text-center reveal">
-                    <h1 class="pt-4 font-black text-7xl sm:text-8xl md:text-9xl bg-gradient-to-r from-emerald-400 to-green-300 text-transparent bg-clip-text drop-shadow-lg">
+                    <h1 class="pt-4 font-black text-7xl sm:text-8xl md:text-9xl bg-gradient-to-r from-emerald-500 to-green-600 text-transparent bg-clip-text drop-shadow-sm">
                         جدار
                     </h1>
-                    <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-200 mt-2 mb-10 drop-shadow-md">
+                    <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mt-2 mb-10">
                         حوّل مساحتك إلى لوحة فنية
                     </p>
-                    <p class="text-base sm:text-lg md:text-xl text-slate-200 max-w-2xl mx-auto mb-10 drop-shadow-md -mt-6">
+                    <p class="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 -mt-6">
                         نقدم لك أحدث وأجمل تجاليد الحوائط التي تجمع بين الفن والجودة، لتمنح منزلك هوية فريدة ومظهرًا عصريًا.
                     </p>
-                    <a href="#categories" class="cta-button inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 px-8 sm:py-4 sm:px-10 rounded-full hover:shadow-emerald-400/30 transition-all duration-300 text-lg font-bold shadow-2xl transform hover:-translate-y-1">
-                        <span>تصفح الأقسام الآن</span>
-                        <i data-feather="arrow-left" class="w-6 h-6"></i>
-                    </a>
                 </div>
             
                 <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
-                    <a href="#categories" class="text-white/70 hover:text-white transition-colors">
+                    <a href="#categories" class="text-slate-500/70 hover:text-slate-700 transition-colors">
                         <i data-feather="chevron-down" class="w-10 h-10 animate-bounce"></i>
                     </a>
                 </div>
@@ -210,118 +247,104 @@
             <section id="categories" class="py-20 sm:py-24 overflow-hidden">
                 <div class="container mx-auto px-6 reveal">
                     <div class="p-4 sm:p-8 md:p-12">
-                        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-4 text-white">تصفح منتجاتنا</h2>
-                        <p class="text-slate-300 text-center max-w-2xl mx-auto mb-12 sm:mb-16">اختر المنتجات التي تلهمك لتبدأ رحلة تصميم مساحتك الخاصة.</p>
+                        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-4 text-slate-900">تصفح منتجاتنا</h2>
+                        <p class="text-slate-600 text-center max-w-2xl mx-auto mb-12 sm:mb-16">اختر المنتجات التي تلهمك لتبدأ رحلة تصميم مساحتك الخاصة.</p>
                         <div class="relative">
-                            <div id="categories-container" class="flex items-center gap-6 sm:gap-8 overflow-x-auto py-4 -mx-6 px-6 scrollbar-hide">
-                                
-                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="natural">
-                                    <img src="https://images.unsplash.com/photo-1533038590840-1cde6e668a91?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم التصاميم الطبيعية">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                                        <i data-feather="feather" class="w-7 h-7 mb-2 text-emerald-300"></i>
-                                        <h3 class="text-xl sm:text-2xl font-bold">تصاميم طبيعية</h3>
+                            <div id="categories-container" class="flex items-center gap-6 sm:gap-8 overflow-x-auto py-4 -mx-6 px-6">
+                                <!-- Categories will be dynamically injected here -->
+                                <div id="add-category-card" class="admin-only group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl border-2 border-dashed border-slate-300 hover:border-emerald-500 transition-colors flex items-center justify-center cursor-pointer">
+                                    <div class="text-center text-slate-400 group-hover:text-emerald-500">
+                                        <i data-feather="plus-circle" class="w-12 h-12 mx-auto"></i>
+                                        <p class="mt-4 font-bold">إضافة قسم جديد</p>
                                     </div>
-                                </a>
-
-                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="modern">
-                                    <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم التصاميم المودرن">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                                        <i data-feather="box" class="w-7 h-7 mb-2 text-purple-300"></i>
-                                        <h3 class="text-xl sm:text-2xl font-bold">تصاميم مودرن</h3>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="geometric">
-                                    <img src="https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم التصاميم الهندسية">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                                        <i data-feather="triangle" class="w-7 h-7 mb-2 text-pink-300"></i>
-                                        <h3 class="text-xl sm:text-2xl font-bold">تصاميم هندسية</h3>
-                                    </div>
-                                </a>
-
-                                 <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="classic">
-                                    <img src="https://images.unsplash.com/photo-1612325430584-be225f1262d6?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم التصاميم الكلاسيكية">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                                        <i data-feather="shield" class="w-7 h-7 mb-2 text-amber-300"></i>
-                                        <h3 class="text-xl sm:text-2xl font-bold">تصاميم كلاسيكية</h3>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="kids">
-                                    <img src="https://images.unsplash.com/photo-1596431718218-a6152b380645?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم غرف الأطفال">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
-                                        <i data-feather="smile" class="w-7 h-7 mb-2 text-sky-300"></i>
-                                        <h3 class="text-xl sm:text-2xl font-bold">غرف أطفال</h3>
-                                    </div>
-                                </a>
+                                </div>
                             </div>
-                            <button id="scroll-right-btn" class="absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition hidden sm:block"><i data-feather="chevron-left"></i></button>
-                            <button id="scroll-left-btn" class="absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition hidden sm:block"><i data-feather="chevron-right"></i></button>
+                            <button id="scroll-right-btn" class="absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 bg-white hover:bg-slate-100 text-slate-600 rounded-full p-2 shadow-md transition hidden sm:block"><i data-feather="chevron-left"></i></button>
+                            <button id="scroll-left-btn" class="absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 bg-white hover:bg-slate-100 text-slate-600 rounded-full p-2 shadow-md transition hidden sm:block"><i data-feather="chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="how-it-works" class="py-20 sm:py-24 overflow-hidden">
+                <div class="container mx-auto px-6 reveal">
+                    <div class="text-center">
+                        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-slate-900">كيف نعمل؟</h2>
+                        <p class="text-slate-600 mb-12 sm:mb-16 max-w-2xl mx-auto">نتبع عملية بسيطة وشفافة لضمان حصولك على أفضل تجربة من البداية إلى النهاية.</p>
+                    </div>
+                    <div class="relative max-w-4xl mx-auto">
+                        <!-- Connecting Line -->
+                        <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-200 -translate-y-1/2 -z-10"></div>
+                        <div dir="ltr" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                            
+                            <!-- Step 1 -->
+                            <div dir="rtl" class="text-center p-6 bg-white rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
+                                <div class="relative inline-block">
+                                    <div class="bg-emerald-100 text-emerald-500 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-5">
+                                        <i data-feather="clipboard" class="w-10 h-10"></i>
+                                    </div>
+                                    <span class="absolute -top-2 -right-2 flex h-8 w-8">
+                                        <span class="relative inline-flex rounded-full h-8 w-8 bg-emerald-500 items-center justify-center text-white font-bold text-sm">1</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2 text-slate-900">الاستشارة والاختيار</h3>
+                                <p class="text-slate-600 text-sm flex-grow">تفضل بزيارتنا لاكتشاف مجموعتنا الواسعة من الخامات والتصاميم، وسنساعدك في اختيار ما يناسب ذوقك ومساحتك.</p>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div dir="rtl" class="text-center p-6 bg-white rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
+                                <div class="relative inline-block">
+                                    <div class="bg-emerald-100 text-emerald-500 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-5">
+                                        <i data-feather="dollar-sign" class="w-10 h-10"></i>
+                                    </div>
+                                     <span class="absolute -top-2 -right-2 flex h-8 w-8">
+                                        <span class="relative inline-flex rounded-full h-8 w-8 bg-emerald-500 items-center justify-center text-white font-bold text-sm">2</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2 text-slate-900">عروض أسعار مرنة</h3>
+                                <p class="text-slate-600 text-sm flex-grow">نقدم لك عرض أسعار شفاف ومفصل، مع خيارات مرنة تناسب ميزانيتك دون المساومة على الجودة.</p>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div dir="rtl" class="text-center p-6 bg-white rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
+                               <div class="relative inline-block">
+                                    <div class="bg-emerald-100 text-emerald-500 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-5">
+                                        <i data-feather="credit-card" class="w-10 h-10"></i>
+                                    </div>
+                                    <span class="absolute -top-2 -right-2 flex h-8 w-8">
+                                        <span class="relative inline-flex rounded-full h-8 w-8 bg-emerald-500 items-center justify-center text-white font-bold text-sm">3</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2 text-slate-900">دفع ميسّر</h3>
+                                <p class="text-slate-600 text-sm flex-grow">نوفر لك جميع طرق الدفع المتاحة ونتعاون معك لإيجاد الحل الأنسب لك بكل سهولة ويسر.</p>
+                                <button class="open-payment-modal-btn mt-4 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                                    أظهر طرق الدفع
+                                </button>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div dir="rtl" class="text-center p-6 bg-white rounded-2xl border border-slate-100 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col">
+                                <div class="relative inline-block">
+                                    <div class="bg-emerald-100 text-emerald-500 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-5">
+                                        <i data-feather="truck" class="w-10 h-10"></i>
+                                    </div>
+                                    <span class="absolute -top-2 -right-2 flex h-8 w-8">
+                                        <span class="relative inline-flex rounded-full h-8 w-8 bg-emerald-500 items-center justify-center text-white font-bold text-sm">4</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2 text-slate-900">الاستلام والتسليم</h3>
+                                <p class="text-slate-600 text-sm flex-grow">استلم خاماتك بنفسك من فرعنا، أو اطلب توصيلها مباشرة إلى باب بيتك. الخيار لك!</p>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="why-us" class="py-20 sm:py-24 overflow-hidden">
+            <section id="portfolio" class="py-20 sm:py-24 bg-slate-100 overflow-hidden">
                 <div class="container mx-auto px-6 text-center reveal">
-                     <div class="p-4 sm:p-8 md:p-12">
-                        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-white">خبرتنا بين يديك: من الفكرة إلى الواقع</h2>
-                        <p class="text-slate-300 mb-12 sm:mb-16 max-w-3xl mx-auto">نحن لا نقدم منتجات فحسب، بل نقدم حلاً متكاملاً يجمع بين التصميم الإبداعي، التنفيذ الدقيق، وضمان الجودة لنجعل من مساحتك تحفة فنية.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                           
-                            <div class="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
-                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
-                                     <i data-feather="edit-3" class="w-8 h-8 sm:w-10 sm:h-10"></i>
-                                </div>
-                                <div>
-                                     <h3 class="text-xl sm:text-2xl font-bold mb-2 text-white">تصاميم مبتكرة لكل ذوق</h3>
-                                     <p class="text-slate-300 leading-relaxed">نصمم كل ما تحلم به، من التصاميم الهندسية الدقيقة إلى الخدع البصرية الفنية لورق الحائط، لنعكس شخصيتك على جدرانك.</p>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
-                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
-                                     <i data-feather="tool" class="w-8 h-8 sm:w-10 sm:h-10"></i>
-                                </div>
-                                <div>
-                                     <h3 class="text-xl sm:text-2xl font-bold mb-2 text-white">تنفيذ احترافي متكامل</h3>
-                                     <p class="text-slate-300 leading-relaxed">فريقنا من مهندسي التركيبات والتشطيبات يضمن لك معاينة دقيقة وتركيب احترافي، مع خدمة شحن للمواد لجميع الأنحاء.</p>
-                                </div>
-                            </div>
-
-                           <div class="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
-                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
-                                     <i data-feather="award" class="w-8 h-8 sm:w-10 sm:h-10"></i>
-                                </div>
-                                <div>
-                                     <h3 class="text-xl sm:text-2xl font-bold mb-2 text-white">جودة فائقة وخامات عالمية</h3>
-                                     <p class="text-slate-300 leading-relaxed">نلتزم بأعلى معايير الجودة ونستخدم أفضل الخامات لنقدم لك منتجات تدوم طويلاً بألوان ثابتة ومظهر لا يبهت.</p>
-                                </div>
-                            </div>
-
-                            <div class="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
-                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
-                                     <i data-feather="thumbs-up" class="w-8 h-8 sm:w-10 sm:h-10"></i>
-                                </div>
-                                <div>
-                                     <h3 class="text-xl sm:text-2xl font-bold mb-2 text-white">ضمان ذهبي ورضا تام</h3>
-                                     <p class="text-slate-300 leading-relaxed">نثق بمنتجاتنا ونقدم لك ضماناً قوياً وسياسة استرجاع مرنة وطويلة تضمن لك راحة البال ورضاك الكامل عن تجربتك معنا.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="portfolio" class="py-20 sm:py-24 bg-black/20 overflow-hidden">
-                <div class="container mx-auto px-6 text-center reveal">
-                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-white">شاهد إبداعنا على أرض الواقع</h2>
-                    <p class="text-slate-300 mb-12 sm:mb-16 max-w-2xl mx-auto">تصفح مجموعة من أحدث مشاريعنا التي نفخر بتنفيذها. كل مشروع يحكي قصة نجاح وجودة.</p>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-slate-900">شاهد إبداعنا على أرض الواقع</h2>
+                    <p class="text-slate-600 mb-12 sm:mb-16 max-w-2xl mx-auto">تصفح مجموعة من أحدث مشاريعنا التي نفخر بتنفيذها. كل مشروع يحكي قصة نجاح وجودة.</p>
                     <div class="relative">
                         <div id="portfolio-container" class="flex items-stretch gap-6 overflow-x-auto py-4 scrollbar-hide -mx-6 px-6">
                             <!-- Portfolio Item 1 -->
@@ -369,47 +392,47 @@
                             </div>
                             <!-- Add more portfolio items here following the same structure -->
                         </div>
-                        <button id="portfolio-scroll-right-btn" class="absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition hidden md:block"><i data-feather="chevron-left"></i></button>
-                        <button id="portfolio-scroll-left-btn" class="absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition hidden md:block"><i data-feather="chevron-right"></i></button>
+                        <button id="portfolio-scroll-right-btn" class="absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 bg-white hover:bg-slate-100 text-slate-600 rounded-full p-2 shadow-md transition hidden md:block"><i data-feather="chevron-left"></i></button>
+                        <button id="portfolio-scroll-left-btn" class="absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 bg-white hover:bg-slate-100 text-slate-600 rounded-full p-2 shadow-md transition hidden md:block"><i data-feather="chevron-right"></i></button>
                     </div>
                 </div>
             </section>
         </main>
 
-        <footer id="main-footer" class="py-4 sm:py-8 border-t border-white/10">
+        <footer id="main-footer" class="py-4 sm:py-8 border-t border-slate-200">
             <div class="container mx-auto px-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-right">
                     <div class="md:col-span-1">
-                         <h3 class="text-lg font-bold text-white mb-2">نبذة عن جدار</h3>
-                         <p class="text-slate-300 leading-relaxed text-sm">
+                         <h3 class="text-lg font-bold text-slate-800 mb-2">نبذة عن جدار</h3>
+                         <p class="text-slate-600 leading-relaxed text-sm">
                             موقع جدار أكبر موقع للتشطيبات وتاسيس المنشأت في مصر , كل ما تحلم به تجده علي موقع جدار.
                          </p>
                     </div>
                      <div class="md:col-span-1">
-                         <h3 class="text-lg font-bold text-white mb-2">الفرع الرئيسي</h3>
-                         <p class="text-slate-300 leading-relaxed text-sm">
+                         <h3 class="text-lg font-bold text-slate-800 mb-2">الفرع الرئيسي</h3>
+                         <p class="text-slate-600 leading-relaxed text-sm">
                             الفيوم - اخر سور المستشفي العام ، امام مطعم ابو صلاح وبجوار المغسلة الأمريكية .
                          </p>
                     </div>
-                    <div class="md:col-span-1 flex flex-col items-center md:items-end">
-                         <h3 class="text-lg font-bold text-white mb-2">تواصل معنا</h3>
-                         <div class="flex flex-col items-center md:items-end gap-2">
-                             <a href="https://wa.me/201014175070" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-slate-200 hover:text-emerald-400 transition-colors text-sm">
+                     <div class="md:col-span-1 flex flex-col items-center md:items-end">
+                         <h3 class="text-lg font-bold text-slate-800 mb-4">تواصل معنا</h3>
+                         <div class="flex flex-col items-center md:items-end gap-3">
+                             <a href="https://wa.me/201014175070" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-slate-600 hover:text-emerald-600 transition-colors text-base font-medium">
                                     <span dir="ltr">01014175070</span>
                                     <i data-feather="message-circle" class="w-5 h-5"></i>
                                 </a>
-                                <a href="mailto:gedar.fayoum@gmail.com" class="flex items-center gap-3 text-slate-200 hover:text-emerald-400 transition-colors text-sm">
+                                <a href="mailto:gedar.fayoum@gmail.com" class="flex items-center gap-3 text-slate-600 hover:text-emerald-600 transition-colors text-base font-medium">
                                     <span>gedar.fayoum@gmail.com</span>
                                     <i data-feather="mail" class="w-5 h-5"></i>
                                 </a>
                          </div>
                     </div>
                 </div>
-                <div class="mt-6 border-t border-white/10 pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p class="text-slate-400 text-sm">&copy; 2025 جدار. جميع الحقوق محفوظة.</p>
+                <div class="mt-6 border-t border-slate-200 pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <p class="text-slate-500 text-sm">&copy; 2025 جدار. جميع الحقوق محفوظة.</p>
                     <div class="flex items-center gap-5">
-                         <a href="https://www.instagram.com/gedar_fayoum/" target="_blank" aria-label="Instagram" class="text-slate-400 hover:text-white transition-colors"><i data-feather="instagram" class="w-5 h-5"></i></a>
-                        <a href="https://www.facebook.com/gedar.fayoum/" target="_blank" aria-label="Facebook" class="text-slate-400 hover:text-white transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                         <a href="https://www.instagram.com/gedar_fayoum/" target="_blank" aria-label="Instagram" class="text-slate-500 hover:text-slate-800 transition-colors"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                        <a href="https://www.facebook.com/gedar.fayoum/" target="_blank" aria-label="Facebook" class="text-slate-500 hover:text-slate-800 transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
                     </div>
                 </div>
             </div>
@@ -417,147 +440,23 @@
     </div>
     
     <div id="category-pages-container" class="hidden">
-        
-        <section id="page-natural" class="category-page hidden min-h-screen py-16 text-white">
-             <div class="container mx-auto px-6">
-                <div class="bg-black/20 backdrop-blur-sm rounded-3xl p-8 md:p-12">
-                    <button class="back-to-main-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-300 hover:text-white font-semibold transition-colors">
-                        <i data-feather="arrow-right" class="w-5 h-5"></i>
-                        <span>العودة للأقسام</span>
-                    </button>
-                    <h2 class="text-4xl font-extrabold text-center mb-6">تصاميم طبيعية</h2>
-                    <!-- Sort Buttons -->
-                    <div class="flex justify-center gap-2 mb-10 flex-wrap sort-buttons">
-                        <button class="sort-btn active" data-sort="default">الكل</button>
-                        <button class="sort-btn" data-sort="bestseller">الأكثر مبيعاً</button>
-                        <button class="sort-btn" data-sort="price-desc">الأعلى سعراً</button>
-                        <button class="sort-btn" data-sort="price-asc">الأقل سعراً</button>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 product-grid">
-                        <!-- Product Card 1 -->
-                        <div class="product-card group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/10 hover:-translate-y-2"
-                            data-title="ورق حائط بنقشة أوراق استوائية"
-                            data-price="250"
-                            data-bestseller="false"
-                            data-img="https://images.unsplash.com/photo-1585333150141-35a224586d48?q=80&w=800&auto=format&fit=crop"
-                            data-desc="أضف لمسة من الطبيعة الخلابة إلى مساحتك مع هذا التصميم الذي يحاكي أوراق المونستيرا الكثيفة، مثالي لغرف المعيشة والاستقبال.">
-                            <div class="relative">
-                                <img src="https://images.unsplash.com/photo-1585333150141-35a224586d48?q=80&w=800&auto=format&fit=crop" alt="ورق حائط بنقشة أوراق استوائية" class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-110">
-                            </div>
-                            <div class="p-5">
-                                <h3 class="text-xl font-bold text-white mb-1 truncate">ورق حائط بنقشة أوراق استوائية</h3>
-                                <p class="text-2xl font-black text-emerald-400 mb-4">250 <span class="text-sm font-semibold text-slate-300">جم / للفة</span></p>
-                                <button class="details-btn w-full bg-emerald-600/80 text-white py-2 px-4 rounded-full hover:bg-emerald-600 transition-colors">عرض التفاصيل</button>
-                            </div>
-                        </div>
-                        <!-- Product Card 2 -->
-                        <div class="product-card group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/10 hover:-translate-y-2"
-                             data-title="تجاليد خشبية طبيعية"
-                             data-price="450"
-                             data-bestseller="true"
-                             data-img="https://images.unsplash.com/photo-1611094603953-53b9a0a65a3c?q=80&w=800&auto=format&fit=crop"
-                             data-desc="امنح جدرانك ملمساً وشكلاً دافئاً مع تجاليدنا الخشبية المصنوعة من أجود أنواع الأخشاب الطبيعية، سهلة التركيب وتدوم طويلاً.">
-                            <div class="relative">
-                                <img src="https://images.unsplash.com/photo-1611094603953-53b9a0a65a3c?q=80&w=800&auto=format&fit=crop" alt="تجاليد خشبية طبيعية" class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-110">
-                            </div>
-                             <div class="p-5">
-                                <h3 class="text-xl font-bold text-white mb-1 truncate">تجاليد خشبية طبيعية</h3>
-                                <p class="text-2xl font-black text-emerald-400 mb-4">450 <span class="text-sm font-semibold text-slate-300">جم / متر مربع</span></p>
-                                <button class="details-btn w-full bg-emerald-600/80 text-white py-2 px-4 rounded-full hover:bg-emerald-600 transition-colors">عرض التفاصيل</button>
-                            </div>
-                        </div>
-                        <!-- Product Card 3 -->
-                        <div class="product-card group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/10 hover:-translate-y-2"
-                             data-title="تصميم حجارة طبيعية"
-                             data-price="320"
-                             data-bestseller="false"
-                             data-img="https://images.unsplash.com/photo-1522041221495-9c94608e124f?q=80&w=800&auto=format&fit=crop"
-                             data-desc="تصميم فريد يحاكي شكل وملمس الجدران الحجرية الطبيعية، يضيف عمقاً وفخامة للمداخل والمساحات الخارجية.">
-                            <div class="relative">
-                                <img src="https://images.unsplash.com/photo-1522041221495-9c94608e124f?q=80&w=800&auto=format&fit=crop" alt="تصميم حجارة طبيعية" class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-110">
-                            </div>
-                             <div class="p-5">
-                                <h3 class="text-xl font-bold text-white mb-1 truncate">تصميم حجارة طبيعية</h3>
-                                <p class="text-2xl font-black text-emerald-400 mb-4">320 <span class="text-sm font-semibold text-slate-300">جم / متر مربع</span></p>
-                                <button class="details-btn w-full bg-emerald-600/80 text-white py-2 px-4 rounded-full hover:bg-emerald-600 transition-colors">عرض التفاصيل</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="page-modern" class="category-page hidden min-h-screen py-16 text-white">
-             <div class="container mx-auto px-6">
-                <div class="bg-black/20 backdrop-blur-sm rounded-3xl p-8 md:p-12">
-                    <button class="back-to-main-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-300 hover:text-white font-semibold transition-colors">
-                        <i data-feather="arrow-right" class="w-5 h-5"></i>
-                        <span>العودة للأقسام</span>
-                    </button>
-                    <h2 class="text-4xl font-extrabold text-center mb-10">تصاميم مودرن</h2>
-                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <p class="text-center col-span-full text-slate-400 text-lg">سيتم إضافة المنتجات هنا قريباً.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Static category pages from original HTML have been removed. 
+             They are now fully generated dynamically by JavaScript -->
+    </div>
 
-        <section id="page-geometric" class="category-page hidden min-h-screen py-16 text-white">
-             <div class="container mx-auto px-6">
-                <div class="bg-black/20 backdrop-blur-sm rounded-3xl p-8 md:p-12">
-                    <button class="back-to-main-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-300 hover:text-white font-semibold transition-colors">
-                        <i data-feather="arrow-right" class="w-5 h-5"></i>
-                        <span>العودة للأقسام</span>
-                    </button>
-                    <h2 class="text-4xl font-extrabold text-center mb-10">تصاميم هندسية</h2>
-                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <p class="text-center col-span-full text-slate-400 text-lg">سيتم إضافة المنتجات هنا قريباً.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="page-classic" class="category-page hidden min-h-screen py-16 text-white">
-            <div class="container mx-auto px-6">
-                <div class="bg-black/20 backdrop-blur-sm rounded-3xl p-8 md:p-12">
-                    <button class="back-to-main-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-300 hover:text-white font-semibold transition-colors">
-                        <i data-feather="arrow-right" class="w-5 h-5"></i>
-                        <span>العودة للأقسام</span>
-                    </button>
-                    <h2 class="text-4xl font-extrabold text-center mb-10">تصاميم كلاسيكية</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                         <p class="text-center col-span-full text-slate-400 text-lg">سيتم إضافة المنتجات هنا قريباً.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="page-kids" class="category-page hidden min-h-screen py-16 text-white">
-             <div class="container mx-auto px-6">
-                <div class="bg-black/20 backdrop-blur-sm rounded-3xl p-8 md:p-12">
-                    <button class="back-to-main-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-300 hover:text-white font-semibold transition-colors">
-                        <i data-feather="arrow-right" class="w-5 h-5"></i>
-                        <span>العودة للأقسام</span>
-                    </button>
-                    <h2 class="text-4xl font-extrabold text-center mb-10">غرف أطفال</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                         <p class="text-center col-span-full text-slate-400 text-lg">سيتم إضافة المنتجات هنا قريباً.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+    <div id="product-detail-container" class="hidden">
+        <!-- Product Detail Page will be dynamically injected here -->
     </div>
 
     <!-- Project Detail Modal -->
-    <div id="project-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="project-modal-content" class="bg-stone-900/80 backdrop-blur-2xl border border-white/10 text-slate-200 rounded-2xl shadow-2xl max-w-4xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
-            <button id="close-project-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors z-20">
+    <div id="project-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div id="project-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
+            <button id="close-project-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20">
                 <i data-feather="x" class="w-8 h-8"></i>
             </button>
             <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
                 <!-- Main Media Viewer -->
-                <div class="w-full md:w-2/3 bg-black flex items-center justify-center">
+                <div class="w-full md:w-2/3 bg-slate-200 flex items-center justify-center">
                     <div id="project-main-media" class="w-full h-full">
                         <!-- Media (Image/Video) will be injected here by JS -->
                     </div>
@@ -565,11 +464,11 @@
                 <!-- Project Details & Thumbnails -->
                 <div class="w-full md:w-1/3 p-6 flex flex-col overflow-y-auto">
                     <div>
-                        <h2 id="project-modal-title" class="text-2xl font-extrabold text-emerald-400 mb-2"></h2>
-                        <p id="project-modal-desc" class="text-slate-300 leading-relaxed mb-4"></p>
+                        <h2 id="project-modal-title" class="text-2xl font-extrabold text-emerald-600 mb-2"></h2>
+                        <p id="project-modal-desc" class="text-slate-600 leading-relaxed mb-4"></p>
                     </div>
-                    <div class="border-t border-white/10 pt-4 mt-auto">
-                        <h4 class="font-bold text-base text-white mb-3">معرض المشروع</h4>
+                    <div class="border-t border-slate-200 pt-4 mt-auto">
+                        <h4 class="font-bold text-base text-slate-800 mb-3">معرض المشروع</h4>
                         <div id="project-thumbnails" class="grid grid-cols-4 gap-2">
                             <!-- Thumbnails will be injected here by JS -->
                         </div>
@@ -579,126 +478,166 @@
         </div>
     </div>
 
-    <!-- Product Detail Modal -->
-    <div id="product-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="product-modal-content" class="bg-stone-900/80 backdrop-blur-2xl border border-white/10 text-slate-200 rounded-2xl shadow-2xl max-w-2xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
-            <button id="close-product-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors z-20">
-                <i data-feather="x" class="w-7 h-7"></i>
-            </button>
-            <div class="overflow-y-auto">
-                <img id="modal-img" src="" alt="صورة المنتج" class="w-full h-72 object-cover">
-                <div class="p-8">
-                    <h2 id="modal-title" class="text-3xl font-extrabold text-emerald-400 mb-2"></h2>
-                    <p id="modal-price" class="text-2xl font-bold text-white mb-4"></p>
-                    <p id="modal-desc" class="text-slate-300 leading-relaxed mb-6"></p>
-                    
-                    <div class="border-t border-b border-white/10 py-4 mb-6">
-                        <h4 class="font-bold text-lg text-white mb-3">الألوان المتاحة</h4>
-                        <div class="flex space-x-3 space-x-reverse">
-                            <span class="w-8 h-8 rounded-full bg-gray-700 border-2 border-white/50 cursor-pointer hover:scale-110 transition-transform"></span>
-                            <span class="w-8 h-8 rounded-full bg-blue-400 border-2 border-white/50 cursor-pointer hover:scale-110 transition-transform"></span>
-                            <span class="w-8 h-8 rounded-full bg-green-300 border-2 border-white/50 cursor-pointer hover:scale-110 transition-transform"></span>
-                            <span class="w-8 h-8 rounded-full bg-red-400 border-2 border-white/50 cursor-pointer hover:scale-110 transition-transform"></span>
-                        </div>
-                    </div>
-
-                    <button class="w-full bg-emerald-600 text-white py-3 px-6 rounded-full hover:bg-emerald-700 transition-colors text-lg font-bold flex items-center justify-center gap-3">
-                        <i data-feather="shopping-cart" class="w-6 h-6"></i>
-                        <span>اطلب الآن عبر واتساب</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Payment Methods Modal -->
     <div id="payment-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="payment-modal-content" class="bg-black/20 backdrop-blur-xl border border-white/10 text-slate-200 rounded-2xl shadow-2xl p-8 max-w-lg w-full relative transform transition-all duration-300 scale-95 opacity-0">
-            <button id="close-payment-modal" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors z-10">
+        <div id="payment-modal-content" class="bg-white/80 backdrop-blur-xl border border-slate-200 text-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-2xl w-full relative transform transition-all duration-300 scale-95 opacity-0">
+            <button id="close-payment-modal" class="absolute top-5 right-5 text-slate-500 hover:text-slate-800 transition-colors z-10">
                 <i data-feather="x" class="w-7 h-7"></i>
             </button>
             <div class="text-center mb-8">
-                 <div class="inline-block p-3 bg-emerald-500/20 rounded-xl mb-4">
-                    <i data-feather="credit-card" class="w-8 h-8 text-emerald-300"></i>
+                 <div class="inline-block p-3 bg-emerald-100 rounded-xl mb-4">
+                    <i data-feather="credit-card" class="w-8 h-8 text-emerald-600"></i>
                  </div>
-                 <h2 class="text-3xl font-extrabold text-white">طرق دفع آمنة ومريحة</h2>
-                 <p class="text-slate-300 mt-2">اختر الطريقة الأنسب لك لإتمام طلبك بكل سهولة.</p>
+                 <h2 class="text-3xl font-extrabold text-slate-900">طرق دفع آمنة ومريحة</h2>
+                 <p class="text-slate-600 mt-2">اختر الطريقة الأنسب لك لإتمام طلبك بكل سهولة.</p>
             </div>
-            <div class="space-y-4 text-right">
-                <!-- Payment Option 1: Cash on Delivery -->
-                <div class="flex items-center gap-4 p-4 bg-white/5 hover:bg-white/10 transition-colors rounded-xl border border-white/10">
-                    <div class="bg-emerald-500/20 text-emerald-400 rounded-lg p-3">
+            
+            <div class="space-y-5">
+                <!-- Option 1: Cash on Delivery -->
+                <div class="flex items-center gap-4 p-4 bg-slate-50 hover:bg-slate-100 transition-colors rounded-xl border border-slate-200">
+                    <div class="bg-emerald-100 text-emerald-600 rounded-lg p-3">
                         <i data-feather="package" class="w-7 h-7 flex-shrink-0"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-lg text-white">الدفع عند الاستلام</h3>
-                        <p class="text-slate-300 text-sm">ادفع نقداً عند استلام طلبك مباشرة.</p>
+                        <h3 class="font-bold text-lg text-slate-800">الدفع عند الاستلام</h3>
+                        <p class="text-slate-600 text-sm">ادفع نقداً عند استلام طلبك مباشرة.</p>
                     </div>
                 </div>
-                <!-- Payment Option 2: Vodafone Cash -->
-                <div class="p-4 bg-white/5 rounded-xl border border-white/10">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="bg-red-500/20 text-red-400 rounded-lg p-3">
-                            <i data-feather="smartphone" class="w-7 h-7 flex-shrink-0"></i>
-                        </div>
-                        <div>
-                           <h3 class="font-bold text-lg text-white">محفظة فودافون كاش</h3>
-                           <p class="text-slate-300 text-sm">حوّل بسهولة باستخدام رقم الهاتف.</p>
+
+                <!-- Digital Wallets Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Vodafone Cash -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
+                        <img src="https://i.ibb.co/ZRgmj5X2/vodafone-icon.png" alt="شعار فودافون كاش" class="h-9 w-auto mb-3 self-start">
+                        <p class="text-slate-600 text-xs mb-2">اسم المستلم: <span class="font-semibold text-slate-800">Mostafa Mamon M** S*** Zaki</span>.</p>
+                        <div class="mt-auto flex justify-between items-center bg-slate-100 p-2 rounded-lg border border-slate-200">
+                            <span id="vodafone-number" class="text-slate-700 font-mono tracking-wider text-sm sm:text-base">01064009655</span>
+                            <button onclick="copyToClipboard('vodafone-number')" class="copy-btn bg-slate-300 text-slate-700 text-xs font-bold px-3 py-1 rounded-md hover:bg-slate-400 transition-colors">نسخ</button>
                         </div>
                     </div>
-                    <p class="text-slate-300 text-xs mb-2">اسم المستلم: <span class="font-semibold text-slate-100">Mostafa Mamon M** S*** Zaki</span>.</p>
-                    <div class="flex justify-between items-center bg-black/30 p-2 rounded-lg border border-white/10">
-                        <span id="vodafone-number" class="text-slate-200 font-mono tracking-wider text-sm sm:text-base">01064009655</span>
-                        <button onclick="copyToClipboard('vodafone-number')" class="copy-btn bg-slate-700 text-slate-200 text-xs font-bold px-3 py-1 rounded-md hover:bg-slate-600 transition-colors">نسخ</button>
+                    <!-- InstaPay -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
+                        <img src="https://i.ibb.co/tPWksj7T/vodafone-icon-copy.png" alt="شعار انستا باي" class="h-9 w-auto mb-3 self-start">
+                        <p class="text-slate-600 text-xs mb-2">اسم المستلم: <span class="font-semibold text-slate-800">Mostafa Mamon M** S*** Zaki</span>.</p>
+                        <div class="mt-auto flex justify-between items-center bg-slate-100 p-2 rounded-lg border border-slate-200">
+                            <span id="instapay-number" class="text-slate-700 font-mono tracking-wider text-sm sm:text-base">01064009655</span>
+                            <button onclick="copyToClipboard('instapay-number')" class="copy-btn bg-slate-300 text-slate-700 text-xs font-bold px-3 py-1 rounded-md hover:bg-slate-400 transition-colors">نسخ</button>
+                        </div>
                     </div>
                 </div>
-                <!-- Payment Option 3: InstaPay -->
-                <div class="p-4 bg-white/5 rounded-xl border border-white/10">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div class="bg-purple-500/20 text-purple-400 rounded-lg p-3">
-                            <i data-feather="zap" class="w-7 h-7 flex-shrink-0"></i>
-                        </div>
-                        <div>
-                           <h3 class="font-bold text-lg text-white">تطبيق انستا باي (InstaPay)</h3>
-                           <p class="text-slate-300 text-sm">تحويل فوري وآمن عبر التطبيق.</p>
-                        </div>
-                    </div>
-                     <p class="text-slate-300 text-xs mb-2">اسم المستلم: <span class="font-semibold text-slate-100">Mostafa Mamon M** S*** Zaki</span>.</p>
-                     <div class="flex justify-between items-center bg-black/30 p-2 rounded-lg border border-white/10">
-                        <span id="instapay-number" class="text-slate-200 font-mono tracking-wider text-sm sm:text-base">01064009655</span>
-                        <button onclick="copyToClipboard('instapay-number')" class="copy-btn bg-slate-700 text-slate-200 text-xs font-bold px-3 py-1 rounded-md hover:bg-slate-600 transition-colors">نسخ</button>
-                    </div>
-                </div>
-                 <!-- Payment Option 4: Credit Cards (Disabled) -->
-                 <div class="flex items-center gap-4 p-4 bg-black/20 rounded-xl border border-white/10 opacity-60 cursor-not-allowed">
-                    <div class="bg-yellow-500/20 text-yellow-500 rounded-lg p-3">
+
+                <!-- Disabled Option -->
+                <div class="flex items-center gap-4 p-4 bg-slate-200 rounded-xl border border-slate-300 opacity-60 cursor-not-allowed">
+                    <div class="bg-yellow-200 text-yellow-700 rounded-lg p-3">
                         <i data-feather="credit-card" class="w-7 h-7 flex-shrink-0"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-lg text-white">البطاقات الائتمانية</h3>
-                        <p class="text-slate-300 text-sm">قريباً! نعمل على تفعيل هذه الخدمة.</p>
+                        <h3 class="font-bold text-lg text-slate-800">البطاقات الائتمانية</h3>
+                        <p class="text-slate-600 text-sm">قريباً! نعمل على تفعيل هذه الخدمة.</p>
                     </div>
+                </div>
+            </div>
+
+            <div class="mt-6 border-t border-slate-200 pt-5 text-center">
+                <div class="flex items-start justify-center gap-3 text-slate-500 max-w-sm mx-auto">
+                    <i data-feather="info" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-xs leading-relaxed">
+                        <strong>ملحوظة هامة:</strong> عند تجهيز اى فاتورة يتم دفع 50 % كحد أدنى من قيمتها لبدأ تنفيذ عملية تسليم المنتجات.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- Login Modal -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div id="login-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-sm w-full relative transform transition-all duration-300 scale-95 opacity-0 p-8 text-center">
+            <button id="close-login-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20">
+                <i data-feather="x" class="w-8 h-8"></i>
+            </button>
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">تسجيل الدخول</h2>
+            <p class="text-slate-600 mb-8">مرحباً بك مجدداً في جدار! سجل دخولك للمتابعة.</p>
+            <button id="google-signin-btn" class="w-full bg-white text-gray-800 py-3 px-6 rounded-full hover:bg-gray-100 border border-slate-300 transition-colors text-lg font-bold flex items-center justify-center gap-3">
+                <svg class="w-6 h-6" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#34A853" d="M46.44 24.28c0-1.63-.15-3.2-.42-4.72H24v9.02h12.47c-.55 2.92-2.19 5.42-4.62 7.17l7.63 5.91c4.46-4.11 7.03-10.21 7.03-17.38z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.63-5.91c-2.11 1.41-4.79 2.26-7.91 2.26-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
+                <span>المتابعة باستخدام جوجل</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Add Category Modal -->
+    <div id="add-category-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div id="add-category-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-lg w-full relative transform transition-all duration-300 scale-95 opacity-0 p-8">
+            <button id="close-add-category-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20"><i data-feather="x" class="w-8 h-8"></i></button>
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-6">إضافة قسم جديد</h2>
+            <form id="add-category-form" class="space-y-4">
+                <input type="text" name="name" placeholder="اسم القسم" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                <input type="text" name="pageId" placeholder="معرّف القسم (مثال: natural-designs)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                <input type="text" name="icon" placeholder="أيقونة Feather (مثال: feather)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                <input type="url" name="imageUrl" placeholder="رابط صورة الخلفية" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-bold">إضافة القسم</button>
+            </form>
+        </div>
+    </div>
 
-    <!-- AI Assistant FAB -->
-    <button id="ai-fab" class="fixed bottom-6 right-6 bg-white/10 backdrop-blur-md text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-300 z-40">
+    <!-- Product Admin Modal (Add/Edit) -->
+    <div id="product-admin-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div id="product-admin-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-3xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
+            <button id="close-product-admin-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20"><i data-feather="x" class="w-8 h-8"></i></button>
+            <h2 id="product-admin-modal-title" class="text-3xl font-extrabold text-slate-900 mb-6 p-8 pb-0">إضافة منتج جديد</h2>
+            <form id="product-admin-form" class="space-y-4 overflow-y-auto p-8 pt-4">
+                <input type="text" name="title" placeholder="اسم المنتج (نبذة)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                <input type="text" name="type" placeholder="نوع المنتج" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                <textarea name="desc" placeholder="تفاصيل المنتج" rows="3" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required></textarea>
+                <input type="url" name="mainImageUrl" placeholder="رابط الصورة الخارجية للمنتج" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="number" name="price" placeholder="السعر" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                    <input type="number" name="discount" placeholder="الخصم (اختياري)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="isAvailable" name="isAvailable" checked class="w-5 h-5 accent-emerald-500">
+                    <label for="isAvailable">متوفر حالياً</label>
+                </div>
+
+                <div class="border-t border-b border-slate-200 py-4">
+                    <h4 class="font-bold text-lg text-slate-800 mb-3">الألوان والأكواد</h4>
+                    <div id="colors-container" class="space-y-3">
+                        <!-- Color fields will be injected here -->
+                    </div>
+                    <button type="button" id="add-color-btn" class="mt-3 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-2">
+                        <i data-feather="plus"></i>
+                        <span>إضافة لون جديد</span>
+                    </button>
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-bold">حفظ المنتج</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Confirm Delete Modal -->
+    <div id="confirm-delete-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div id="confirm-delete-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-sm w-full relative transform transition-all duration-300 scale-95 opacity-0 p-8 text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">تأكيد الحذف</h2>
+            <p class="text-slate-600 mb-6">هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.</p>
+            <div class="flex justify-center gap-4">
+                <button id="cancel-delete-btn" class="bg-gray-200 text-gray-800 py-2 px-6 rounded-lg hover:bg-gray-300 transition-colors">إلغاء</button>
+                <button id="confirm-delete-btn" class="bg-red-600 text-white py-2 px-6 rounded-lg hover:bg-red-700 transition-colors">حذف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant FAB & Chat Modal -->
+    <button id="ai-fab" class="fixed bottom-6 right-6 bg-white/80 backdrop-blur-md text-slate-800 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-300 z-40 border border-slate-200">
         <i data-feather="message-square" class="w-8 h-8"></i>
     </button>
-
-    <!-- AI Chat Modal -->
     <div id="ai-chat-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center sm:items-end sm:justify-end p-4 md:p-8 transition-opacity duration-300 opacity-0">
-        <div id="ai-chat-container" class="bg-stone-800/50 backdrop-blur-xl text-white w-full max-w-md rounded-2xl shadow-2xl flex flex-col h-[80vh] sm:h-[70vh] transform transition-transform duration-300 translate-y-full">
-            <!-- Header -->
-            <div class="flex justify-between items-center p-4 border-b border-white/10 flex-shrink-0">
+        <div id="ai-chat-container" class="bg-white/80 backdrop-blur-xl text-slate-800 w-full max-w-md rounded-2xl shadow-2xl flex flex-col h-[80vh] sm:h-[70vh] transform transition-transform duration-300 translate-y-full border border-slate-200">
+            <div class="flex justify-between items-center p-4 border-b border-slate-200 flex-shrink-0">
                 <h3 class="font-bold text-lg">مساعد جدار الذكي</h3>
-                <button id="close-ai-chat" class="text-slate-400 hover:text-white transition-colors">
+                <button id="close-ai-chat" class="text-slate-500 hover:text-slate-800 transition-colors">
                     <i data-feather="x" class="w-6 h-6"></i>
                 </button>
             </div>
-            <!-- Messages -->
             <div id="chat-window" class="flex-1 p-4 overflow-y-auto space-y-4">
                 <div class="chat-message bot">
                     <div class="message-content">
@@ -706,10 +645,9 @@
                     </div>
                 </div>
             </div>
-            <!-- Input -->
-            <div class="p-4 border-t border-white/10 flex-shrink-0">
+            <div class="p-4 border-t border-slate-200 flex-shrink-0">
                 <form id="ai-chat-form" class="flex gap-2">
-                    <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا..." class="flex-1 bg-white/10 rounded-full py-2 px-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <input type="text" id="ai-chat-input" placeholder="اكتب سؤالك هنا..." class="flex-1 bg-slate-100 rounded-full py-2 px-4 text-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     <button type="submit" class="bg-emerald-600 text-white rounded-full w-10 h-10 flex-shrink-0 flex items-center justify-center">
                         <i data-feather="send" class="w-5 h-5"></i>
                     </button>
@@ -718,467 +656,679 @@
         </div>
     </div>
     
-    <script>
-        feather.replace()
+    <script type="module">
+        // Import Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWnvpPCcqBJggQd8OSXsdBGat-e2a9g2I",
+            authDomain: "website-gedr.firebaseapp.com",
+            projectId: "website-gedr",
+            storageBucket: "website-gedr.firebasestorage.app",
+            messagingSenderId: "1000084151526",
+            appId: "1:1000084151526:web:3131d3640cc5d2687b6f27",
+            measurementId: "G-701Z5YNF0E"
+        };
 
-        // --- Page Navigation & Content Visibility ---
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+        
+        // --- Admin Configuration ---
+        const adminUID = "LEFkiRDqE1gEQj7iAlEgzbSCPHh1"; // IMPORTANT: Replace with your actual Google User ID from Firebase Auth
+        let currentUser = null;
+
+        // --- DOM Elements ---
+        const logoBtn = document.getElementById('logo-btn');
         const mainContent = document.getElementById('main-content');
-        const categoryPagesContainer = document.getElementById('category-pages-container');
-        const backButtons = document.querySelectorAll('.back-to-main-btn');
+        // Modals
+        const loginModal = document.getElementById('login-modal');
+        const loginModalContent = document.getElementById('login-modal-content');
+        const addCategoryModal = document.getElementById('add-category-modal');
+        const addCategoryModalContent = document.getElementById('add-category-modal-content');
+        const productAdminModal = document.getElementById('product-admin-modal');
+        const productAdminModalContent = document.getElementById('product-admin-modal-content');
+        const confirmDeleteModal = document.getElementById('confirm-delete-modal');
+        const confirmDeleteModalContent = document.getElementById('confirm-delete-modal-content');
+        const paymentModal = document.getElementById('payment-modal');
+        const paymentModalContent = document.getElementById('payment-modal-content');
+        const projectModal = document.getElementById('project-modal');
+        const projectModalContent = document.getElementById('project-modal-content');
+        const aiChatModal = document.getElementById('ai-chat-modal');
+        const aiChatContainer = document.getElementById('ai-chat-container');
 
+        // Forms & Buttons
+        const googleSignInBtn = document.getElementById('google-signin-btn');
+        const addCategoryForm = document.getElementById('add-category-form');
+        const productAdminForm = document.getElementById('product-admin-form');
+        const addColorBtn = document.getElementById('add-color-btn');
+        const colorsContainer = document.getElementById('colors-container');
+        
+        // Containers
+        const categoriesContainer = document.getElementById('categories-container');
+        const categoryPagesContainer = document.getElementById('category-pages-container');
+        const productDetailContainer = document.getElementById('product-detail-container');
+
+
+        // --- Authentication & Admin Logic ---
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            updateUIForAuthState(user);
+            // Now that we know the auth state, we can safely listen for data.
+            listenForCategories();
+        });
+        
+        const isAdmin = () => currentUser && currentUser.uid === adminUID;
+
+        function updateUIForAuthState(user) {
+            const userSections = document.querySelectorAll('[id^="user-section-"]');
+            const authSections = document.querySelectorAll('[id^="auth-section-"]');
+
+            if (user) {
+                closeModal(loginModal, loginModalContent);
+                userSections.forEach(section => {
+                    section.classList.remove('hidden');
+                    section.classList.add(section.id.includes('mobile') ? 'flex' : 'flex');
+                    section.querySelector('[id^="user-avatar-"]').src = user.photoURL;
+                    section.querySelector('[id^="user-name-"]').textContent = user.displayName;
+                });
+                authSections.forEach(section => section.classList.add('hidden'));
+            } else {
+                userSections.forEach(section => {
+                    section.classList.add('hidden');
+                    section.classList.remove('flex');
+                });
+                authSections.forEach(section => section.classList.remove('hidden'));
+            }
+
+            // Show/Hide Admin Controls
+            document.querySelectorAll('.admin-only').forEach(el => {
+                 el.style.display = isAdmin() ? (el.matches('.add-product-card, #add-category-card') ? 'flex' : 'block') : 'none';
+            });
+            feather.replace(); // Refresh icons
+        }
+
+        // --- Firestore Real-time Listeners ---
+
+        function listenForCategories() {
+            const categoriesRef = collection(db, "categories");
+            onSnapshot(categoriesRef, (snapshot) => {
+                const categories = [];
+                snapshot.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
+                renderCategoriesAndPages(categories);
+            }, (error) => {
+                console.error("Error listening for categories:", error);
+                clearDynamicContent();
+            });
+        }
+
+        function listenForProducts(categoryId, productGrid) {
+             const productsRef = collection(db, "products");
+             const q = query(productsRef, where("categoryId", "==", categoryId));
+             onSnapshot(q, (snapshot) => {
+                const products = [];
+                snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+                renderProducts(products, categoryId, productGrid);
+             });
+        }
+
+        // --- Dynamic Rendering ---
+        
+        function renderCategoriesAndPages(categories) {
+            document.querySelectorAll('.dynamic-category-card, .category-page').forEach(el => el.remove());
+
+            const addCategoryCard = document.getElementById('add-category-card');
+
+            categories.forEach(cat => {
+                // Render category card on main page
+                const card = document.createElement('a');
+                card.href = '#';
+                card.className = 'category-card dynamic-category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2';
+                card.dataset.page = cat.pageId;
+                card.dataset.category = JSON.stringify(cat); // Store full category data
+                card.innerHTML = `
+                    <img src="${cat.imageUrl}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="${cat.name}">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute top-3 left-3 admin-only flex items-center gap-2 z-10">
+                        <button class="edit-category-btn p-2 bg-blue-500/80 backdrop-blur-sm rounded-full hover:bg-blue-600 transition-colors"><i data-feather="edit" class="w-4 h-4 text-white pointer-events-none"></i></button>
+                        <button class="delete-category-btn p-2 bg-red-500/80 backdrop-blur-sm rounded-full hover:bg-red-600 transition-colors"><i data-feather="trash-2" class="w-4 h-4 text-white pointer-events-none"></i></button>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+                        <i data-feather="${cat.icon}" class="w-7 h-7 mb-2 text-emerald-300"></i>
+                        <h3 class="text-xl sm:text-2xl font-bold">${cat.name}</h3>
+                    </div>
+                `;
+                categoriesContainer.insertBefore(card, addCategoryCard);
+
+                // Render the corresponding category page
+                const page = document.createElement('section');
+                page.id = `page-${cat.pageId}`;
+                page.className = 'category-page hidden min-h-screen py-16';
+                page.innerHTML = `
+                    <div class="container mx-auto px-6">
+                        <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+                            <button class="back-to-main-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-500 hover:text-slate-800 font-semibold transition-colors">
+                                <i data-feather="arrow-right" class="w-5 h-5"></i>
+                                <span>العودة للأقسام</span>
+                            </button>
+                             <div class="my-8 max-w-2xl mx-auto relative">
+                               <input type="text" placeholder="ابحث في ${cat.name}..." class="category-search-input w-full bg-slate-100 rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base text-slate-800 placeholder-slate-500">
+                               <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                                   <i data-feather="search" class="w-6 h-6"></i>
+                               </span>
+                           </div>
+                            <h2 class="text-4xl font-extrabold text-center mb-6 text-slate-900">${cat.name}</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 product-grid">
+                                 <div class="add-product-card admin-only group relative bg-transparent border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl overflow-hidden transition-all duration-300 flex items-center justify-center cursor-pointer min-h-[350px]" data-category-id="${cat.pageId}">
+                                    <div class="text-center text-slate-400 group-hover:text-emerald-500">
+                                        <i data-feather="plus-circle" class="w-12 h-12 mx-auto"></i>
+                                        <p class="mt-4 font-bold">إضافة منتج جديد</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                categoryPagesContainer.appendChild(page);
+                
+                const productGrid = page.querySelector('.product-grid');
+                listenForProducts(cat.pageId, productGrid);
+
+                // Add search functionality for the newly created page
+                const searchInput = page.querySelector('.category-search-input');
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+                    const allProducts = productGrid.querySelectorAll('.product-card');
+
+                    allProducts.forEach(card => {
+                        const productData = JSON.parse(card.dataset.product);
+                        const isVisible = productData.title.toLowerCase().includes(searchTerm);
+                        card.style.display = isVisible ? 'flex' : 'none';
+                    });
+                });
+            });
+            updateUIForAuthState(currentUser);
+        }
+
+        function renderProducts(products, categoryId, productGrid) {
+            productGrid.querySelectorAll('.product-card').forEach(card => card.remove());
+
+            products.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = 'product-card flex flex-col group relative bg-white border border-slate-100 shadow-md rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2';
+                
+                const mainImage = prod.mainImageUrl || (prod.colors && prod.colors.length > 0 && prod.colors[0].imageUrl ? prod.colors[0].imageUrl : 'https://placehold.co/800x600/e2e8f0/475569?text=No+Image');
+
+                let priceHTML = `<p class="text-2xl font-black text-emerald-600 mb-4">${prod.price} <span class="text-sm font-semibold text-slate-500">جم</span></p>`;
+                if (prod.discount && prod.discount > 0) {
+                    const discountedPrice = prod.price * (1 - prod.discount / 100);
+                    priceHTML = `
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <p class="text-lg font-bold text-slate-400 line-through">${prod.price} جم</p>
+                            <p class="text-2xl font-black text-emerald-600">${discountedPrice.toFixed(2)} <span class="text-sm font-semibold text-slate-500">جم</span></p>
+                        </div>
+                    `;
+                }
+                
+                const unavailableOverlay = !prod.isAvailable 
+                    ? `<div class="absolute inset-0 bg-slate-100/80 backdrop-blur-sm flex items-center justify-center">
+                           <span class="text-slate-800 font-bold text-xl border-2 border-slate-800 rounded-md px-4 py-2">غير متوفر حالياً</span>
+                       </div>` 
+                    : '';
+                const buttonDisabled = !prod.isAvailable ? 'disabled' : '';
+                const buttonClasses = !prod.isAvailable 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                    : 'bg-emerald-500 hover:bg-emerald-600 text-white';
+
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${mainImage}" alt="${prod.title}" class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-110">
+                        ${unavailableOverlay}
+                        ${prod.discount ? `<span class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">خصم ${prod.discount}%</span>` : ''}
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="product-title text-xl font-bold text-slate-800 mb-2">${prod.title}</h3>
+                        ${priceHTML}
+                        <div class="mt-auto">
+                            <button class="details-btn w-full py-2 px-4 rounded-full transition-colors ${buttonClasses}" ${buttonDisabled}>عرض التفاصيل</button>
+                            <div class="admin-only flex justify-between items-center mt-3">
+                                <button class="edit-product-btn text-blue-500 hover:text-blue-600"><i data-feather="edit" class="w-5 h-5"></i></button>
+                                <button class="delete-product-btn text-red-500 hover:text-red-600"><i data-feather="trash-2" class="w-5 h-5"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                card.dataset.product = JSON.stringify({id: prod.id, ...prod});
+                productGrid.appendChild(card);
+            });
+            updateUIForAuthState(currentUser);
+        }
+
+        function clearDynamicContent() {
+             document.querySelectorAll('.dynamic-category-card, .category-page').forEach(el => el.remove());
+        }
+
+        // --- Add/Edit/Delete Product & Category Logic ---
+        let currentEditingProductId = null;
+        let currentEditingCategoryId = null;
+        let currentCategoryId = null;
+        let itemToDelete = { type: null, id: null };
+        
+        document.body.addEventListener('click', async (e) => {
+            // Add Category Card
+            if (e.target.closest('#add-category-card') && isAdmin()) {
+                currentEditingCategoryId = null;
+                addCategoryForm.reset();
+                document.querySelector('#add-category-modal h2').textContent = 'إضافة قسم جديد';
+                document.querySelector('#add-category-form button[type="submit"]').textContent = 'إضافة القسم';
+                openModal(addCategoryModal, addCategoryModalContent);
+            }
+            // Edit Category Button
+            const editCategoryBtn = e.target.closest('.edit-category-btn');
+            if (editCategoryBtn && isAdmin()) {
+                e.preventDefault();
+                const card = editCategoryBtn.closest('.category-card');
+                const categoryData = JSON.parse(card.dataset.category);
+                
+                currentEditingCategoryId = categoryData.id;
+                addCategoryForm.name.value = categoryData.name;
+                addCategoryForm.pageId.value = categoryData.pageId;
+                addCategoryForm.icon.value = categoryData.icon;
+                addCategoryForm.imageUrl.value = categoryData.imageUrl;
+
+                document.querySelector('#add-category-modal h2').textContent = 'تعديل القسم';
+                document.querySelector('#add-category-form button[type="submit"]').textContent = 'حفظ التعديلات';
+                openModal(addCategoryModal, addCategoryModalContent);
+            }
+             // Delete Category Button
+            const deleteCategoryBtn = e.target.closest('.delete-category-btn');
+            if (deleteCategoryBtn && isAdmin()) {
+                e.preventDefault();
+                const card = deleteCategoryBtn.closest('.category-card');
+                const categoryData = JSON.parse(card.dataset.category);
+                itemToDelete = { type: 'category', id: categoryData.id };
+                openModal(confirmDeleteModal, confirmDeleteModalContent);
+            }
+            // Add Product Card
+            const addProductCard = e.target.closest('.add-product-card');
+            if (addProductCard && isAdmin()) {
+                currentEditingProductId = null;
+                currentCategoryId = addProductCard.dataset.categoryId;
+                productAdminForm.reset();
+                colorsContainer.innerHTML = '';
+                document.getElementById('product-admin-modal-title').textContent = 'إضافة منتج جديد';
+                openModal(productAdminModal, productAdminModalContent);
+            }
+             // Edit Product Button
+            const editBtn = e.target.closest('.edit-product-btn');
+            if(editBtn && isAdmin()) {
+                const card = editBtn.closest('.product-card');
+                const productData = JSON.parse(card.dataset.product);
+                currentEditingProductId = productData.id;
+                currentCategoryId = productData.categoryId;
+                
+                productAdminForm.title.value = productData.title;
+                productAdminForm.type.value = productData.type;
+                productAdminForm.desc.value = productData.desc;
+                productAdminForm.mainImageUrl.value = productData.mainImageUrl || '';
+                productAdminForm.price.value = productData.price;
+                productAdminForm.discount.value = productData.discount || '';
+                productAdminForm.isAvailable.checked = productData.isAvailable;
+
+                colorsContainer.innerHTML = '';
+                if(productData.colors) {
+                    productData.colors.forEach(color => addColorField(color));
+                }
+                document.getElementById('product-admin-modal-title').textContent = 'تعديل المنتج';
+                openModal(productAdminModal, productAdminModalContent);
+            }
+            // Delete Product Button
+            const deleteBtn = e.target.closest('.delete-product-btn');
+            if (deleteBtn && isAdmin()) {
+                const card = deleteBtn.closest('.product-card');
+                const productData = JSON.parse(card.dataset.product);
+                itemToDelete = { type: 'product', id: productData.id };
+                openModal(confirmDeleteModal, confirmDeleteModalContent);
+            }
+
+            // Details Button
+            const detailsBtn = e.target.closest('.details-btn');
+            if (detailsBtn) {
+                const card = detailsBtn.closest('.product-card');
+                const productData = JSON.parse(card.dataset.product);
+                showProductDetailPage(productData);
+            }
+        });
+
+        // --- FORM SUBMISSIONS ---
+        addCategoryForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(addCategoryForm);
+            const categoryData = {
+                name: formData.get('name'),
+                pageId: formData.get('pageId').replace(/\s+/g, '-').toLowerCase(), // Sanitize pageId
+                icon: formData.get('icon'),
+                imageUrl: formData.get('imageUrl')
+            };
+            try {
+                if (currentEditingCategoryId) {
+                    await updateDoc(doc(db, "categories", currentEditingCategoryId), categoryData);
+                } else {
+                    await addDoc(collection(db, "categories"), categoryData);
+                }
+                closeModal(addCategoryModal, addCategoryModalContent);
+                currentEditingCategoryId = null; // Reset state
+            } catch (error) { 
+                console.error("Error saving category: ", error); 
+                currentEditingCategoryId = null; // Also reset on error
+            }
+        });
+
+        productAdminForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(productAdminForm);
+            const colors = Array.from(formData.getAll('colorHex')).map((hex, i) => ({
+                hex: hex,
+                code: formData.getAll('colorCode')[i],
+                imageUrl: formData.getAll('colorImageUrl')[i]
+            }));
+
+            const productData = {
+                title: formData.get('title'),
+                type: formData.get('type'),
+                desc: formData.get('desc'),
+                mainImageUrl: formData.get('mainImageUrl'),
+                price: parseFloat(formData.get('price')),
+                discount: formData.get('discount') ? parseFloat(formData.get('discount')) : null,
+                isAvailable: formData.get('isAvailable') === 'on',
+                categoryId: currentCategoryId,
+                colors: colors
+            };
+
+            try {
+                if(currentEditingProductId) {
+                    await updateDoc(doc(db, "products", currentEditingProductId), productData);
+                } else {
+                    await addDoc(collection(db, "products"), productData);
+                }
+                closeModal(productAdminModal, productAdminModalContent);
+            } catch (error) { console.error("Error saving product: ", error); }
+        });
+
+        document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+            if (!itemToDelete.id || !itemToDelete.type) return;
+            try {
+                if (itemToDelete.type === 'product') {
+                    await deleteDoc(doc(db, "products", itemToDelete.id));
+                } else if (itemToDelete.type === 'category') {
+                    await deleteDoc(doc(db, "categories", itemToDelete.id));
+                }
+            } catch (error) { 
+                console.error(`Error deleting ${itemToDelete.type}: `, error); 
+            } finally {
+                closeModal(confirmDeleteModal, confirmDeleteModalContent);
+                itemToDelete = { type: null, id: null }; // Reset state
+            }
+        });
+
+        // --- Other Setup & Event Listeners ---
+        feather.replace();
+
+        const signInWithGoogle = () => signInWithPopup(auth, provider).catch(err => console.error(err));
+        const signOutUser = () => signOut(auth).catch(err => console.error(err));
+        
+        logoBtn.addEventListener('click', (e) => { if (!currentUser) { e.preventDefault(); openModal(loginModal, loginModalContent); } });
+        googleSignInBtn.addEventListener('click', signInWithGoogle);
+        document.getElementById('logout-btn-desktop').addEventListener('click', signOutUser);
+        document.getElementById('logout-btn-mobile').addEventListener('click', signOutUser);
+        
+        // Open Payment Modal Buttons
+        document.querySelectorAll('.open-payment-modal-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal(paymentModal, paymentModalContent);
+            });
+        });
+
+        // --- Generic Modal & UI Functions ---
+        const openModal = (modal, content) => {
+            if (!modal || !content) return;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        };
+
+        const closeModal = (modal, content) => {
+            if (!modal || !content || modal.classList.contains('hidden')) return;
+            content.classList.add('scale-95', 'opacity-0');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if (!document.querySelector('.fixed.inset-0:not(.hidden)')) {
+                    document.body.style.overflow = '';
+                }
+            }, 300);
+        };
+
+        // Close Modal Buttons
+        document.getElementById('close-login-modal').addEventListener('click', () => closeModal(loginModal, loginModalContent));
+        document.getElementById('close-add-category-modal').addEventListener('click', () => closeModal(addCategoryModal, addCategoryModalContent));
+        document.getElementById('close-product-admin-modal').addEventListener('click', () => closeModal(productAdminModal, productAdminModalContent));
+        document.getElementById('cancel-delete-btn').addEventListener('click', () => closeModal(confirmDeleteModal, confirmDeleteModalContent));
+        document.getElementById('close-payment-modal').addEventListener('click', () => closeModal(paymentModal, paymentModalContent));
+        document.getElementById('close-project-modal').addEventListener('click', () => closeModal(projectModal, projectModalContent));
+        document.getElementById('close-ai-chat').addEventListener('click', closeAiChat);
+        
+        // Dynamically add color fields
+        addColorBtn.addEventListener('click', () => addColorField());
+        function addColorField(color = {}) {
+            const div = document.createElement('div');
+            div.className = 'grid grid-cols-1 md:grid-cols-4 gap-2 items-center';
+            div.innerHTML = `
+                <input type="color" name="colorHex" value="${color.hex || '#ffffff'}" class="w-full h-10 p-1 bg-slate-100 rounded-lg cursor-pointer border border-slate-300">
+                <input type="text" name="colorCode" placeholder="كود المنتج للون" value="${color.code || ''}" class="md:col-span-1 w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none text-slate-800">
+                <input type="url" name="colorImageUrl" placeholder="رابط صورة اللون" value="${color.imageUrl || ''}" class="md:col-span-1 w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none text-slate-800">
+                <button type="button" class="remove-color-btn text-red-500 hover:text-red-600"><i data-feather="trash-2" class="w-5 h-5"></i></button>
+            `;
+            colorsContainer.appendChild(div);
+            feather.replace();
+        }
+        colorsContainer.addEventListener('click', e => {
+            if (e.target.closest('.remove-color-btn')) e.target.closest('.grid').remove();
+        });
+
+        // Page Navigation
         function showCategoryPage(pageId) {
             mainContent.classList.add('hidden');
+            productDetailContainer.classList.add('hidden');
             categoryPagesContainer.classList.remove('hidden');
-            
             document.querySelectorAll('.category-page').forEach(page => page.classList.add('hidden'));
-            
             const targetPage = document.getElementById(`page-${pageId}`);
-            if (targetPage) {
-                targetPage.classList.remove('hidden');
-            }
+            if (targetPage) targetPage.classList.remove('hidden');
             window.scrollTo(0, 0);
         }
 
         function showMainContent() {
             mainContent.classList.remove('hidden');
             categoryPagesContainer.classList.add('hidden');
+            productDetailContainer.classList.add('hidden');
+        }
+
+        function showProductDetailPage(productData) {
+            mainContent.classList.add('hidden');
+            categoryPagesContainer.classList.add('hidden');
+            productDetailContainer.classList.remove('hidden');
+            
+            window.scrollTo(0, 0);
+
+            let allImages = [];
+            if (productData.mainImageUrl) {
+                allImages.push({ type: 'main', src: productData.mainImageUrl });
+            }
+            if (productData.colors && productData.colors.length > 0) {
+                productData.colors.forEach(color => {
+                    if(color.imageUrl) {
+                        allImages.push({ type: 'color', src: color.imageUrl, hex: color.hex, code: color.code });
+                    }
+                });
+            }
+
+            if (allImages.length === 0) {
+                allImages.push({ type: 'placeholder', src: 'https://placehold.co/1200x800/e2e8f0/475569?text=No+Image' });
+            }
+
+            const thumbnailsHTML = allImages.map((img, index) => `
+                <img src="${img.src}" alt="صورة مصغرة للمنتج ${index + 1}" class="thumbnail-img w-full h-24 object-cover rounded-lg cursor-pointer border-2 ${index === 0 ? 'border-emerald-500' : 'border-transparent'} hover:border-emerald-500 transition-colors" data-src="${img.src}">
+            `).join('');
+
+            let priceHTML = `<p class="text-4xl font-black text-emerald-600">${productData.price} <span class="text-lg font-semibold text-slate-500">جم</span></p>`;
+            if (productData.discount && productData.discount > 0) {
+                const discountedPrice = productData.price * (1 - productData.discount / 100);
+                priceHTML = `
+                    <div class="flex items-baseline gap-3">
+                        <p class="text-2xl font-bold text-slate-400 line-through">${productData.price} جم</p>
+                        <p class="text-4xl font-black text-emerald-600">${discountedPrice.toFixed(2)} <span class="text-lg font-semibold text-slate-500">جم</span></p>
+                    </div>
+                `;
+            }
+
+            const colorsHTML = productData.colors && productData.colors.length > 0 
+                ? productData.colors.map(color => `
+                    <div class="flex items-center gap-3 p-2 border border-slate-200 rounded-lg">
+                        <span class="w-8 h-8 rounded-full border-2 border-slate-200" style="background-color: ${color.hex};"></span>
+                        <span class="font-semibold text-slate-700">${color.code || color.hex}</span>
+                    </div>
+                `).join('')
+                : '<p class="text-slate-500">لا توجد ألوان محددة.</p>';
+
+            const pageHTML = `
+                <section id="page-product-detail" class="category-page min-h-screen py-16 text-slate-800">
+                    <div class="container mx-auto px-6">
+                        <button class="back-to-category-btn mb-8 inline-flex items-center space-x-2 space-x-reverse text-slate-500 hover:text-slate-800 font-semibold transition-colors" data-category-id="${productData.categoryId}">
+                            <i data-feather="arrow-right" class="w-5 h-5"></i>
+                            <span>العودة للمنتجات</span>
+                        </button>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                            <!-- Image Gallery -->
+                            <div class="flex flex-col gap-4">
+                                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-lg">
+                                    <img id="main-product-image" src="${allImages[0].src}" alt="صورة المنتج الرئيسية" class="w-full h-auto object-contain max-h-[60vh] transition-opacity duration-300">
+                                </div>
+                                <div class="grid grid-cols-4 sm:grid-cols-5 gap-3">
+                                    ${thumbnailsHTML}
+                                </div>
+                            </div>
+                            <!-- Product Details -->
+                            <div class="flex flex-col">
+                                <span class="text-emerald-600 font-semibold mb-2">${productData.type}</span>
+                                <h1 class="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">${productData.title}</h1>
+                                <div class="mb-6">${priceHTML}</div>
+                                <p class="text-slate-600 leading-relaxed mb-8">${productData.desc}</p>
+                                
+                                <div class="border-t border-slate-200 pt-6 mb-8">
+                                    <h3 class="text-xl font-bold text-slate-900 mb-4">الألوان والأكواد المتاحة</h3>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        ${colorsHTML}
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto">
+                                <a href="https://wa.me/201014175070?text=${encodeURIComponent(`أرغب في طلب منتج: ${productData.title}`)}" target="_blank" class="w-full bg-gradient-to-r from-emerald-500 to-green-500 text-white py-4 px-8 rounded-full hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-300 text-lg font-bold shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-3">
+                                        <i data-feather="shopping-cart" class="w-6 h-6"></i>
+                                        <span>اطلب الآن عبر واتساب</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+
+            productDetailContainer.innerHTML = pageHTML;
+            feather.replace();
+
+            // Add event listeners for new elements
+            const detailPage = document.getElementById('page-product-detail');
+            if (!detailPage) return;
+
+            const mainImage = detailPage.querySelector('#main-product-image');
+            
+            detailPage.addEventListener('click', e => {
+                if (e.target.closest('.back-to-category-btn')) {
+                    showCategoryPage(e.target.closest('.back-to-category-btn').dataset.categoryId);
+                }
+                
+                const thumbnail = e.target.closest('.thumbnail-img');
+                if (thumbnail && mainImage) {
+                    mainImage.style.opacity = '0';
+                    setTimeout(() => {
+                        mainImage.src = thumbnail.dataset.src;
+                        mainImage.style.opacity = '1';
+                    }, 300);
+                    
+                    detailPage.querySelectorAll('.thumbnail-img').forEach(t => t.classList.remove('border-emerald-500'));
+                    thumbnail.classList.add('border-emerald-500');
+                }
+            });
         }
         
-        backButtons.forEach(button => {
-            button.addEventListener('click', e => {
-                e.preventDefault();
-                showMainContent();
-            });
+        document.body.addEventListener('click', e => {
+            if (e.target.closest('.back-to-main-btn')) { e.preventDefault(); showMainContent(); }
+            const categoryCard = e.target.closest('.category-card:not(#add-category-card)');
+            if (categoryCard) { e.preventDefault(); showCategoryPage(categoryCard.dataset.page); }
         });
 
-        // --- Mobile Menu Logic ---
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.addEventListener('click', () => {
-            if (mobileMenu.style.maxHeight) {
-                mobileMenu.style.maxHeight = null;
-            } else {
-                mobileMenu.style.maxHeight = mobileMenu.scrollHeight + "px";
-            }
+        // Other UI logic (mobile menu, scroll reveal, etc.)
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.style.maxHeight = mobileMenu.style.maxHeight ? null : mobileMenu.scrollHeight + "px";
         });
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
-        }, {
-            threshold: 0.1 
-        });
-
-        const revealElements = document.querySelectorAll('.reveal');
-        revealElements.forEach(el => observer.observe(el));
-
-        const header = document.querySelector('header');
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // --- Generic Modal Functions ---
-        const openModal = (modal, content) => {
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                content.classList.remove('scale-95', 'opacity-0');
-                content.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        };
-
-        const closeModal = (modal, content) => {
-            content.classList.remove('scale-100', 'opacity-100');
-            content.classList.add('scale-95', 'opacity-0');
-            modal.classList.add('opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }, 300);
-        };
-        
-        const searchForms = document.querySelectorAll('.search-form');
-
-        searchForms.forEach(searchForm => {
-            const searchInput = searchForm.querySelector('input');
-
-            searchForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const query = searchInput.value.toLowerCase().trim();
-                if (!query) return;
-
-                const mainSections = {
-                    'home': ['الرئيسية', 'لوحة', 'فنية', 'مساحتك'],
-                    'categories': ['اقسام', 'تصفح'],
-                    'why-us': ['لماذا', 'جدار', 'مميزات', 'جودة', 'حصرية', 'تركيب']
-                };
-
-                const categoryPages = {
-                    'natural': ['طبيعية', 'طبيعي'],
-                    'modern': ['مودرن', 'حديث'],
-                    'geometric': ['هندسية', 'هندسي'],
-                    'classic': ['كلاسيكية', 'كلاسيك'],
-                    'kids': ['اطفال', 'غرف اطفال']
-                };
-                
-                let targetFound = false;
-
-                for (const pageId in categoryPages) {
-                    if (categoryPages[pageId].some(keyword => query.includes(keyword))) {
-                        showCategoryPage(pageId);
-                        searchInput.value = '';
-                        searchInput.blur();
-                        targetFound = true;
-                        break;
-                    }
-                }
-
-                if (!targetFound) {
-                    for (const sectionId in mainSections) {
-                        if (mainSections[sectionId].some(keyword => query.includes(keyword))) {
-                            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-                            searchInput.value = '';
-                            searchInput.blur();
-                            targetFound = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!targetFound) {
-                    searchInput.classList.add('animate-shake');
-                    setTimeout(() => searchInput.classList.remove('animate-shake'), 600);
-                }
-            });
-        });
-
-
-        const categoryCards = document.querySelectorAll('.category-card');
-        categoryCards.forEach(card => {
-            card.addEventListener('click', e => {
-                e.preventDefault();
-                const pageId = card.dataset.page;
-                showCategoryPage(pageId);
-            });
-        });
-
-        const categoriesContainer = document.getElementById('categories-container');
-        const scrollLeftBtn = document.getElementById('scroll-left-btn');
-        const scrollRightBtn = document.getElementById('scroll-right-btn');
-
-        if (categoriesContainer && scrollLeftBtn && scrollRightBtn) {
-            const scrollAmount = 300; 
-
-            scrollLeftBtn.addEventListener('click', () => {
-                categoriesContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            });
-
-            scrollRightBtn.addEventListener('click', () => {
-                categoriesContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            });
-        }
-
-        // --- AI Chat Logic ---
+        // AI Chat
         const aiFab = document.getElementById('ai-fab');
-        const aiChatModal = document.getElementById('ai-chat-modal');
-        const aiChatContainer = document.getElementById('ai-chat-container');
-        const closeAiChatBtn = document.getElementById('close-ai-chat');
-        const aiChatForm = document.getElementById('ai-chat-form');
-        const aiChatInput = document.getElementById('ai-chat-input');
-        const chatWindow = document.getElementById('chat-window');
-
-        const openAiChat = () => {
+        function closeAiChat() {
+            aiChatContainer.classList.add('translate-y-full');
+            aiChatModal.classList.add('opacity-0');
+            setTimeout(() => aiChatModal.classList.add('hidden'), 300);
+        };
+        aiFab.addEventListener('click', () => {
             aiChatModal.classList.remove('hidden');
             setTimeout(() => {
                 aiChatModal.classList.remove('opacity-0');
                 aiChatContainer.classList.remove('translate-y-full');
             }, 10);
-        };
-
-        const closeAiChat = () => {
-            aiChatContainer.classList.add('translate-y-full');
-            aiChatModal.classList.add('opacity-0');
-            setTimeout(() => {
-                aiChatModal.classList.add('hidden');
-            }, 300);
-        };
-
-        aiFab.addEventListener('click', openAiChat);
-        closeAiChatBtn.addEventListener('click', closeAiChat);
-
-        const addMessage = (text, sender) => {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${sender}`;
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-            const p = document.createElement('p');
-            p.textContent = text;
-            contentDiv.appendChild(p);
-            messageDiv.appendChild(contentDiv);
-            chatWindow.appendChild(messageDiv);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-        };
-
-        const getBotResponse = (userInput) => {
-            const query = userInput.toLowerCase();
-            let botResponse = "شكرًا لسؤالك! أنا هنا لمساعدتك في العثور على أفضل التصاميم. هل تبحث عن شيء معين؟";
-
-            if (query.includes("سعر") || query.includes("تكلفة")) {
-                botResponse = "تعتمد أسعارنا على التصميم والمواد المستخدمة. يمكنك تصفح قسم معين لمعرفة المزيد أو التواصل معنا مباشرة!";
-            } else if (query.includes("عنوان") || query.includes("مكان")) {
-                botResponse = "فرعنا الرئيسي في: الفيوم - اخر سور المستشفي العام، امام مطعم ابو صلاح وبجوار المغسلة الأمريكية.";
-            } else if (query.includes("طبيعي") || query.includes("مودرن") || query.includes("هندسي") || query.includes("كلاسيك") || query.includes("أطفال")) {
-                 botResponse = `بالتأكيد! لدينا قسم خاص للتصاميم الـ ${query}. يمكنك استكشافه من خلال الصفحة الرئيسية.`;
-            }
-
-            setTimeout(() => {
-                addMessage(botResponse, 'bot');
-            }, 1000);
-        };
-
-        aiChatForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const userMessage = aiChatInput.value.trim();
-            if (!userMessage) return;
-            addMessage(userMessage, 'user');
-            aiChatInput.value = '';
-            getBotResponse(userMessage);
         });
-
-        // --- Payment Modal Logic ---
-        const paymentModal = document.getElementById('payment-modal');
-        const paymentModalContent = document.getElementById('payment-modal-content');
-        const openPaymentBtns = document.querySelectorAll('.open-payment-modal-btn');
-        const closePaymentBtn = document.getElementById('close-payment-modal');
         
-        openPaymentBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                openModal(paymentModal, paymentModalContent);
-            });
-        });
-        closePaymentBtn.addEventListener('click', () => closeModal(paymentModal, paymentModalContent));
-        paymentModal.addEventListener('click', (e) => {
-            if (e.target === paymentModal) closeModal(paymentModal, paymentModalContent);
-        });
-
-        // --- Product Modal Logic ---
-        const productModal = document.getElementById('product-modal');
-        const productModalContent = document.getElementById('product-modal-content');
-        const closeProductModalBtn = document.getElementById('close-product-modal');
-        const detailButtons = document.querySelectorAll('.details-btn');
-
-        const modalImg = document.getElementById('modal-img');
-        const modalTitle = document.getElementById('modal-title');
-        const modalPrice = document.getElementById('modal-price');
-        const modalDesc = document.getElementById('modal-desc');
-
-        detailButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const card = button.closest('.product-card');
-                
-                modalImg.src = card.dataset.img;
-                modalTitle.textContent = card.dataset.title;
-                modalPrice.innerHTML = `${card.dataset.price} <span class="text-sm font-semibold text-slate-300">جم</span>`;
-                modalDesc.textContent = card.dataset.desc;
-
-                openModal(productModal, productModalContent);
-            });
-        });
-
-        closeProductModalBtn.addEventListener('click', () => closeModal(productModal, productModalContent));
-        productModal.addEventListener('click', (e) => {
-            if (e.target === productModal) closeModal(productModal, productModalContent);
-        });
-
-        // --- Portfolio Project Modal Logic ---
-        const projectModal = document.getElementById('project-modal');
-        const projectModalContent = document.getElementById('project-modal-content');
-        const closeProjectModalBtn = document.getElementById('close-project-modal');
-        const portfolioItems = document.querySelectorAll('.portfolio-item');
-
-        const projectModalTitle = document.getElementById('project-modal-title');
-        const projectModalDesc = document.getElementById('project-modal-desc');
-        const projectMainMedia = document.getElementById('project-main-media');
-        const projectThumbnails = document.getElementById('project-thumbnails');
-
-        const loadMedia = (src, type, thumbnailElement) => {
-            projectMainMedia.innerHTML = ''; // Clear previous media
-            if (type === 'image') {
-                const img = document.createElement('img');
-                img.src = src;
-                img.className = 'w-full h-full object-contain';
-                projectMainMedia.appendChild(img);
-            } else if (type === 'video') {
-                const video = document.createElement('video');
-                video.src = src;
-                video.className = 'w-full h-full object-contain';
-                video.autoplay = true;
-                video.muted = true;
-                video.loop = true;
-                video.controls = true;
-                projectMainMedia.appendChild(video);
-            }
-            // Update active thumbnail
-            document.querySelectorAll('.project-thumbnail.active').forEach(th => th.classList.remove('active'));
-            if(thumbnailElement) thumbnailElement.classList.add('active');
-        };
-
-        portfolioItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const title = item.dataset.title;
-                const desc = item.dataset.desc;
-                const media = JSON.parse(item.dataset.media);
-
-                projectModalTitle.textContent = title;
-                projectModalDesc.textContent = desc;
-                projectThumbnails.innerHTML = ''; // Clear old thumbnails
-
-                if (media && media.length > 0) {
-                    media.forEach((mediaItem, index) => {
-                        const thumb = document.createElement('img');
-                        thumb.src = mediaItem.type === 'image' ? mediaItem.src : 'https://placehold.co/100x100/111827/FFFFFF?text=Video'; // Placeholder for video thumb
-                        thumb.className = 'w-full h-16 object-cover rounded-md project-thumbnail';
-                        
-                        thumb.addEventListener('click', () => loadMedia(mediaItem.src, mediaItem.type, thumb));
-                        
-                        projectThumbnails.appendChild(thumb);
-                        
-                        if (index === 0) {
-                            loadMedia(mediaItem.src, mediaItem.type, thumb);
-                        }
-                    });
-                }
-                
-                openModal(projectModal, projectModalContent);
-            });
-        });
-
-        closeProjectModalBtn.addEventListener('click', () => closeModal(projectModal, projectModalContent));
-        projectModal.addEventListener('click', (e) => {
-            // Stop video when closing modal
-            const videoEl = projectMainMedia.querySelector('video');
-            if (videoEl) videoEl.pause();
-            
-            if (e.target === projectModal) closeModal(projectModal, projectModalContent);
-        });
-
-        // --- Product Sorting Logic ---
-        const sortProductButtons = document.querySelectorAll('.sort-btn');
-
-        sortProductButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const sortBy = button.dataset.sort;
-                const buttonGroup = button.parentElement;
-                const productGrid = buttonGroup.nextElementSibling;
-                const products = Array.from(productGrid.querySelectorAll('.product-card'));
-
-                // Update active button
-                buttonGroup.querySelector('.active').classList.remove('active');
-                button.classList.add('active');
-
-                let sortedProducts = [];
-
-                if(sortBy === 'default') {
-                    // We need the original order, might need to store it if it's not DOM order
-                    // For now, let's just use the original array.
-                    sortedProducts = products;
-                } else if (sortBy === 'bestseller') {
-                    sortedProducts = products.sort((a, b) => {
-                        const aBest = a.dataset.bestseller === 'true';
-                        const bBest = b.dataset.bestseller === 'true';
-                        return bBest - aBest;
-                    });
-                } else if (sortBy === 'price-desc') {
-                    sortedProducts = products.sort((a, b) => {
-                        return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
-                    });
-                } else if (sortBy === 'price-asc') {
-                     sortedProducts = products.sort((a, b) => {
-                        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
-                    });
-                }
-                
-                // Re-append sorted products to the grid
-                productGrid.innerHTML = '';
-                sortedProducts.forEach(product => productGrid.appendChild(product));
-            });
-        });
-
-        // --- Portfolio Scroller Logic ---
-        const portfolioContainer = document.getElementById('portfolio-container');
-        const portfolioScrollLeftBtn = document.getElementById('portfolio-scroll-left-btn');
-        const portfolioScrollRightBtn = document.getElementById('portfolio-scroll-right-btn');
-
-        if (portfolioContainer && portfolioScrollLeftBtn && portfolioScrollRightBtn) {
-            const scrollAmount = portfolioContainer.offsetWidth * 0.8; 
-
-            portfolioScrollLeftBtn.addEventListener('click', () => {
-                portfolioContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            });
-
-            portfolioScrollRightBtn.addEventListener('click', () => {
-                portfolioContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            });
-        }
-
         function copyToClipboard(elementId) {
-            const element = document.getElementById(elementId);
-            const textToCopy = element.innerText;
-            
-            const textArea = document.createElement('textarea');
-            textArea.value = textToCopy;
-            document.body.appendChild(textArea);
-            
-            textArea.select();
-            document.execCommand('copy');
-            
-            document.body.removeChild(textArea);
-
-            const allCopyButtons = document.querySelectorAll('.copy-btn');
-            allCopyButtons.forEach(btn => btn.innerText = 'نسخ'); 
-
-            const clickedButton = element.nextElementSibling;
-            if(clickedButton && clickedButton.classList.contains('copy-btn')) {
-                clickedButton.innerText = 'تم النسخ!';
-                setTimeout(() => {
-                    clickedButton.innerText = 'نسخ';
-                }, 2000);
-            }
+            const textToCopy = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const button = document.querySelector(`[onclick="copyToClipboard('${elementId}')"]`);
+                const originalText = button.innerText;
+                button.innerText = 'تم النسخ!';
+                setTimeout(() => { button.innerText = originalText; }, 2000);
+            });
         }
-
-        // --- Global Keydown Listener ---
-        document.addEventListener('keydown', (e) => { 
-            if (e.key === 'Escape') {
-                if (paymentModal && !paymentModal.classList.contains('hidden')) {
-                     closeModal(paymentModal, paymentModalContent);
-                }
-                if (productModal && !productModal.classList.contains('hidden')) {
-                     closeModal(productModal, productModalContent);
-                }
-                if (projectModal && !projectModal.classList.contains('hidden')) {
-                    const videoEl = projectMainMedia.querySelector('video');
-                    if (videoEl) videoEl.pause();
-                    closeModal(projectModal, projectModalContent);
-                }
-                if (aiChatModal && !aiChatModal.classList.contains('hidden')) {
-                    closeAiChat();
-                }
-            }
-        });
-
+        window.copyToClipboard = copyToClipboard; 
     </script>
 </body>
 </html>
-
 
 
 
