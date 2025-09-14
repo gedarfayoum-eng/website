@@ -260,33 +260,35 @@
 
     <div id="main-content">
         <main>
-            <section id="home" class="relative min-h-screen flex items-center justify-center text-white overflow-hidden -mt-[88px] pb-24">
+            <section id="home" class="relative h-screen min-h-[700px] flex items-center justify-center text-slate-800 overflow-hidden -mt-[88px]">
                  <!-- Background Container -->
-                 <div class="absolute inset-0 -z-20 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2158&auto=format&fit=crop');">
+                 <div class="absolute inset-0 -z-20">
+                    <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2158&auto=format&fit=crop" alt="خلفية لغرفة معيشة عصرية" class="w-full h-full object-cover">
                  </div>
 
-                 <!-- White Foggy Overlay for Readability -->
-                 <div class="absolute inset-0 bg-white/80 -z-10"></div>
-                <div class="relative z-10 container mx-auto px-6 text-center reveal">
-                    <h1 class="pt-4 font-black text-7xl sm:text-8xl md:text-9xl bg-gradient-to-r from-emerald-500 to-green-600 text-transparent bg-clip-text drop-shadow-sm">
+                 <!-- Overlay for Readability -->
+                 <div class="absolute inset-0 bg-gradient-to-t from-slate-50/100 via-slate-50/80 to-transparent -z-10"></div>
+                
+                <div class="relative z-10 container mx-auto px-6 text-center flex flex-col items-center reveal">
+                    <h1 class="font-black text-7xl sm:text-8xl md:text-9xl bg-gradient-to-r from-emerald-500 to-green-600 text-transparent bg-clip-text drop-shadow-md">
                         جدار
                     </h1>
-                    <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mt-2 mb-10">
-                        حوّل مساحتك إلى لوحة فنية
+                    <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mt-4 max-w-3xl tracking-tight text-shadow">
+                        حوّل جدرانك إلى تحفة فنية
                     </p>
-                    <p class="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 -mt-6">
-                        نقدم لك أحدث وأجمل تجاليد الحوائط التي تجمع بين الفن والجودة، لتمنح منزلك هوية فريدة ومظهرًا عصريًا.
+                    <p class="text-base sm:text-lg text-slate-700 max-w-2xl mx-auto mt-4 mb-12 tracking-wide">
+                        اكتشف تشكيلتنا الفريدة من تجاليد الحوائط العصرية. جودة فائقة وتصاميم تلهم الإبداع في كل زاوية من منزلك.
                     </p>
                 </div>
             
-                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
-                    <a href="#products-section" class="text-slate-500/70 hover:text-slate-700 transition-colors">
-                        <i data-feather="chevron-down" class="w-10 h-10 animate-bounce"></i>
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+                    <a href="#products-section" class="text-slate-500/80 hover:text-slate-700 transition-colors">
+                        <i data-feather="arrow-down" class="w-8 h-8 animate-bounce"></i>
                     </a>
                 </div>
             </section>
             
-            <section id="products-section" class="py-20 sm:py-24 overflow-hidden">
+            <section id="products-section" class="py-20 sm:py-24 overflow-hidden bg-slate-50">
                 <div class="container mx-auto px-6 reveal">
                     <div class="bg-white/70 backdrop-blur-md rounded-3xl p-4 sm:p-8 md:p-12">
                         <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-4 text-slate-900">تصفح منتجاتنا</h2>
@@ -441,6 +443,9 @@
                 </div>
             </section>
         </main>
+        <div id="search-results-container" class="hidden category-page min-h-screen container mx-auto px-6 py-24 sm:py-32">
+            <!-- Search results will be injected here by JS -->
+        </div>
         <div id="product-detail-container" class="hidden">
             <!-- Product Detail Page will be dynamically injected here -->
         </div>
@@ -499,199 +504,203 @@
         </div>
     </footer>
     
-    <div id="product-detail-container" class="hidden">
-        <!-- Product Detail Page will be dynamically injected here -->
-    </div>
-
-    <!-- Project Detail Modal -->
-    <div id="project-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="project-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
-            <button id="close-project-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20">
-                <i data-feather="x" class="w-8 h-8"></i>
-            </button>
-            <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
-                <!-- Main Media Viewer -->
-                <div class="w-full md:w-2/3 bg-slate-200 flex items-center justify-center">
-                    <div id="project-main-media" class="w-full h-full">
-                        <!-- Media (Image/Video) will be injected here by JS -->
+    <!-- Modals placeholder -->
+    <div id="modals-container">
+        <!-- Project Detail Modal -->
+        <div id="project-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+            <div id="project-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
+                <button id="close-project-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20">
+                    <i data-feather="x" class="w-8 h-8"></i>
+                </button>
+                <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+                    <!-- Main Media Viewer -->
+                    <div class="w-full md:w-2/3 bg-slate-200 flex items-center justify-center">
+                        <div id="project-main-media" class="w-full h-full">
+                            <!-- Media (Image/Video) will be injected here by JS -->
+                        </div>
                     </div>
-                </div>
-                <!-- Project Details & Thumbnails -->
-                <div class="w-full md:w-1/3 p-6 flex flex-col overflow-y-auto">
-                    <div>
-                        <h2 id="project-modal-title" class="text-2xl font-extrabold text-emerald-600 mb-2"></h2>
-                        <p id="project-modal-desc" class="text-slate-600 leading-relaxed mb-4"></p>
-                    </div>
-                    <div class="border-t border-slate-200 pt-4 mt-auto">
-                        <h4 class="font-bold text-base text-slate-800 mb-3">معرض المشروع</h4>
-                        <div id="project-thumbnails" class="grid grid-cols-4 gap-2">
-                            <!-- Thumbnails will be injected here by JS -->
+                    <!-- Project Details & Thumbnails -->
+                    <div class="w-full md:w-1/3 p-6 flex flex-col overflow-y-auto">
+                        <div>
+                            <h2 id="project-modal-title" class="text-2xl font-extrabold text-emerald-600 mb-2"></h2>
+                            <p id="project-modal-desc" class="text-slate-600 leading-relaxed mb-4"></p>
+                        </div>
+                        <div class="border-t border-slate-200 pt-4 mt-auto">
+                            <h4 class="font-bold text-base text-slate-800 mb-3">معرض المشروع</h4>
+                            <div id="project-thumbnails" class="grid grid-cols-4 gap-2">
+                                <!-- Thumbnails will be injected here by JS -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Payment Methods Modal -->
-    <div id="payment-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="payment-modal-content" class="bg-white/80 backdrop-blur-xl border border-slate-200 text-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-2xl w-full relative transform transition-all duration-300 scale-95 opacity-0">
-            <button id="close-payment-modal" class="absolute top-5 right-5 text-slate-500 hover:text-slate-800 transition-colors z-10">
-                <i data-feather="x" class="w-7 h-7"></i>
-            </button>
-            <div class="text-center mb-8">
-                 <div class="inline-block p-3 bg-emerald-100 rounded-xl mb-4">
-                    <i data-feather="credit-card" class="w-8 h-8 text-emerald-600"></i>
-                 </div>
-                 <h2 class="text-3xl font-extrabold text-slate-900">طرق دفع آمنة ومريحة</h2>
-                 <p class="text-slate-600 mt-2">اختر الطريقة الأنسب لك لإتمام طلبك بكل سهولة.</p>
-            </div>
-            
-            <div class="space-y-5">
-                <!-- Option 1: Cash on Delivery -->
-                <div class="flex items-center gap-4 p-4 bg-slate-50 hover:bg-slate-100 transition-colors rounded-xl border border-slate-200">
-                    <div class="bg-emerald-100 text-emerald-600 rounded-lg p-3">
-                        <i data-feather="package" class="w-7 h-7 flex-shrink-0"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg text-slate-800">الدفع عند الاستلام</h3>
-                        <p class="text-slate-600 text-sm">ادفع نقداً عند استلام طلبك مباشرة.</p>
-                    </div>
+        <!-- Payment Methods Modal -->
+        <div id="payment-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+            <div id="payment-modal-content" class="bg-white/80 backdrop-blur-xl border border-slate-200 text-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 max-w-2xl w-full relative transform transition-all duration-300 scale-95 opacity-0">
+                <button id="close-payment-modal" class="absolute top-5 right-5 text-slate-500 hover:text-slate-800 transition-colors z-10">
+                    <i data-feather="x" class="w-7 h-7"></i>
+                </button>
+                <div class="text-center mb-8">
+                     <div class="inline-block p-3 bg-emerald-100 rounded-xl mb-4">
+                        <i data-feather="credit-card" class="w-8 h-8 text-emerald-600"></i>
+                     </div>
+                     <h2 class="text-3xl font-extrabold text-slate-900">طرق دفع آمنة ومريحة</h2>
+                     <p class="text-slate-600 mt-2">اختر الطريقة الأنسب لك لإتمام طلبك بكل سهولة.</p>
                 </div>
-
-                <!-- Digital Wallets Section -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <!-- Vodafone Cash -->
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
-                        <img src="https://i.ibb.co/ZRgmj5X2/vodafone-icon.png" alt="شعار فودافون كاش" class="h-9 w-auto mb-3 self-start">
-                        <p class="text-slate-600 text-xs mb-2">اسم المستلم: <span class="font-semibold text-slate-800">Mostafa Mamon M** S*** Zaki</span>.</p>
-                        <div class="mt-auto flex justify-between items-center bg-slate-100 p-2 rounded-lg border border-slate-200">
-                            <span id="vodafone-number" class="text-slate-700 font-mono tracking-wider text-sm sm:text-base">01064009655</span>
-                            <button onclick="copyToClipboard('vodafone-number')" class="copy-btn bg-slate-300 text-slate-700 text-xs font-bold px-3 py-1 rounded-md hover:bg-slate-400 transition-colors">نسخ</button>
+                
+                <div class="space-y-5">
+                    <!-- Option 1: Cash on Delivery -->
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 hover:bg-slate-100 transition-colors rounded-xl border border-slate-200">
+                        <div class="bg-emerald-100 text-emerald-600 rounded-lg p-3">
+                            <i data-feather="package" class="w-7 h-7 flex-shrink-0"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-800">الدفع عند الاستلام</h3>
+                            <p class="text-slate-600 text-sm">ادفع نقداً عند استلام طلبك مباشرة.</p>
                         </div>
                     </div>
-                    <!-- InstaPay -->
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
-                        <img src="https://i.ibb.co/tPWksj7T/vodafone-icon-copy.png" alt="شعار انستا باي" class="h-9 w-auto mb-3 self-start">
-                        <p class="text-slate-600 text-xs mb-2">اسم المستلم: <span class="font-semibold text-slate-800">Mostafa Mamon M** S*** Zaki</span>.</p>
-                        <div class="mt-auto flex justify-between items-center bg-slate-100 p-2 rounded-lg border border-slate-200">
-                            <span id="instapay-number" class="text-slate-700 font-mono tracking-wider text-sm sm:text-base">01064009655</span>
-                            <button onclick="copyToClipboard('instapay-number')" class="copy-btn bg-slate-300 text-slate-700 text-xs font-bold px-3 py-1 rounded-md hover:bg-slate-400 transition-colors">نسخ</button>
+
+                    <!-- Digital Wallets Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- Vodafone Cash -->
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
+                            <img src="https://i.ibb.co/ZRgmj5X2/vodafone-icon.png" alt="شعار فودافون كاش" class="h-9 w-auto mb-3 self-start">
+                            <p class="text-slate-600 text-xs mb-2">اسم المستلم: <span class="font-semibold text-slate-800">Mostafa Mamon M** S*** Zaki</span>.</p>
+                            <div class="mt-auto flex justify-between items-center bg-slate-100 p-2 rounded-lg border border-slate-200">
+                                <span id="vodafone-number" class="text-slate-700 font-mono tracking-wider text-sm sm:text-base">01064009655</span>
+                                <button onclick="copyToClipboard('vodafone-number')" class="copy-btn bg-slate-300 text-slate-700 text-xs font-bold px-3 py-1 rounded-md hover:bg-slate-400 transition-colors">نسخ</button>
+                            </div>
+                        </div>
+                        <!-- InstaPay -->
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col">
+                            <img src="https://i.ibb.co/tPWksj7T/vodafone-icon-copy.png" alt="شعار انستا باي" class="h-9 w-auto mb-3 self-start">
+                            <p class="text-slate-600 text-xs mb-2">اسم المستلم: <span class="font-semibold text-slate-800">Mostafa Mamon M** S*** Zaki</span>.</p>
+                            <div class="mt-auto flex justify-between items-center bg-slate-100 p-2 rounded-lg border border-slate-200">
+                                <span id="instapay-number" class="text-slate-700 font-mono tracking-wider text-sm sm:text-base">01064009655</span>
+                                <button onclick="copyToClipboard('instapay-number')" class="copy-btn bg-slate-300 text-slate-700 text-xs font-bold px-3 py-1 rounded-md hover:bg-slate-400 transition-colors">نسخ</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Disabled Option -->
+                    <div class="flex items-center gap-4 p-4 bg-slate-200 rounded-xl border border-slate-300 opacity-60 cursor-not-allowed">
+                        <div class="bg-yellow-200 text-yellow-700 rounded-lg p-3">
+                            <i data-feather="credit-card" class="w-7 h-7 flex-shrink-0"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-800">البطاقات الائتمانية</h3>
+                            <p class="text-slate-600 text-sm">قريباً! نعمل على تفعيل هذه الخدمة.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Disabled Option -->
-                <div class="flex items-center gap-4 p-4 bg-slate-200 rounded-xl border border-slate-300 opacity-60 cursor-not-allowed">
-                    <div class="bg-yellow-200 text-yellow-700 rounded-lg p-3">
-                        <i data-feather="credit-card" class="w-7 h-7 flex-shrink-0"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg text-slate-800">البطاقات الائتمانية</h3>
-                        <p class="text-slate-600 text-sm">قريباً! نعمل على تفعيل هذه الخدمة.</p>
+                <div class="mt-6 border-t border-slate-200 pt-5 text-center">
+                    <div class="flex items-start justify-center gap-3 text-slate-500 max-w-sm mx-auto">
+                        <i data-feather="info" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                        <p class="text-xs leading-relaxed">
+                            <strong>ملحوظة هامة:</strong> عند تجهيز اى فاتورة يتم دفع 50 % كحد أدنى من قيمتها لبدأ تنفيذ عملية تسليم المنتجات.
+                        </p>
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Login Modal -->
+        <div id="login-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+            <div id="login-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-sm w-full relative transform transition-all duration-300 scale-95 opacity-0 p-8 text-center">
+                <button id="close-login-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20">
+                    <i data-feather="x" class="w-8 h-8"></i>
+                </button>
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-4">تسجيل الدخول</h2>
+                <p class="text-slate-600 mb-8">مرحباً بك مجدداً في جدار! سجل دخولك للمتابعة.</p>
+                <button id="google-signin-btn" class="w-full bg-white text-gray-800 py-3 px-6 rounded-full hover:bg-gray-100 border border-slate-300 transition-colors text-lg font-bold flex items-center justify-center gap-3">
+                    <svg class="w-6 h-6" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#34A853" d="M46.44 24.28c0-1.63-.15-3.2-.42-4.72H24v9.02h12.47c-.55 2.92-2.19 5.42-4.62 7.17l7.63 5.91c4.46-4.11 7.03-10.21 7.03-17.38z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.63-5.91c-2.11 1.41-4.79 2.26-7.91 2.26-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
+                    <span>المتابعة باستخدام جوجل</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Add Category Modal -->
+        <div id="add-category-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+            <div id="add-category-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-lg w-full relative transform transition-all duration-300 scale-95 opacity-0 p-8">
+                <button id="close-add-category-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20"><i data-feather="x" class="w-8 h-8"></i></button>
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-6">إضافة قسم جديد</h2>
+                <form id="add-category-form" class="space-y-4">
+                    <input type="text" name="name" placeholder="اسم القسم" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                    <input type="text" name="pageId" placeholder="معرّف القسم (مثال: natural-designs)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                    <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-bold">إضافة القسم</button>
+                </form>
+            </div>
+        </div>
 
-            <div class="mt-6 border-t border-slate-200 pt-5 text-center">
-                <div class="flex items-start justify-center gap-3 text-slate-500 max-w-sm mx-auto">
-                    <i data-feather="info" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
-                    <p class="text-xs leading-relaxed">
-                        <strong>ملحوظة هامة:</strong> عند تجهيز اى فاتورة يتم دفع 50 % كحد أدنى من قيمتها لبدأ تنفيذ عملية تسليم المنتجات.
-                    </p>
+        <!-- Product Admin Modal (Add/Edit) -->
+        <div id="product-admin-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+            <div id="product-admin-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-3xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
+                <button id="close-product-admin-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20"><i data-feather="x" class="w-8 h-8"></i></button>
+                <h2 id="product-admin-modal-title" class="text-3xl font-extrabold text-slate-900 mb-6 p-8 pb-0">إضافة منتج جديد</h2>
+                <form id="product-admin-form" class="space-y-4 overflow-y-auto p-8 pt-4">
+                    <input type="text" name="title" placeholder="اسم المنتج (نبذة)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" name="type" placeholder="نوع المنتج" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                        <input type="text" name="productCode" placeholder="كود المنتج (SKU)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
+                    </div>
+                    <textarea name="desc" placeholder="تفاصيل المنتج" rows="3" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required></textarea>
+                    <input type="url" name="mainImageUrl" placeholder="رابط الصورة الخارجية للمنتج" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" name="price" placeholder="السعر" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
+                        <input type="number" name="discount" placeholder="الخصم (اختياري)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="isAvailable" name="isAvailable" checked class="w-5 h-5 accent-emerald-500">
+                        <label for="isAvailable">متوفر حالياً</label>
+                    </div>
+
+                    <div class="border-t border-b border-slate-200 py-4">
+                        <h4 class="font-bold text-lg text-slate-800 mb-3">الألوان والأكواد</h4>
+                        <div id="colors-container" class="space-y-3">
+                            <!-- Color fields will be injected here -->
+                        </div>
+                        <button type="button" id="add-color-btn" class="mt-3 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-2">
+                            <i data-feather="plus"></i>
+                            <span>إضافة لون جديد</span>
+                        </button>
+                    </div>
+
+                    <div class="border-b border-slate-200 py-4">
+                        <h4 class="font-bold text-lg text-slate-800 mb-3">صور إضافية للمعرض</h4>
+                        <div id="gallery-images-container" class="space-y-3">
+                            <!-- Gallery Image fields will be injected here -->
+                        </div>
+                        <button type="button" id="add-gallery-image-btn" class="mt-3 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-2">
+                            <i data-feather="plus"></i>
+                            <span>إضافة صورة للمعرض</span>
+                        </button>
+                    </div>
+
+                    <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-bold">حفظ المنتج</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Confirm Delete Modal -->
+        <div id="confirm-delete-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+            <div id="confirm-delete-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-sm w-full relative transform transition-all duration-300 scale-95 opacity-0 p-8 text-center">
+                <h2 class="text-2xl font-bold text-slate-900 mb-4">تأكيد الحذف</h2>
+                <p class="text-slate-600 mb-6">هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.</p>
+                <div class="flex justify-center gap-4">
+                    <button id="cancel-delete-btn" class="bg-gray-200 text-gray-800 py-2 px-6 rounded-lg hover:bg-gray-300 transition-colors">إلغاء</button>
+                    <button id="confirm-delete-btn" class="bg-red-600 text-white py-2 px-6 rounded-lg hover:bg-red-700 transition-colors">حذف</button>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Login Modal -->
-    <div id="login-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="login-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-sm w-full relative transform transition-all duration-300 scale-95 opacity-0 p-8 text-center">
-            <button id="close-login-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20">
-                <i data-feather="x" class="w-8 h-8"></i>
-            </button>
-            <h2 class="text-3xl font-extrabold text-slate-900 mb-4">تسجيل الدخول</h2>
-            <p class="text-slate-600 mb-8">مرحباً بك مجدداً في جدار! سجل دخولك للمتابعة.</p>
-            <button id="google-signin-btn" class="w-full bg-white text-gray-800 py-3 px-6 rounded-full hover:bg-gray-100 border border-slate-300 transition-colors text-lg font-bold flex items-center justify-center gap-3">
-                <svg class="w-6 h-6" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#34A853" d="M46.44 24.28c0-1.63-.15-3.2-.42-4.72H24v9.02h12.47c-.55 2.92-2.19 5.42-4.62 7.17l7.63 5.91c4.46-4.11 7.03-10.21 7.03-17.38z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.63-5.91c-2.11 1.41-4.79 2.26-7.91 2.26-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
-                <span>المتابعة باستخدام جوجل</span>
-            </button>
-        </div>
-    </div>
-    
-    <!-- Add Category Modal -->
-    <div id="add-category-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="add-category-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-lg w-full relative transform transition-all duration-300 scale-95 opacity-0 p-8">
-            <button id="close-add-category-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20"><i data-feather="x" class="w-8 h-8"></i></button>
-            <h2 class="text-3xl font-extrabold text-slate-900 mb-6">إضافة قسم جديد</h2>
-            <form id="add-category-form" class="space-y-4">
-                <input type="text" name="name" placeholder="اسم القسم" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
-                <input type="text" name="pageId" placeholder="معرّف القسم (مثال: natural-designs)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
-                <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-bold">إضافة القسم</button>
-            </form>
-        </div>
-    </div>
 
-    <!-- Product Admin Modal (Add/Edit) -->
-    <div id="product-admin-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="product-admin-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-3xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
-            <button id="close-product-admin-modal" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-colors z-20"><i data-feather="x" class="w-8 h-8"></i></button>
-            <h2 id="product-admin-modal-title" class="text-3xl font-extrabold text-slate-900 mb-6 p-8 pb-0">إضافة منتج جديد</h2>
-            <form id="product-admin-form" class="space-y-4 overflow-y-auto p-8 pt-4">
-                <input type="text" name="title" placeholder="اسم المنتج (نبذة)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" name="type" placeholder="نوع المنتج" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
-                    <input type="text" name="productCode" placeholder="كود المنتج (SKU)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
-                </div>
-                <textarea name="desc" placeholder="تفاصيل المنتج" rows="3" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required></textarea>
-                <input type="url" name="mainImageUrl" placeholder="رابط الصورة الخارجية للمنتج" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="number" name="price" placeholder="السعر" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800" required>
-                    <input type="number" name="discount" placeholder="الخصم (اختياري)" class="w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800">
-                </div>
-                <div class="flex items-center gap-2">
-                    <input type="checkbox" id="isAvailable" name="isAvailable" checked class="w-5 h-5 accent-emerald-500">
-                    <label for="isAvailable">متوفر حالياً</label>
-                </div>
-
-                <div class="border-t border-b border-slate-200 py-4">
-                    <h4 class="font-bold text-lg text-slate-800 mb-3">الألوان والأكواد</h4>
-                    <div id="colors-container" class="space-y-3">
-                        <!-- Color fields will be injected here -->
-                    </div>
-                    <button type="button" id="add-color-btn" class="mt-3 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-2">
-                        <i data-feather="plus"></i>
-                        <span>إضافة لون جديد</span>
-                    </button>
-                </div>
-
-                <div class="border-b border-slate-200 py-4">
-                    <h4 class="font-bold text-lg text-slate-800 mb-3">صور إضافية للمعرض</h4>
-                    <div id="gallery-images-container" class="space-y-3">
-                        <!-- Gallery Image fields will be injected here -->
-                    </div>
-                    <button type="button" id="add-gallery-image-btn" class="mt-3 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-2">
-                        <i data-feather="plus"></i>
-                        <span>إضافة صورة للمعرض</span>
-                    </button>
-                </div>
-
-                <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-bold">حفظ المنتج</button>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Confirm Delete Modal -->
-    <div id="confirm-delete-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="confirm-delete-modal-content" class="bg-white text-slate-800 rounded-2xl shadow-2xl max-w-sm w-full relative transform transition-all duration-300 scale-95 opacity-0 p-8 text-center">
-            <h2 class="text-2xl font-bold text-slate-900 mb-4">تأكيد الحذف</h2>
-            <p class="text-slate-600 mb-6">هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.</p>
-            <div class="flex justify-center gap-4">
-                <button id="cancel-delete-btn" class="bg-gray-200 text-gray-800 py-2 px-6 rounded-lg hover:bg-gray-300 transition-colors">إلغاء</button>
-                <button id="confirm-delete-btn" class="bg-red-600 text-white py-2 px-6 rounded-lg hover:bg-red-700 transition-colors">حذف</button>
-            </div>
-        </div>
-    </div>
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top-btn" class="hidden fixed bottom-24 right-6 bg-white/80 backdrop-blur-md text-slate-800 w-16 h-16 rounded-full shadow-lg items-center justify-center transform hover:scale-110 transition-all duration-300 z-40 border border-slate-200">
+        <i data-feather="arrow-up" class="w-8 h-8"></i>
+    </button>
 
     <!-- AI Assistant FAB & Chat Modal -->
     <button id="ai-fab" class="fixed bottom-6 right-6 bg-white/80 backdrop-blur-md text-slate-800 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-300 z-40 border border-slate-200">
@@ -756,6 +765,7 @@
         const mainPageContent = document.querySelector('#main-content > main');
         const productsSection = document.getElementById('products-section');
         // Modals
+        const modalsContainer = document.getElementById('modals-container');
         const loginModal = document.getElementById('login-modal');
         const loginModalContent = document.getElementById('login-modal-content');
         const addCategoryModal = document.getElementById('add-category-modal');
@@ -785,6 +795,7 @@
         const productDetailContainer = document.getElementById('product-detail-container');
 
         let allCategories = [];
+        let allProductsForSearch = [];
 
         const toArabicNumerals = (num) => {
             const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -798,6 +809,7 @@
             updateUIForAuthState(user);
             // Now that we know the auth state, we can safely listen for data.
             listenForCategories();
+            listenForAllProductsForSearch();
         });
         
         const isAdmin = () => currentUser && currentUser.uid === adminUID;
@@ -807,7 +819,7 @@
             const authSections = document.querySelectorAll('[id^="auth-section-"]');
 
             if (user) {
-                closeModal(loginModal, loginModalContent);
+                if(loginModal) closeModal(loginModal, loginModalContent);
                 userSections.forEach(section => {
                     section.classList.remove('hidden');
                     section.classList.add(section.id.includes('mobile') ? 'flex' : 'flex');
@@ -832,6 +844,18 @@
 
         // --- Firestore Real-time Listeners ---
 
+        function listenForAllProductsForSearch() {
+            const productsRef = collection(db, "products");
+            onSnapshot(productsRef, (snapshot) => {
+                allProductsForSearch = []; // Clear on each update
+                snapshot.forEach(doc => {
+                    allProductsForSearch.push({ id: doc.id, ...doc.data() });
+                });
+            }, (error) => {
+                console.error("Error fetching all products for search:", error);
+            });
+        }
+
         function listenForCategories() {
             const categoriesRef = collection(db, "categories");
             onSnapshot(categoriesRef, (snapshot) => {
@@ -840,8 +864,8 @@
                 renderCategoriesAndPages(allCategories);
             }, (error) => {
                 console.error("Error listening for categories:", error);
-                categoryTabs.innerHTML = '';
-                categoryProductsDisplay.innerHTML = '<p>حدث خطأ في تحميل الأقسام.</p>';
+                if(categoryTabs) categoryTabs.innerHTML = '';
+                if(categoryProductsDisplay) categoryProductsDisplay.innerHTML = '<p>حدث خطأ في تحميل الأقسام.</p>';
             });
         }
 
@@ -865,8 +889,63 @@
         }
 
         // --- Dynamic Rendering ---
+
+        function createProductCard(prod) {
+            const card = document.createElement('div');
+            card.className = 'product-card flex flex-col group bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl border border-slate-200/60 text-center';
+            
+            const mainImage = prod.mainImageUrl || (prod.colors && prod.colors.length > 0 && prod.colors[0].imageUrl ? prod.colors[0].imageUrl : 'https://placehold.co/800x600/e2e8f0/475569?text=No+Image');
+
+            let priceHTML = `<p class="text-xl font-bold text-emerald-600">${toArabicNumerals(prod.price)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>`;
+            if (prod.discount && prod.discount > 0) {
+                const discountedPrice = (prod.price * (1 - prod.discount / 100)).toFixed(2);
+                priceHTML = `
+                    <div class="flex items-baseline justify-center gap-2">
+                        <p class="text-base font-medium text-slate-400 line-through">${toArabicNumerals(prod.price)} ج.م</p>
+                        <p class="text-xl font-bold text-emerald-600">${toArabicNumerals(discountedPrice)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>
+                    </div>
+                `;
+            }
+            
+            const unavailableOverlay = !prod.isAvailable 
+                ? `<div class="absolute inset-0 bg-slate-100/80 backdrop-blur-sm flex items-center justify-center z-10">
+                       <span class="text-slate-800 font-bold text-xl border-2 border-slate-800 rounded-md px-4 py-2 bg-white/50">غير متوفر حالياً</span>
+                   </div>` 
+                : '';
+            const buttonDisabled = !prod.isAvailable ? 'disabled' : '';
+            const buttonClasses = !prod.isAvailable 
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                : 'bg-emerald-500 hover:bg-emerald-600 text-white';
+
+            card.innerHTML = `
+                <div class="relative overflow-hidden p-4">
+                    <img src="${mainImage}" alt="${prod.title}" class="w-full h-56 object-contain transition-transform duration-500 group-hover:scale-105">
+                    ${unavailableOverlay}
+                    ${prod.discount ? `<span class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">خصم ${toArabicNumerals(prod.discount)}%</span>` : ''}
+                </div>
+                <div class="p-5 pt-0 flex flex-col flex-grow items-center">
+                    <h3 class="product-title text-lg font-bold text-slate-800 mb-2 h-14 flex items-center justify-center">${prod.title}</h3>
+                    <div class="my-4">
+                         ${priceHTML}
+                    </div>
+                    <div class="mt-auto w-full">
+                        <button class="details-btn w-full py-2.5 px-4 rounded-full transition-all duration-300 font-bold ${buttonClasses}" ${buttonDisabled}>
+                            عرض التفاصيل
+                        </button>
+                        <div class="admin-only flex justify-center items-center mt-4 gap-6">
+                            <button class="edit-product-btn text-blue-500 hover:text-blue-700 transition-colors"><i data-feather="edit" class="w-5 h-5 pointer-events-none"></i></button>
+                            <button class="delete-product-btn text-red-500 hover:text-red-700 transition-colors"><i data-feather="trash-2" class="w-5 h-5 pointer-events-none"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            card.dataset.product = JSON.stringify({id: prod.id, ...prod});
+            return card;
+        }
         
         function renderCategoriesAndPages(categories) {
+            if(!categoryTabs || !categoryProductsDisplay) return;
+
             categoryTabs.innerHTML = '';
             categoryProductsDisplay.innerHTML = '';
 
@@ -987,9 +1066,11 @@
                 categoryTabs.appendChild(addCategoryBtn);
                 addCategoryBtn.addEventListener('click', () => {
                     currentEditingCategoryId = null;
-                    addCategoryForm.reset();
-                    document.querySelector('#add-category-modal h2').textContent = 'إضافة قسم جديد';
-                    document.querySelector('#add-category-form button[type="submit"]').textContent = 'إضافة القسم';
+                    if(addCategoryForm) addCategoryForm.reset();
+                    const modalTitle = document.querySelector('#add-category-modal h2');
+                    if(modalTitle) modalTitle.textContent = 'إضافة قسم جديد';
+                    const submitBtn = document.querySelector('#add-category-form button[type="submit"]');
+                    if(submitBtn) submitBtn.textContent = 'إضافة القسم';
                     openModal(addCategoryModal, addCategoryModalContent);
                 });
             }
@@ -1002,82 +1083,38 @@
 
             updateUIForAuthState(currentUser);
         }
+        
+        if (categoryTabs) {
+            categoryTabs.addEventListener('click', (e) => {
+                const tab = e.target.closest('.category-tab-btn');
+                if (tab && !tab.id.includes('add-category-btn')) {
+                    const pageId = tab.dataset.page;
+                    
+                    // Toggle active class on sidebar links
+                    document.querySelectorAll('#category-tabs .category-tab-btn').forEach(l => l.classList.remove('active'));
+                    tab.classList.add('active');
 
-        categoryTabs.addEventListener('click', (e) => {
-            const tab = e.target.closest('.category-tab-btn');
-            if (tab && !tab.id.includes('add-category-btn')) {
-                const pageId = tab.dataset.page;
-                
-                // Toggle active class on sidebar links
-                document.querySelectorAll('#category-tabs .category-tab-btn').forEach(l => l.classList.remove('active'));
-                tab.classList.add('active');
+                    // Hide placeholder and all product containers
+                    const placeholder = document.getElementById('products-placeholder');
+                    if(placeholder) placeholder.classList.add('hidden');
+                    document.querySelectorAll('#category-products-display .product-container').forEach(cont => cont.classList.add('hidden'));
 
-                // Hide placeholder and all product containers
-                const placeholder = document.getElementById('products-placeholder');
-                if(placeholder) placeholder.classList.add('hidden');
-                document.querySelectorAll('#category-products-display .product-container').forEach(cont => cont.classList.add('hidden'));
-
-                // Show the selected product container
-                const targetContainer = document.getElementById(`products-for-${pageId}`);
-                if (targetContainer) {
-                    targetContainer.classList.remove('hidden');
+                    // Show the selected product container
+                    const targetContainer = document.getElementById(`products-for-${pageId}`);
+                    if (targetContainer) {
+                        targetContainer.classList.remove('hidden');
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
         function renderProducts(products, categoryId, productGrid) {
+            if (!productGrid) return;
             productGrid.querySelectorAll('.product-card').forEach(card => card.remove());
 
             products.forEach(prod => {
-                const card = document.createElement('div');
-                card.className = 'product-card flex flex-col group bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl border border-slate-200/60 text-center';
-                
-                const mainImage = prod.mainImageUrl || (prod.colors && prod.colors.length > 0 && prod.colors[0].imageUrl ? prod.colors[0].imageUrl : 'https://placehold.co/800x600/e2e8f0/475569?text=No+Image');
-
-                let priceHTML = `<p class="text-xl font-bold text-emerald-600">${toArabicNumerals(prod.price)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>`;
-                if (prod.discount && prod.discount > 0) {
-                    const discountedPrice = (prod.price * (1 - prod.discount / 100)).toFixed(2);
-                    priceHTML = `
-                        <div class="flex items-baseline justify-center gap-2">
-                            <p class="text-base font-medium text-slate-400 line-through">${toArabicNumerals(prod.price)} ج.م</p>
-                            <p class="text-xl font-bold text-emerald-600">${toArabicNumerals(discountedPrice)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>
-                        </div>
-                    `;
-                }
-                
-                const unavailableOverlay = !prod.isAvailable 
-                    ? `<div class="absolute inset-0 bg-slate-100/80 backdrop-blur-sm flex items-center justify-center z-10">
-                           <span class="text-slate-800 font-bold text-xl border-2 border-slate-800 rounded-md px-4 py-2 bg-white/50">غير متوفر حالياً</span>
-                       </div>` 
-                    : '';
-                const buttonDisabled = !prod.isAvailable ? 'disabled' : '';
-                const buttonClasses = !prod.isAvailable 
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                    : 'bg-emerald-500 hover:bg-emerald-600 text-white';
-
-                card.innerHTML = `
-                    <div class="relative overflow-hidden p-4">
-                        <img src="${mainImage}" alt="${prod.title}" class="w-full h-56 object-contain transition-transform duration-500 group-hover:scale-105">
-                        ${unavailableOverlay}
-                        ${prod.discount ? `<span class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">خصم ${prod.discount}%</span>` : ''}
-                    </div>
-                    <div class="p-5 pt-0 flex flex-col flex-grow items-center">
-                        <h3 class="product-title text-lg font-bold text-slate-800 mb-2 h-14 flex items-center justify-center">${prod.title}</h3>
-                        <div class="my-4">
-                             ${priceHTML}
-                        </div>
-                        <div class="mt-auto w-full">
-                            <button class="details-btn w-full py-2.5 px-4 rounded-full transition-all duration-300 font-bold ${buttonClasses}" ${buttonDisabled}>
-                                عرض التفاصيل
-                            </button>
-                            <div class="admin-only flex justify-center items-center mt-4 gap-6">
-                                <button class="edit-product-btn text-blue-500 hover:text-blue-700 transition-colors"><i data-feather="edit" class="w-5 h-5 pointer-events-none"></i></button>
-                                <button class="delete-product-btn text-red-500 hover:text-red-700 transition-colors"><i data-feather="trash-2" class="w-5 h-5 pointer-events-none"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                card.dataset.product = JSON.stringify({id: prod.id, ...prod});
+                const card = createProductCard(prod);
                 // Don't append admin-only cards to the "all" grid
                 if (isAdmin() || categoryId !== 'all') {
                     productGrid.appendChild(card);
@@ -1089,8 +1126,8 @@
         }
 
         function clearDynamicContent() {
-             categoryTabs.innerHTML = '';
-             categoryProductsDisplay.innerHTML = '<p>جاري التحميل...</p>';
+             if(categoryTabs) categoryTabs.innerHTML = '';
+             if(categoryProductsDisplay) categoryProductsDisplay.innerHTML = '<p>جاري التحميل...</p>';
         }
 
         // --- Add/Edit/Delete Product & Category Logic ---
@@ -1130,9 +1167,10 @@
                 currentEditingProductId = null;
                 currentCategoryId = addProductCard.dataset.categoryId;
                 productAdminForm.reset();
-                colorsContainer.innerHTML = '';
-                galleryImagesContainer.innerHTML = '';
-                document.getElementById('product-admin-modal-title').textContent = 'إضافة منتج جديد';
+                if(colorsContainer) colorsContainer.innerHTML = '';
+                if(galleryImagesContainer) galleryImagesContainer.innerHTML = '';
+                const modalTitle = document.getElementById('product-admin-modal-title');
+                if(modalTitle) modalTitle.textContent = 'إضافة منتج جديد';
                 openModal(productAdminModal, productAdminModalContent);
             }
              // Edit Product Button
@@ -1151,15 +1189,16 @@
                 productAdminForm.discount.value = productData.discount || '';
                 productAdminForm.isAvailable.checked = productData.isAvailable;
 
-                colorsContainer.innerHTML = '';
+                if(colorsContainer) colorsContainer.innerHTML = '';
                 if(productData.colors) {
                     productData.colors.forEach(color => addColorField(color));
                 }
-                galleryImagesContainer.innerHTML = '';
+                if(galleryImagesContainer) galleryImagesContainer.innerHTML = '';
                 if(productData.galleryImages) {
                     productData.galleryImages.forEach(imgUrl => addGalleryImageField(imgUrl));
                 }
-                document.getElementById('product-admin-modal-title').textContent = 'تعديل المنتج';
+                const modalTitle = document.getElementById('product-admin-modal-title');
+                if(modalTitle) modalTitle.textContent = 'تعديل المنتج';
                 openModal(productAdminModal, productAdminModalContent);
             }
             // Delete Product Button
@@ -1181,76 +1220,155 @@
         });
 
         // --- FORM SUBMISSIONS ---
-        addCategoryForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(addCategoryForm);
-            const categoryData = {
-                name: formData.get('name'),
-                pageId: formData.get('pageId').replace(/\s+/g, '-').toLowerCase(), // Sanitize pageId
-            };
-            try {
-                if (currentEditingCategoryId) {
-                    await updateDoc(doc(db, "categories", currentEditingCategoryId), categoryData);
-                } else {
-                    await addDoc(collection(db, "categories"), categoryData);
+        if(addCategoryForm) {
+            addCategoryForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(addCategoryForm);
+                const categoryData = {
+                    name: formData.get('name'),
+                    pageId: formData.get('pageId').replace(/\s+/g, '-').toLowerCase(), // Sanitize pageId
+                };
+                try {
+                    if (currentEditingCategoryId) {
+                        await updateDoc(doc(db, "categories", currentEditingCategoryId), categoryData);
+                    } else {
+                        await addDoc(collection(db, "categories"), categoryData);
+                    }
+                    closeModal(addCategoryModal, addCategoryModalContent);
+                    currentEditingCategoryId = null; // Reset state
+                } catch (error) { 
+                    console.error("Error saving category: ", error); 
+                    currentEditingCategoryId = null; // Also reset on error
                 }
-                closeModal(addCategoryModal, addCategoryModalContent);
-                currentEditingCategoryId = null; // Reset state
-            } catch (error) { 
-                console.error("Error saving category: ", error); 
-                currentEditingCategoryId = null; // Also reset on error
+            });
+        }
+
+        if(productAdminForm) {
+            productAdminForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(productAdminForm);
+                const colors = Array.from(formData.getAll('colorHex')).map((hex, i) => ({
+                    hex: hex,
+                    code: formData.getAll('colorCode')[i],
+                    imageUrl: formData.getAll('colorImageUrl')[i]
+                }));
+                const galleryImages = Array.from(formData.getAll('galleryImageUrl')).filter(url => url.trim() !== '');
+
+                const productData = {
+                    title: formData.get('title'),
+                    type: formData.get('type'),
+                    productCode: formData.get('productCode'),
+                    desc: formData.get('desc'),
+                    mainImageUrl: formData.get('mainImageUrl'),
+                    price: parseFloat(formData.get('price')),
+                    discount: formData.get('discount') ? parseFloat(formData.get('discount')) : null,
+                    isAvailable: formData.get('isAvailable') === 'on',
+                    categoryId: currentCategoryId,
+                    colors: colors,
+                    galleryImages: galleryImages
+                };
+
+                try {
+                    if(currentEditingProductId) {
+                        await updateDoc(doc(db, "products", currentEditingProductId), productData);
+                    } else {
+                        await addDoc(collection(db, "products"), productData);
+                    }
+                    closeModal(productAdminModal, productAdminModalContent);
+                } catch (error) { console.error("Error saving product: ", error); }
+            });
+        }
+        
+        const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+        if (confirmDeleteBtn) {
+            confirmDeleteBtn.addEventListener('click', async () => {
+                if (!itemToDelete.id || !itemToDelete.type) return;
+                try {
+                    if (itemToDelete.type === 'product') {
+                        await deleteDoc(doc(db, "products", itemToDelete.id));
+                    } else if (itemToDelete.type === 'category') {
+                        await deleteDoc(doc(db, "categories", itemToDelete.id));
+                    }
+                } catch (error) { 
+                    console.error(`Error deleting ${itemToDelete.type}: `, error); 
+                } finally {
+                    closeModal(confirmDeleteModal, confirmDeleteModalContent);
+                    itemToDelete = { type: null, id: null }; // Reset state
+                }
+            });
+        }
+
+
+        // --- Global Search Logic ---
+        const headerSearchForm = document.getElementById('header-search-form');
+        const mobileSearchForm = document.getElementById('mobile-search-form');
+        const searchResultsContainer = document.getElementById('search-results-container');
+
+        function showSearchResults(searchTerm) {
+            if (!searchResultsContainer || !mainPageContent) return;
+
+            // Filter products by title, type, or product code
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+            const filteredProducts = allProductsForSearch.filter(product =>
+                product.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+                (product.type && product.type.toLowerCase().includes(lowerCaseSearchTerm)) ||
+                (product.productCode && product.productCode.toLowerCase().includes(lowerCaseSearchTerm))
+            );
+
+            // Hide main content and show search results container
+            mainPageContent.classList.add('hidden');
+            searchResultsContainer.classList.remove('hidden');
+            searchResultsContainer.innerHTML = ''; // Clear previous results
+            window.scrollTo(0, 0);
+
+            // Create the search results view
+            const resultsGrid = document.createElement('div');
+            resultsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 product-grid';
+
+            if (filteredProducts.length > 0) {
+                filteredProducts.forEach(prod => {
+                    const card = createProductCard(prod);
+                    resultsGrid.appendChild(card);
+                });
+            } else {
+                resultsGrid.innerHTML = `<p class="col-span-full text-center text-slate-500 text-lg py-16">لا توجد نتائج بحث تطابق '${searchTerm}'</p>`;
             }
-        });
+            
+            // Assemble the search view
+            searchResultsContainer.innerHTML = `
+                <div class="mb-8 flex justify-between items-center border-b border-slate-200 pb-4">
+                    <h2 class="text-3xl font-bold text-slate-800">نتائج البحث عن: <span class="text-emerald-600">${searchTerm}</span></h2>
+                    <button id="close-search-btn" class="inline-flex items-center gap-2 text-slate-500 hover:text-slate-800 font-semibold transition-colors">
+                        <i data-feather="x" class="w-5 h-5"></i>
+                        <span>إغلاق</span>
+                    </button>
+                </div>
+            `;
+            searchResultsContainer.appendChild(resultsGrid);
+            feather.replace();
+            updateUIForAuthState(currentUser); // Ensure admin controls are correctly shown/hidden
 
-        productAdminForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(productAdminForm);
-            const colors = Array.from(formData.getAll('colorHex')).map((hex, i) => ({
-                hex: hex,
-                code: formData.getAll('colorCode')[i],
-                imageUrl: formData.getAll('colorImageUrl')[i]
-            }));
-            const galleryImages = Array.from(formData.getAll('galleryImageUrl')).filter(url => url.trim() !== '');
+            document.getElementById('close-search-btn').addEventListener('click', hideSearchResults);
+        }
 
-            const productData = {
-                title: formData.get('title'),
-                type: formData.get('type'),
-                productCode: formData.get('productCode'),
-                desc: formData.get('desc'),
-                mainImageUrl: formData.get('mainImageUrl'),
-                price: parseFloat(formData.get('price')),
-                discount: formData.get('discount') ? parseFloat(formData.get('discount')) : null,
-                isAvailable: formData.get('isAvailable') === 'on',
-                categoryId: currentCategoryId,
-                colors: colors,
-                galleryImages: galleryImages
-            };
+        function hideSearchResults() {
+            if (!searchResultsContainer || !mainPageContent) return;
+            searchResultsContainer.classList.add('hidden');
+            mainPageContent.classList.remove('hidden');
+        }
 
-            try {
-                if(currentEditingProductId) {
-                    await updateDoc(doc(db, "products", currentEditingProductId), productData);
-                } else {
-                    await addDoc(collection(db, "products"), productData);
-                }
-                closeModal(productAdminModal, productAdminModalContent);
-            } catch (error) { console.error("Error saving product: ", error); }
-        });
-
-        document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
-            if (!itemToDelete.id || !itemToDelete.type) return;
-            try {
-                if (itemToDelete.type === 'product') {
-                    await deleteDoc(doc(db, "products", itemToDelete.id));
-                } else if (itemToDelete.type === 'category') {
-                    await deleteDoc(doc(db, "categories", itemToDelete.id));
-                }
-            } catch (error) { 
-                console.error(`Error deleting ${itemToDelete.type}: `, error); 
-            } finally {
-                closeModal(confirmDeleteModal, confirmDeleteModalContent);
-                itemToDelete = { type: null, id: null }; // Reset state
+        function handleSearch(event) {
+            event.preventDefault();
+            const searchInput = event.target.querySelector('input[type="text"]');
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm) {
+                showSearchResults(searchTerm);
+                searchInput.value = ''; // Clear input after search
             }
-        });
+        }
+
+        if(headerSearchForm) headerSearchForm.addEventListener('submit', handleSearch);
+        if(mobileSearchForm) mobileSearchForm.addEventListener('submit', handleSearch);
 
         // --- Other Setup & Event Listeners ---
         feather.replace();
@@ -1258,10 +1376,13 @@
         const signInWithGoogle = () => signInWithPopup(auth, provider).catch(err => console.error(err));
         const signOutUser = () => signOut(auth).catch(err => console.error(err));
         
-        logoBtn.addEventListener('click', (e) => { if (!currentUser) { e.preventDefault(); openModal(loginModal, loginModalContent); } });
-        googleSignInBtn.addEventListener('click', signInWithGoogle);
-        document.getElementById('logout-btn-desktop').addEventListener('click', signOutUser);
-        document.getElementById('logout-btn-mobile').addEventListener('click', signOutUser);
+        if (logoBtn) logoBtn.addEventListener('click', (e) => { if (!currentUser) { e.preventDefault(); openModal(loginModal, loginModalContent); } });
+        if (googleSignInBtn) googleSignInBtn.addEventListener('click', signInWithGoogle);
+        
+        const logoutBtnDesktop = document.getElementById('logout-btn-desktop');
+        if(logoutBtnDesktop) logoutBtnDesktop.addEventListener('click', signOutUser);
+        const logoutBtnMobile = document.getElementById('logout-btn-mobile');
+        if(logoutBtnMobile) logoutBtnMobile.addEventListener('click', signOutUser);
         
         // Open Payment Modal Buttons
         document.querySelectorAll('.open-payment-modal-btn').forEach(btn => {
@@ -1295,16 +1416,30 @@
         };
 
         // Close Modal Buttons
-        document.getElementById('close-login-modal').addEventListener('click', () => closeModal(loginModal, loginModalContent));
-        document.getElementById('close-add-category-modal').addEventListener('click', () => closeModal(addCategoryModal, addCategoryModalContent));
-        document.getElementById('close-product-admin-modal').addEventListener('click', () => closeModal(productAdminModal, productAdminModalContent));
-        document.getElementById('cancel-delete-btn').addEventListener('click', () => closeModal(confirmDeleteModal, confirmDeleteModalContent));
-        document.getElementById('close-payment-modal').addEventListener('click', () => closeModal(paymentModal, paymentModalContent));
-        document.getElementById('close-project-modal').addEventListener('click', () => closeModal(projectModal, projectModalContent));
-        document.getElementById('close-ai-chat').addEventListener('click', closeAiChat);
+        const closeLoginModalBtn = document.getElementById('close-login-modal');
+        if(closeLoginModalBtn) closeLoginModalBtn.addEventListener('click', () => closeModal(loginModal, loginModalContent));
+
+        const closeAddCategoryModalBtn = document.getElementById('close-add-category-modal');
+        if(closeAddCategoryModalBtn) closeAddCategoryModalBtn.addEventListener('click', () => closeModal(addCategoryModal, addCategoryModalContent));
+        
+        const closeProductAdminModalBtn = document.getElementById('close-product-admin-modal');
+        if(closeProductAdminModalBtn) closeProductAdminModalBtn.addEventListener('click', () => closeModal(productAdminModal, productAdminModalContent));
+
+        const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+        if(cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', () => closeModal(confirmDeleteModal, confirmDeleteModalContent));
+        
+        const closePaymentModalBtn = document.getElementById('close-payment-modal');
+        if(closePaymentModalBtn) closePaymentModalBtn.addEventListener('click', () => closeModal(paymentModal, paymentModalContent));
+
+        const closeProjectModalBtn = document.getElementById('close-project-modal');
+        if(closeProjectModalBtn) closeProjectModalBtn.addEventListener('click', () => closeModal(projectModal, projectModalContent));
+        
+        const closeAiChatBtn = document.getElementById('close-ai-chat');
+        if(closeAiChatBtn) closeAiChatBtn.addEventListener('click', closeAiChat);
+        
         
         // Dynamically add color fields
-        addColorBtn.addEventListener('click', () => addColorField());
+        if(addColorBtn) addColorBtn.addEventListener('click', () => addColorField());
         function addColorField(color = {}) {
             const div = document.createElement('div');
             div.className = 'grid grid-cols-1 md:grid-cols-4 gap-2 items-center';
@@ -1314,15 +1449,16 @@
                 <input type="url" name="colorImageUrl" placeholder="رابط صورة اللون" value="${color.imageUrl || ''}" class="md:col-span-1 w-full bg-slate-100 rounded-lg py-2 px-4 focus:outline-none text-slate-800">
                 <button type="button" class="remove-color-btn text-red-500 hover:text-red-600"><i data-feather="trash-2" class="w-5 h-5"></i></button>
             `;
-            colorsContainer.appendChild(div);
+            if(colorsContainer) colorsContainer.appendChild(div);
             feather.replace();
         }
-        colorsContainer.addEventListener('click', e => {
+        if(colorsContainer) colorsContainer.addEventListener('click', e => {
             if (e.target.closest('.remove-color-btn')) e.target.closest('.grid').remove();
         });
 
         // Dynamically add gallery image fields
-        document.getElementById('add-gallery-image-btn').addEventListener('click', () => addGalleryImageField());
+        const addGalleryImageBtn = document.getElementById('add-gallery-image-btn');
+        if(addGalleryImageBtn) addGalleryImageBtn.addEventListener('click', () => addGalleryImageField());
         function addGalleryImageField(imageUrl = '') {
             const div = document.createElement('div');
             div.className = 'flex gap-2 items-center';
@@ -1330,18 +1466,18 @@
                 <input type="url" name="galleryImageUrl" placeholder="رابط صورة المنتج" value="${imageUrl}" class="flex-grow bg-slate-100 rounded-lg py-2 px-4 focus:outline-none text-slate-800">
                 <button type="button" class="remove-gallery-image-btn text-red-500 hover:text-red-600"><i data-feather="trash-2" class="w-5 h-5"></i></button>
             `;
-            galleryImagesContainer.appendChild(div);
+            if(galleryImagesContainer) galleryImagesContainer.appendChild(div);
             feather.replace();
         }
-        galleryImagesContainer.addEventListener('click', e => {
+        if(galleryImagesContainer) galleryImagesContainer.addEventListener('click', e => {
             if (e.target.closest('.remove-gallery-image-btn')) e.target.closest('.flex').remove();
         });
 
 
         // Page Navigation
         function showProductDetailPage(productData) {
-            mainPageContent.classList.add('hidden');
-            productDetailContainer.classList.remove('hidden');
+            if(mainPageContent) mainPageContent.classList.add('hidden');
+            if(productDetailContainer) productDetailContainer.classList.remove('hidden');
             
             window.scrollTo(0, 0);
 
@@ -1509,7 +1645,7 @@
                 </section>
             `;
 
-            productDetailContainer.innerHTML = pageHTML;
+            if(productDetailContainer) productDetailContainer.innerHTML = pageHTML;
             feather.replace();
 
             // Add event listeners for new elements
@@ -1521,9 +1657,11 @@
             detailPage.addEventListener('click', e => {
                 const backBtn = e.target.closest('.back-to-products-btn');
                 if (backBtn) {
-                    productDetailContainer.classList.add('hidden');
-                    productDetailContainer.innerHTML = ''; // Clear content to prevent ID conflicts
-                    mainPageContent.classList.remove('hidden');
+                    if(productDetailContainer) {
+                        productDetailContainer.classList.add('hidden');
+                        productDetailContainer.innerHTML = ''; // Clear content to prevent ID conflicts
+                    }
+                    if(mainPageContent) mainPageContent.classList.remove('hidden');
                     
                     // Optional: Re-select the correct category in the sidebar
                     const categoryToSelect = categoryTabs.querySelector(`[data-page="${backBtn.dataset.categoryId}"]`);
@@ -1564,34 +1702,42 @@
         });
 
         // Other UI logic (mobile menu, scroll reveal, etc.)
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.style.maxHeight = mobileMenu.style.maxHeight ? null : mobileMenu.scrollHeight + "px";
-        });
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        if(mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                const mobileMenu = document.getElementById('mobile-menu');
+                if(mobileMenu) mobileMenu.style.maxHeight = mobileMenu.style.maxHeight ? null : mobileMenu.scrollHeight + "px";
+            });
+        }
+        
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        
         window.addEventListener('scroll', () => {
-            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+            const header = document.querySelector('header');
+            if(header) header.classList.toggle('scrolled', window.scrollY > 50);
         });
 
         // AI Chat
         const aiFab = document.getElementById('ai-fab');
         function closeAiChat() {
-            aiChatContainer.classList.add('translate-y-full');
-            aiChatModal.classList.add('opacity-0');
-            setTimeout(() => aiChatModal.classList.add('hidden'), 300);
+            if(aiChatContainer) aiChatContainer.classList.add('translate-y-full');
+            if(aiChatModal) aiChatModal.classList.add('opacity-0');
+            setTimeout(() => { if(aiChatModal) aiChatModal.classList.add('hidden') }, 300);
         };
-        aiFab.addEventListener('click', () => {
-            aiChatModal.classList.remove('hidden');
-            setTimeout(() => {
-                aiChatModal.classList.remove('opacity-0');
-                aiChatContainer.classList.remove('translate-y-full');
-            }, 10);
-        });
+        if(aiFab) {
+            aiFab.addEventListener('click', () => {
+                if(aiChatModal) aiChatModal.classList.remove('hidden');
+                setTimeout(() => {
+                    if(aiChatModal) aiChatModal.classList.remove('opacity-0');
+                    if(aiChatContainer) aiChatContainer.classList.remove('translate-y-full');
+                }, 10);
+            });
+        }
         
         function copyToClipboard(elementId) {
             const textToCopy = document.getElementById(elementId).innerText;
@@ -1623,8 +1769,34 @@
                 }
             });
         });
+
+        // Scroll to Top Button Logic
+        const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+        if (scrollToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) { // Show after scrolling 300px
+                    scrollToTopBtn.classList.remove('hidden');
+                    scrollToTopBtn.classList.add('flex');
+                } else {
+                    scrollToTopBtn.classList.add('hidden');
+                    scrollToTopBtn.classList.remove('flex');
+                }
+            });
+
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
         
     </script>
 </body>
 </html>
+
+
+
+
+
 
