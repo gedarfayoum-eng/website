@@ -38,7 +38,7 @@
         }
         header.scrolled {
              background-color: transparent;
-             backdrop-filter: blur(12px);
+             backdrop-filter: none;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.98); }
@@ -85,19 +85,54 @@
             color: #e5e7eb; /* gray-200 */
             border-bottom-left-radius: 0.25rem;
         }
+        
+        .project-thumbnail {
+            opacity: 0.6;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .project-thumbnail:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        .project-thumbnail.active {
+            opacity: 1;
+            border-color: #34d399; /* emerald-400 */
+        }
+        .sort-btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #d1d5db; /* gray-300 */
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+        .sort-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .sort-btn.active {
+            background-color: #10b981; /* emerald-600 */
+            color: white;
+            border-color: #34d399; /* emerald-400 */
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+        }
         #mobile-menu {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
         }
     </style>
 </head>
 <body class="text-slate-200">
 
     <div class="fixed inset-0 -z-10">
-        <img src="https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=2500&auto=format&fit=crop" 
-             alt="خلفية داخلية فاخرة لمنزل" 
-             class="w-full h-full object-cover"
-             onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/111827/FFFFFF?text=Jedar+Interior';">
+        <video autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1615874959474-d609969a20ed?q=80&w=2500&auto=format&fit=crop" class="w-full h-full object-cover">
+            <source src="https://videos.pexels.com/video-files/8310134/8310134-hd_1920_1080_25fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
         <div class="absolute inset-0 bg-black/50"></div>
     </div>
 
@@ -108,8 +143,12 @@
                 <h1 class="brand-title text-xl font-black text-white -mb-1">جدار</h1>
                 <p class="text-xs text-slate-300 tracking-tight">للديكورات الحديثة</p>
             </a>
+            
+            <!-- Desktop Navigation -->
             <nav class="hidden md:flex items-center space-x-6 space-x-reverse">
                 <a href="#home" class="text-slate-200 hover:text-white font-semibold transition duration-300">الرئيسية</a>
+                <a href="#main-footer" class="text-slate-200 hover:text-white font-semibold transition duration-300">تواصل معنا</a>
+                <a href="#" class="open-payment-modal-btn bg-emerald-500/20 text-emerald-300 text-sm font-bold py-2 px-4 rounded-full hover:bg-emerald-500/30 transition-colors">طرق الدفع</a>
                 <form id="header-search-form" class="relative search-form">
                     <input type="text" placeholder="ابحث..." class="bg-white/10 text-white rounded-full py-2 pl-10 pr-4 w-48 transition-all duration-300 focus:w-64 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
@@ -117,34 +156,47 @@
                     </span>
                 </form>
             </nav>
-            <!-- The mobile menu button has been removed -->
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-white focus:outline-none">
+                    <i data-feather="menu" class="w-7 h-7"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="md:hidden bg-transparent">
+            <div class="container mx-auto px-6 py-4 flex flex-col items-center gap-4">
+                <a href="#home" class="text-slate-200 hover:text-white font-semibold transition duration-300">الرئيسية</a>
+                <a href="#main-footer" class="text-slate-200 hover:text-white font-semibold transition duration-300">تواصل معنا</a>
+                <a href="#" class="open-payment-modal-btn bg-emerald-500/20 text-emerald-300 text-sm font-bold py-2 px-4 rounded-full hover:bg-emerald-500/30 transition-colors">طرق الدفع</a>
+                <form id="mobile-search-form" class="relative search-form w-full max-w-sm">
+                    <input type="text" placeholder="ابحث عن تصميم..." class="bg-white/10 text-white rounded-full py-3 pl-12 pr-4 w-full focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                        <i data-feather="search" class="w-6 h-6"></i>
+                    </span>
+                </form>
+            </div>
         </div>
     </header>
 
-    <!-- The mobile menu has been removed -->
-
     <div id="main-content">
         <main>
-            <section id="home" class="relative min-h-screen flex items-center justify-center text-white overflow-hidden -mt-[80px]">
+            <section id="home" class="relative min-h-screen flex items-center justify-center text-white overflow-hidden -mt-[88px]">
                 <div class="relative z-10 container mx-auto px-6 text-center reveal">
-                    <div class="mb-8 md:hidden">
-                        <form id="mobile-search-form" class="relative search-form w-full max-w-sm mx-auto">
-                            <input type="text" placeholder="ابحث عن تصميم..." class="bg-white/10 text-white rounded-full py-3 pl-12 pr-4 w-full focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-                                <i data-feather="search" class="w-6 h-6"></i>
-                            </span>
-                        </form>
-                    </div>
-                    <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight md:leading-snug drop-shadow-lg">
-                        <span class="bg-gradient-to-r from-emerald-400 to-green-300 text-transparent bg-clip-text">حوّل مساحتك</span>
-                        <br>
-                        إلى لوحة فنية
+                    <h1 class="pt-4 font-black text-7xl sm:text-8xl md:text-9xl bg-gradient-to-r from-emerald-400 to-green-300 text-transparent bg-clip-text drop-shadow-lg">
+                        جدار
                     </h1>
-                    <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto mb-10 drop-shadow-md">
+                    <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-200 mt-2 mb-10 drop-shadow-md">
+                        حوّل مساحتك إلى لوحة فنية
+                    </p>
+                    <p class="text-base sm:text-lg md:text-xl text-slate-200 max-w-2xl mx-auto mb-10 drop-shadow-md -mt-6">
                         نقدم لك أحدث وأجمل تجاليد الحوائط التي تجمع بين الفن والجودة، لتمنح منزلك هوية فريدة ومظهرًا عصريًا.
                     </p>
-                    <a href="#categories" class="cta-button inline-block bg-emerald-600 text-white py-4 px-10 rounded-full hover:bg-emerald-700 transition-all duration-300 text-lg font-bold shadow-2xl hover:shadow-emerald-500/40 transform hover:-translate-y-1">
-                        تصفح الأقسام الآن
+                    <a href="#categories" class="cta-button inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-500 to-green-400 text-white py-3 px-8 sm:py-4 sm:px-10 rounded-full hover:shadow-emerald-400/30 transition-all duration-300 text-lg font-bold shadow-2xl transform hover:-translate-y-1">
+                        <span>تصفح الأقسام الآن</span>
+                        <i data-feather="arrow-left" class="w-6 h-6"></i>
                     </a>
                 </div>
             
@@ -155,145 +207,209 @@
                 </div>
             </section>
             
-            <section id="categories" class="py-24 overflow-hidden">
+            <section id="categories" class="py-20 sm:py-24 overflow-hidden">
                 <div class="container mx-auto px-6 reveal">
-                    <div class="p-8 md:p-12">
-                        <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-4 text-white">تصفح أقسامنا</h2>
-                        <p class="text-slate-300 text-center max-w-2xl mx-auto mb-16">اختر القسم الذي يلهمك لتبدأ رحلة تصميم مساحتك الخاصة.</p>
+                    <div class="p-4 sm:p-8 md:p-12">
+                        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-4 text-white">تصفح منتجاتنا</h2>
+                        <p class="text-slate-300 text-center max-w-2xl mx-auto mb-12 sm:mb-16">اختر المنتجات التي تلهمك لتبدأ رحلة تصميم مساحتك الخاصة.</p>
                         <div class="relative">
-                            <div id="categories-container" class="flex items-center gap-12 md:gap-16 overflow-x-auto py-4 scrollbar-hide">
+                            <div id="categories-container" class="flex items-center gap-6 sm:gap-8 overflow-x-auto py-4 -mx-6 px-6 scrollbar-hide">
                                 
-                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-emerald-500/20" data-page="natural">
-                                    <img src="https://placehold.co/300x300/84CC16/1C1917?text=" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-125" alt="قسم التصاميم الطبيعية">
-                                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-                                    <div class="relative h-full flex flex-col items-center justify-center text-white text-center p-4">
-                                        <h3 class="text-2xl font-bold drop-shadow-md">تصاميم طبيعية</h3>
-                                        <p class="mt-1 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">استكشف الآن</p>
+                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="natural">
+                                    <img src="https://images.unsplash.com/photo-1533038590840-1cde6e668a91?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم التصاميم الطبيعية">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+                                        <i data-feather="feather" class="w-7 h-7 mb-2 text-emerald-300"></i>
+                                        <h3 class="text-xl sm:text-2xl font-bold">تصاميم طبيعية</h3>
                                     </div>
                                 </a>
 
-                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-emerald-500/20" data-page="modern">
-                                    <img src="https://placehold.co/300x300/A78BFA/44403C?text=" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-125" alt="قسم التصاميم المودرن">
-                                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-                                    <div class="relative h-full flex flex-col items-center justify-center text-white text-center p-4">
-                                        <h3 class="text-2xl font-bold drop-shadow-md">تصاميم مودرن</h3>
-                                        <p class="mt-1 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">استكشف الآن</p>
+                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="modern">
+                                    <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم التصاميم المودرن">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+                                        <i data-feather="box" class="w-7 h-7 mb-2 text-purple-300"></i>
+                                        <h3 class="text-xl sm:text-2xl font-bold">تصاميم مودرن</h3>
                                     </div>
                                 </a>
 
-                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-emerald-500/20" data-page="geometric">
-                                    <img src="https://placehold.co/300x300/F472B6/1F2937?text=" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-125" alt="قسم التصاميم الهندسية">
-                                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-                                    <div class="relative h-full flex flex-col items-center justify-center text-white text-center p-4">
-                                        <h3 class="text-2xl font-bold drop-shadow-md">تصاميم هندسية</h3>
-                                        <p class="mt-1 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">استكشف الآن</p>
+                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="geometric">
+                                    <img src="https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم التصاميم الهندسية">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+                                        <i data-feather="triangle" class="w-7 h-7 mb-2 text-pink-300"></i>
+                                        <h3 class="text-xl sm:text-2xl font-bold">تصاميم هندسية</h3>
                                     </div>
                                 </a>
 
-                                 <a href="#" class="category-card group relative flex-shrink-0 w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-emerald-500/20" data-page="classic">
-                                    <img src="https://placehold.co/300x300/F59E0B/422006?text=" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-125" alt="قسم التصاميم الكلاسيكية">
-                                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-                                    <div class="relative h-full flex flex-col items-center justify-center text-white text-center p-4">
-                                        <h3 class="text-2xl font-bold drop-shadow-md">تصاميم كلاسيكية</h3>
-                                        <p class="mt-1 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">استكشف الآن</p>
+                                 <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="classic">
+                                    <img src="https://images.unsplash.com/photo-1612325430584-be225f1262d6?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم التصاميم الكلاسيكية">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+                                        <i data-feather="shield" class="w-7 h-7 mb-2 text-amber-300"></i>
+                                        <h3 class="text-xl sm:text-2xl font-bold">تصاميم كلاسيكية</h3>
                                     </div>
                                 </a>
 
-                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-emerald-500/20" data-page="kids">
-                                    <img src="https://placehold.co/300x300/38BDF8/0C4A6E?text=" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-125" alt="قسم غرف الأطفال">
-                                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-                                    <div class="relative h-full flex flex-col items-center justify-center text-white text-center p-4">
-                                        <h3 class="text-2xl font-bold drop-shadow-md">غرف أطفال</h3>
-                                        <p class="mt-1 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">استكشف الآن</p>
+                                <a href="#" class="category-card group relative flex-shrink-0 w-48 h-64 sm:w-56 sm:h-72 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform hover:-translate-y-2" data-page="kids">
+                                    <img src="https://images.unsplash.com/photo-1596431718218-a6152b380645?q=80&w=600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="قسم غرف الأطفال">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                    <div class="absolute bottom-0 left-0 right-0 p-5 text-white">
+                                        <i data-feather="smile" class="w-7 h-7 mb-2 text-sky-300"></i>
+                                        <h3 class="text-xl sm:text-2xl font-bold">غرف أطفال</h3>
                                     </div>
                                 </a>
                             </div>
-                            <button id="scroll-right-btn" class="absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition"><i data-feather="chevron-left"></i></button>
-                            <button id="scroll-left-btn" class="absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition"><i data-feather="chevron-right"></i></button>
+                            <button id="scroll-right-btn" class="absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition hidden sm:block"><i data-feather="chevron-left"></i></button>
+                            <button id="scroll-left-btn" class="absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition hidden sm:block"><i data-feather="chevron-right"></i></button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="why-us" class="py-24 overflow-hidden">
+            <section id="why-us" class="py-20 sm:py-24 overflow-hidden">
                 <div class="container mx-auto px-6 text-center reveal">
-                     <div class="p-8 md:p-12">
-                        <h2 class="text-4xl md:text-5xl font-extrabold mb-3 text-white">لماذا جدار؟</h2>
-                        <p class="text-slate-300 mb-16 max-w-2xl mx-auto">نحن لا نبيع تجاليد حوائط فحسب، بل نقدم حلولاً إبداعية لجعل مساحتك أكثر جمالاً.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                     <div class="p-4 sm:p-8 md:p-12">
+                        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-white">خبرتنا بين يديك: من الفكرة إلى الواقع</h2>
+                        <p class="text-slate-300 mb-12 sm:mb-16 max-w-3xl mx-auto">نحن لا نقدم منتجات فحسب، بل نقدم حلاً متكاملاً يجمع بين التصميم الإبداعي، التنفيذ الدقيق، وضمان الجودة لنجعل من مساحتك تحفة فنية.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                            
-                            <div class="bg-white/5 backdrop-blur-sm p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
-                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-20 w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
-                                     <i data-feather="award" class="w-10 h-10"></i>
+                            <div class="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
+                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
+                                     <i data-feather="edit-3" class="w-8 h-8 sm:w-10 sm:h-10"></i>
                                 </div>
                                 <div>
-                                     <h3 class="text-2xl font-bold mb-2 text-white">جودة فائقة</h3>
-                                     <p class="text-slate-300 leading-relaxed">نستخدم أفضل المواد لضمان منتجات تدوم طويلاً بألوان ثابتة وملمس فريد.</p>
+                                     <h3 class="text-xl sm:text-2xl font-bold mb-2 text-white">تصاميم مبتكرة لكل ذوق</h3>
+                                     <p class="text-slate-300 leading-relaxed">نصمم كل ما تحلم به، من التصاميم الهندسية الدقيقة إلى الخدع البصرية الفنية لورق الحائط، لنعكس شخصيتك على جدرانك.</p>
                                 </div>
                             </div>
 
-                            <div class="bg-white/5 backdrop-blur-sm p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
-                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-20 w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
-                                     <i data-feather="pen-tool" class="w-10 h-10"></i>
+                            <div class="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
+                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
+                                     <i data-feather="tool" class="w-8 h-8 sm:w-10 sm:h-10"></i>
                                 </div>
                                 <div>
-                                     <h3 class="text-2xl font-bold mb-2 text-white">تصاميم حصرية</h3>
-                                     <p class="text-slate-300 leading-relaxed">فريق من المصممين يبدعون لك تشكيلات متجددة لا تجدها في أي مكان آخر.</p>
+                                     <h3 class="text-xl sm:text-2xl font-bold mb-2 text-white">تنفيذ احترافي متكامل</h3>
+                                     <p class="text-slate-300 leading-relaxed">فريقنا من مهندسي التركيبات والتشطيبات يضمن لك معاينة دقيقة وتركيب احترافي، مع خدمة شحن للمواد لجميع الأنحاء.</p>
                                 </div>
                             </div>
 
-                           <div class="bg-white/5 backdrop-blur-sm p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
-                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-20 w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
-                                     <i data-feather="truck" class="w-10 h-10"></i>
+                           <div class="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
+                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
+                                     <i data-feather="award" class="w-8 h-8 sm:w-10 sm:h-10"></i>
                                 </div>
                                 <div>
-                                     <h3 class="text-2xl font-bold mb-2 text-white">تركيب وشحن سريع</h3>
-                                     <p class="text-slate-300 leading-relaxed">نوفر لك خدمة تركيب احترافية ونوصل طلبك إلى باب منزلك في أسرع وقت.</p>
+                                     <h3 class="text-xl sm:text-2xl font-bold mb-2 text-white">جودة فائقة وخامات عالمية</h3>
+                                     <p class="text-slate-300 leading-relaxed">نلتزم بأعلى معايير الجودة ونستخدم أفضل الخامات لنقدم لك منتجات تدوم طويلاً بألوان ثابتة ومظهر لا يبهت.</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl text-center transition-all duration-300 hover:bg-white/10 hover:-translate-y-2 border border-white/10">
+                                <div class="bg-emerald-500/20 text-emerald-400 rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 flex items-center justify-center mx-auto mb-6">
+                                     <i data-feather="thumbs-up" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                                </div>
+                                <div>
+                                     <h3 class="text-xl sm:text-2xl font-bold mb-2 text-white">ضمان ذهبي ورضا تام</h3>
+                                     <p class="text-slate-300 leading-relaxed">نثق بمنتجاتنا ونقدم لك ضماناً قوياً وسياسة استرجاع مرنة وطويلة تضمن لك راحة البال ورضاك الكامل عن تجربتك معنا.</p>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="portfolio" class="py-20 sm:py-24 bg-black/20 overflow-hidden">
+                <div class="container mx-auto px-6 text-center reveal">
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-white">شاهد إبداعنا على أرض الواقع</h2>
+                    <p class="text-slate-300 mb-12 sm:mb-16 max-w-2xl mx-auto">تصفح مجموعة من أحدث مشاريعنا التي نفخر بتنفيذها. كل مشروع يحكي قصة نجاح وجودة.</p>
+                    <div class="relative">
+                        <div id="portfolio-container" class="flex items-stretch gap-6 overflow-x-auto py-4 scrollbar-hide -mx-6 px-6">
+                            <!-- Portfolio Item 1 -->
+                            <div class="portfolio-item group relative rounded-2xl overflow-hidden cursor-pointer w-4/5 sm:w-1/2 md:w-1/3 flex-shrink-0 h-96" 
+                                 data-title="فيلا مودرن بالشيخ زايد"
+                                 data-desc="تم تنفيذ تصميم داخلي كامل لهذه الفيلا بأسلوب مودرن يجمع بين البساطة والفخامة، مع استخدام ورق حائط بنقشات هادئة وتجاليد خشبية لإضافة لمسة دافئة."
+                                 data-media='[
+                                    {"type": "image", "src": "https://images.unsplash.com/photo-1556702585-2856c6f3b0e3?q=80&w=1200&auto=format&fit=crop"},
+                                    {"type": "video", "src": "https://videos.pexels.com/video-files/853875/853875-hd_1280_720_25fps.mp4"},
+                                    {"type": "image", "src": "https://images.unsplash.com/photo-1600121848594-d8644e57abab?q=80&w=1200&auto=format&fit=crop"}
+                                 ]'>
+                                <img src="https://images.unsplash.com/photo-1556702585-2856c6f3b0e3?q=80&w=800&auto=format&fit=crop" alt="مشروع تصميم داخلي 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors duration-300 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 p-4">
+                                    <i data-feather="eye" class="w-12 h-12 text-white"></i>
+                                    <p class="text-white font-bold mt-2">عرض المشروع</p>
+                                </div>
+                            </div>
+                            <!-- Portfolio Item 2 -->
+                            <div class="portfolio-item group relative rounded-2xl overflow-hidden cursor-pointer w-4/5 sm:w-1/2 md:w-1/3 flex-shrink-0 h-96"
+                                 data-title="شقة دوبلكس بالتجمع الخامس"
+                                 data-desc="مشروع تصميم وتنفيذ شقة دوبلكس، تم التركيز فيه على استخدام التصاميم الهندسية وورق الحائط ثلاثي الأبعاد لخلق مساحات بصرية مبتكرة."
+                                 data-media='[
+                                    {"type": "image", "src": "https://images.unsplash.com/photo-1536532184021-e3592b2a5630?q=80&w=1200&auto=format&fit=crop"},
+                                    {"type": "image", "src": "https://images.unsplash.com/photo-1516146522434-78d103525232?q=80&w=1200&auto=format&fit=crop"}
+                                 ]'>
+                                <img src="https://images.unsplash.com/photo-1536532184021-e3592b2a5630?q=80&w=800&auto=format&fit=crop" alt="مشروع تصميم داخلي 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors duration-300 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 p-4">
+                                    <i data-feather="eye" class="w-12 h-12 text-white"></i>
+                                    <p class="text-white font-bold mt-2">عرض المشروع</p>
+                                </div>
+                            </div>
+                            <!-- Portfolio Item 3 -->
+                            <div class="portfolio-item group relative rounded-2xl overflow-hidden cursor-pointer w-4/5 sm:w-1/2 md:w-1/3 flex-shrink-0 h-96"
+                                 data-title="مكاتب إدارية بالعاصمة الجديدة"
+                                 data-desc="تصميم وتنفيذ تشطيبات لمكاتب إدارية حديثة، مع التركيز على التجاليد الخشبية التي تضفي طابعاً من الاحترافية والهدوء على بيئة العمل."
+                                 data-media='[
+                                    {"type": "image", "src": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1200&auto=format&fit=crop"},
+                                    {"type": "image", "src": "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1200&auto=format&fit=crop"}
+                                 ]'>
+                                <img src="https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=800&auto=format&fit=crop" alt="مشروع تصميم داخلي 3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors duration-300 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 p-4">
+                                    <i data-feather="eye" class="w-12 h-12 text-white"></i>
+                                    <p class="text-white font-bold mt-2">عرض المشروع</p>
+                                </div>
+                            </div>
+                            <!-- Add more portfolio items here following the same structure -->
+                        </div>
+                        <button id="portfolio-scroll-right-btn" class="absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition hidden md:block"><i data-feather="chevron-left"></i></button>
+                        <button id="portfolio-scroll-left-btn" class="absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white text-slate-800 rounded-full p-2 shadow-md transition hidden md:block"><i data-feather="chevron-right"></i></button>
                     </div>
                 </div>
             </section>
         </main>
 
-        <footer id="main-footer" class="py-8 bg-black/20 backdrop-blur-sm border-t border-white/10">
+        <footer id="main-footer" class="py-4 sm:py-8 border-t border-white/10">
             <div class="container mx-auto px-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-right">
-                    <div class="lg:col-span-1">
-                         <h3 class="text-xl font-bold text-white mb-4">نبذة عن جدار</h3>
-                         <p class="text-slate-200 leading-relaxed">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-right">
+                    <div class="md:col-span-1">
+                         <h3 class="text-lg font-bold text-white mb-2">نبذة عن جدار</h3>
+                         <p class="text-slate-300 leading-relaxed text-sm">
                             موقع جدار أكبر موقع للتشطيبات وتاسيس المنشأت في مصر , كل ما تحلم به تجده علي موقع جدار.
                          </p>
                     </div>
-                     <div class="lg:col-span-1">
-                         <h3 class="text-xl font-bold text-white mb-4">الفرع الرئيسي</h3>
-                         <p class="text-slate-200 leading-relaxed">
+                     <div class="md:col-span-1">
+                         <h3 class="text-lg font-bold text-white mb-2">الفرع الرئيسي</h3>
+                         <p class="text-slate-300 leading-relaxed text-sm">
                             الفيوم - اخر سور المستشفي العام ، امام مطعم ابو صلاح وبجوار المغسلة الأمريكية .
                          </p>
                     </div>
-                    <div class="lg:col-span-1 text-right md:text-left">
-                         <h3 class="text-xl font-bold text-white mb-4">تواصل معنا</h3>
-                         <div class="flex flex-col items-end md:items-start gap-3">
-                             <a href="https://wa.me/201014175070" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-slate-200 hover:text-emerald-400 transition-colors">
+                    <div class="md:col-span-1 flex flex-col items-center md:items-end">
+                         <h3 class="text-lg font-bold text-white mb-2">تواصل معنا</h3>
+                         <div class="flex flex-col items-center md:items-end gap-2">
+                             <a href="https://wa.me/201014175070" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-slate-200 hover:text-emerald-400 transition-colors text-sm">
                                     <span dir="ltr">01014175070</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                                    <i data-feather="message-circle" class="w-5 h-5"></i>
                                 </a>
-                                <a href="mailto:gedar.fayoum@gmail.com" class="flex items-center gap-3 text-slate-200 hover:text-emerald-400 transition-colors">
+                                <a href="mailto:gedar.fayoum@gmail.com" class="flex items-center gap-3 text-slate-200 hover:text-emerald-400 transition-colors text-sm">
                                     <span>gedar.fayoum@gmail.com</span>
                                     <i data-feather="mail" class="w-5 h-5"></i>
                                 </a>
                          </div>
                     </div>
                 </div>
-                <div class="mt-8 border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div class="flex items-center gap-x-6 gap-y-4 flex-wrap justify-center">
-                        <p class="text-slate-300 text-sm">&copy; 2025 جدار. جميع الحقوق محفوظة.</p>
-                        <a href="#" id="open-payment-modal" class="text-slate-300 text-sm hover:text-white transition-colors">طرق الدفع</a>
-                    </div>
-                    <div class="flex gap-5">
-                         <a href="https://www.instagram.com/gedar_fayoum/" target="_blank" aria-label="Instagram" class="text-slate-300 hover:text-white transition-colors"><i data-feather="instagram"></i></a>
-                        <a href="https://www.facebook.com/gedar.fayoum" target="_blank" aria-label="Facebook" class="text-slate-300 hover:text-white transition-colors"><i data-feather="facebook"></i></a>
+                <div class="mt-6 border-t border-white/10 pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <p class="text-slate-400 text-sm">&copy; 2025 جدار. جميع الحقوق محفوظة.</p>
+                    <div class="flex items-center gap-5">
+                         <a href="https://www.instagram.com/gedar_fayoum/" target="_blank" aria-label="Instagram" class="text-slate-400 hover:text-white transition-colors"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                        <a href="https://www.facebook.com/gedar.fayoum/" target="_blank" aria-label="Facebook" class="text-slate-400 hover:text-white transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
                     </div>
                 </div>
             </div>
@@ -309,9 +425,63 @@
                         <i data-feather="arrow-right" class="w-5 h-5"></i>
                         <span>العودة للأقسام</span>
                     </button>
-                    <h2 class="text-4xl font-extrabold text-center mb-10">تصاميم طبيعية</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <p class="text-center col-span-full text-slate-400 text-lg">سيتم إضافة المنتجات هنا قريباً.</p>
+                    <h2 class="text-4xl font-extrabold text-center mb-6">تصاميم طبيعية</h2>
+                    <!-- Sort Buttons -->
+                    <div class="flex justify-center gap-2 mb-10 flex-wrap sort-buttons">
+                        <button class="sort-btn active" data-sort="default">الكل</button>
+                        <button class="sort-btn" data-sort="bestseller">الأكثر مبيعاً</button>
+                        <button class="sort-btn" data-sort="price-desc">الأعلى سعراً</button>
+                        <button class="sort-btn" data-sort="price-asc">الأقل سعراً</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 product-grid">
+                        <!-- Product Card 1 -->
+                        <div class="product-card group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/10 hover:-translate-y-2"
+                            data-title="ورق حائط بنقشة أوراق استوائية"
+                            data-price="250"
+                            data-bestseller="false"
+                            data-img="https://images.unsplash.com/photo-1585333150141-35a224586d48?q=80&w=800&auto=format&fit=crop"
+                            data-desc="أضف لمسة من الطبيعة الخلابة إلى مساحتك مع هذا التصميم الذي يحاكي أوراق المونستيرا الكثيفة، مثالي لغرف المعيشة والاستقبال.">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1585333150141-35a224586d48?q=80&w=800&auto=format&fit=crop" alt="ورق حائط بنقشة أوراق استوائية" class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-110">
+                            </div>
+                            <div class="p-5">
+                                <h3 class="text-xl font-bold text-white mb-1 truncate">ورق حائط بنقشة أوراق استوائية</h3>
+                                <p class="text-2xl font-black text-emerald-400 mb-4">250 <span class="text-sm font-semibold text-slate-300">جم / للفة</span></p>
+                                <button class="details-btn w-full bg-emerald-600/80 text-white py-2 px-4 rounded-full hover:bg-emerald-600 transition-colors">عرض التفاصيل</button>
+                            </div>
+                        </div>
+                        <!-- Product Card 2 -->
+                        <div class="product-card group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/10 hover:-translate-y-2"
+                             data-title="تجاليد خشبية طبيعية"
+                             data-price="450"
+                             data-bestseller="true"
+                             data-img="https://images.unsplash.com/photo-1611094603953-53b9a0a65a3c?q=80&w=800&auto=format&fit=crop"
+                             data-desc="امنح جدرانك ملمساً وشكلاً دافئاً مع تجاليدنا الخشبية المصنوعة من أجود أنواع الأخشاب الطبيعية، سهلة التركيب وتدوم طويلاً.">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1611094603953-53b9a0a65a3c?q=80&w=800&auto=format&fit=crop" alt="تجاليد خشبية طبيعية" class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-110">
+                            </div>
+                             <div class="p-5">
+                                <h3 class="text-xl font-bold text-white mb-1 truncate">تجاليد خشبية طبيعية</h3>
+                                <p class="text-2xl font-black text-emerald-400 mb-4">450 <span class="text-sm font-semibold text-slate-300">جم / متر مربع</span></p>
+                                <button class="details-btn w-full bg-emerald-600/80 text-white py-2 px-4 rounded-full hover:bg-emerald-600 transition-colors">عرض التفاصيل</button>
+                            </div>
+                        </div>
+                        <!-- Product Card 3 -->
+                        <div class="product-card group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/10 hover:-translate-y-2"
+                             data-title="تصميم حجارة طبيعية"
+                             data-price="320"
+                             data-bestseller="false"
+                             data-img="https://images.unsplash.com/photo-1522041221495-9c94608e124f?q=80&w=800&auto=format&fit=crop"
+                             data-desc="تصميم فريد يحاكي شكل وملمس الجدران الحجرية الطبيعية، يضيف عمقاً وفخامة للمداخل والمساحات الخارجية.">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1522041221495-9c94608e124f?q=80&w=800&auto=format&fit=crop" alt="تصميم حجارة طبيعية" class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-110">
+                            </div>
+                             <div class="p-5">
+                                <h3 class="text-xl font-bold text-white mb-1 truncate">تصميم حجارة طبيعية</h3>
+                                <p class="text-2xl font-black text-emerald-400 mb-4">320 <span class="text-sm font-semibold text-slate-300">جم / متر مربع</span></p>
+                                <button class="details-btn w-full bg-emerald-600/80 text-white py-2 px-4 rounded-full hover:bg-emerald-600 transition-colors">عرض التفاصيل</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -325,8 +495,8 @@
                         <span>العودة للأقسام</span>
                     </button>
                     <h2 class="text-4xl font-extrabold text-center mb-10">تصاميم مودرن</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                         <p class="text-center col-span-full text-slate-400 text-lg">سيتم إضافة المنتجات هنا قريباً.</p>
+                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <p class="text-center col-span-full text-slate-400 text-lg">سيتم إضافة المنتجات هنا قريباً.</p>
                     </div>
                 </div>
             </div>
@@ -340,8 +510,8 @@
                         <span>العودة للأقسام</span>
                     </button>
                     <h2 class="text-4xl font-extrabold text-center mb-10">تصاميم هندسية</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                         <p class="text-center col-span-full text-slate-400 text-lg">سيتم إضافة المنتجات هنا قريباً.</p>
+                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <p class="text-center col-span-full text-slate-400 text-lg">سيتم إضافة المنتجات هنا قريباً.</p>
                     </div>
                 </div>
             </div>
@@ -379,45 +549,113 @@
 
     </div>
 
+    <!-- Project Detail Modal -->
+    <div id="project-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div id="project-modal-content" class="bg-stone-900/80 backdrop-blur-2xl border border-white/10 text-slate-200 rounded-2xl shadow-2xl max-w-4xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
+            <button id="close-project-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors z-20">
+                <i data-feather="x" class="w-8 h-8"></i>
+            </button>
+            <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+                <!-- Main Media Viewer -->
+                <div class="w-full md:w-2/3 bg-black flex items-center justify-center">
+                    <div id="project-main-media" class="w-full h-full">
+                        <!-- Media (Image/Video) will be injected here by JS -->
+                    </div>
+                </div>
+                <!-- Project Details & Thumbnails -->
+                <div class="w-full md:w-1/3 p-6 flex flex-col overflow-y-auto">
+                    <div>
+                        <h2 id="project-modal-title" class="text-2xl font-extrabold text-emerald-400 mb-2"></h2>
+                        <p id="project-modal-desc" class="text-slate-300 leading-relaxed mb-4"></p>
+                    </div>
+                    <div class="border-t border-white/10 pt-4 mt-auto">
+                        <h4 class="font-bold text-base text-white mb-3">معرض المشروع</h4>
+                        <div id="project-thumbnails" class="grid grid-cols-4 gap-2">
+                            <!-- Thumbnails will be injected here by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div id="product-modal-content" class="bg-stone-900/80 backdrop-blur-2xl border border-white/10 text-slate-200 rounded-2xl shadow-2xl max-w-2xl w-full relative transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] flex flex-col">
+            <button id="close-product-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors z-20">
+                <i data-feather="x" class="w-7 h-7"></i>
+            </button>
+            <div class="overflow-y-auto">
+                <img id="modal-img" src="" alt="صورة المنتج" class="w-full h-72 object-cover">
+                <div class="p-8">
+                    <h2 id="modal-title" class="text-3xl font-extrabold text-emerald-400 mb-2"></h2>
+                    <p id="modal-price" class="text-2xl font-bold text-white mb-4"></p>
+                    <p id="modal-desc" class="text-slate-300 leading-relaxed mb-6"></p>
+                    
+                    <div class="border-t border-b border-white/10 py-4 mb-6">
+                        <h4 class="font-bold text-lg text-white mb-3">الألوان المتاحة</h4>
+                        <div class="flex space-x-3 space-x-reverse">
+                            <span class="w-8 h-8 rounded-full bg-gray-700 border-2 border-white/50 cursor-pointer hover:scale-110 transition-transform"></span>
+                            <span class="w-8 h-8 rounded-full bg-blue-400 border-2 border-white/50 cursor-pointer hover:scale-110 transition-transform"></span>
+                            <span class="w-8 h-8 rounded-full bg-green-300 border-2 border-white/50 cursor-pointer hover:scale-110 transition-transform"></span>
+                            <span class="w-8 h-8 rounded-full bg-red-400 border-2 border-white/50 cursor-pointer hover:scale-110 transition-transform"></span>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-emerald-600 text-white py-3 px-6 rounded-full hover:bg-emerald-700 transition-colors text-lg font-bold flex items-center justify-center gap-3">
+                        <i data-feather="shopping-cart" class="w-6 h-6"></i>
+                        <span>اطلب الآن عبر واتساب</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Payment Methods Modal -->
-    <div id="payment-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-        <div id="payment-modal-content" class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full relative transform transition-all duration-300 scale-95 opacity-0">
-            <button id="close-payment-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 transition-colors">
+    <div id="payment-modal" class="hidden fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
+        <div id="payment-modal-content" class="bg-stone-800/50 backdrop-blur-xl border border-white/10 text-slate-200 rounded-2xl shadow-2xl p-8 max-w-lg w-full relative transform transition-all duration-300 scale-95 opacity-0">
+            <button id="close-payment-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
                 <i data-feather="x" class="w-7 h-7"></i>
             </button>
             <div class="text-center mb-8">
-                 <h2 class="text-3xl font-extrabold text-emerald-600">طرق الدفع المتاحة</h2>
-                 <p class="text-slate-500 mt-2">اكتشف كيفية السداد الأمثل للمشتريات الخاصة بك</p>
+                 <h2 class="text-3xl font-extrabold text-emerald-400">طرق دفع آمنة ومريحة</h2>
+                 <p class="text-slate-300 mt-2">اختر الطريقة الأنسب لك لإتمام طلبك بكل سهولة.</p>
             </div>
-            <div class="space-y-4 text-slate-800 text-right">
-                <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
-                    <i data-feather="dollar-sign" class="w-8 h-8 text-emerald-600 flex-shrink-0"></i>
+            <div class="space-y-4 text-right">
+                <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/10">
+                    <i data-feather="package" class="w-8 h-8 text-emerald-400 flex-shrink-0 mt-1"></i>
                     <div>
-                        <h3 class="font-bold text-lg">الدفع نقدا</h3>
-                        <p class="text-slate-600 text-sm">يمكن دفع القيمة كامله نقدا او دفع بقية المبلغ ، الجزء الثاني من المبلغ عند الإستلام.</p>
+                        <h3 class="font-bold text-lg text-white">الدفع عند الاستلام</h3>
+                        <p class="text-slate-300 text-sm">يمكن دفع القيمة كامله نقدا او دفع بقية المبلغ ، الجزء الثاني من المبلغ عند الإستلام.</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
-                    <i data-feather="smartphone" class="w-8 h-8 text-red-600 flex-shrink-0"></i>
+                <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/10">
+                    <i data-feather="smartphone" class="w-8 h-8 text-red-500 flex-shrink-0 mt-1"></i>
                     <div>
-                        <h3 class="font-bold text-lg">فودافون كاش</h3>
-                        <p class="text-slate-600 text-sm">قم بتحويل المبلغ المطلوب إلى رقمنا الخاص بفودافون كاش 01064009655 بإسم Mostafa mamon Mostafa M** S** Zaki.</p>
+                        <h3 class="font-bold text-lg text-white">محفظة فودافون كاش</h3>
+                        <p class="text-slate-300 text-sm mb-2">يمكنك التحويل مباشرة إلى رقمنا. يرجى التأكد من أن الاسم هو <span class="font-semibold text-slate-100">Mostafa Mamon M** S*** Zaki</span>.</p>
+                        <div class="flex justify-between items-center bg-slate-900/50 p-2 rounded-lg border border-white/10">
+                            <span id="vodafone-number" class="text-slate-200 font-mono tracking-wider">01064009655</span>
+                            <button onclick="copyToClipboard('vodafone-number')" class="copy-btn bg-slate-700 text-slate-200 text-xs font-bold px-3 py-1 rounded hover:bg-slate-600 transition-colors">نسخ</button>
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
-                    <div class="w-8 h-8 text-purple-600 flex-shrink-0">
-                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-5h2v5h-2zm0-7V8h2v2h-2z"/></svg>
-                    </div>
+                <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/10">
+                     <i data-feather="zap" class="w-8 h-8 text-purple-400 flex-shrink-0 mt-1"></i>
                     <div>
-                        <h3 class="font-bold text-lg">انستا باي</h3>
-                        <p class="text-slate-600 text-sm">يمكنك إجراء تحويل بنكي مباشر لحساب انستا باي . 01064009655 بإسم Mostafa mamon Mostafa M** S** Zaki.</p>
+                        <h3 class="font-bold text-lg text-white">تطبيق انستا باي (InstaPay)</h3>
+                        <p class="text-slate-300 text-sm mb-2">حوّل بسهولة عبر انستا باي باستخدام رقم الهاتف. اسم المستلم: <span class="font-semibold text-slate-100">Mostafa Mamon M** S*** Zaki</span>.</p>
+                         <div class="flex justify-between items-center bg-slate-900/50 p-2 rounded-lg border border-white/10">
+                            <span id="instapay-number" class="text-slate-200 font-mono tracking-wider">01064009655</span>
+                            <button onclick="copyToClipboard('instapay-number')" class="copy-btn bg-slate-700 text-slate-200 text-xs font-bold px-3 py-1 rounded hover:bg-slate-600 transition-colors">نسخ</button>
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
-                    <i data-feather="credit-card" class="w-8 h-8 text-yellow-500 flex-shrink-0"></i>
+                 <div class="flex items-start gap-4 p-4 bg-white/5 rounded-xl border border-white/10 opacity-60">
+                    <i data-feather="credit-card" class="w-8 h-8 text-yellow-500 flex-shrink-0 mt-1"></i>
                     <div>
-                        <h3 class="font-bold text-lg">البطاقات الائتمانية (قريباً)</h3>
-                        <p class="text-slate-600 text-sm">سيتم تفعيل الدفع باستخدام فيزا وماستركارد قريباً.</p>
+                        <h3 class="font-bold text-lg text-white">البطاقات الائتمانية</h3>
+                        <p class="text-slate-300 text-sm">نعمل على إضافة خيار الدفع ببطاقات فيزا وماستركارد قريباً لنوفر لك المزيد من الخيارات.</p>
                     </div>
                 </div>
             </div>
@@ -425,7 +663,7 @@
     </div>
 
     <!-- AI Assistant FAB -->
-    <button id="ai-fab" class="fixed bottom-6 left-6 bg-white/10 backdrop-blur-md text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-300 z-40">
+    <button id="ai-fab" class="fixed bottom-6 right-6 bg-white/10 backdrop-blur-md text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-300 z-40">
         <i data-feather="message-square" class="w-8 h-8"></i>
     </button>
 
@@ -492,7 +730,16 @@
             });
         });
 
-        // --- Mobile menu logic has been removed ---
+        // --- Mobile Menu Logic ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            if (mobileMenu.style.maxHeight) {
+                mobileMenu.style.maxHeight = null;
+            } else {
+                mobileMenu.style.maxHeight = mobileMenu.scrollHeight + "px";
+            }
+        });
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -688,23 +935,218 @@
         // --- Payment Modal Logic ---
         const paymentModal = document.getElementById('payment-modal');
         const paymentModalContent = document.getElementById('payment-modal-content');
-        const openPaymentBtn = document.getElementById('open-payment-modal');
+        const openPaymentBtns = document.querySelectorAll('.open-payment-modal-btn');
         const closePaymentBtn = document.getElementById('close-payment-modal');
         
-        openPaymentBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal(paymentModal, paymentModalContent);
+        openPaymentBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal(paymentModal, paymentModalContent);
+            });
         });
         closePaymentBtn.addEventListener('click', () => closeModal(paymentModal, paymentModalContent));
         paymentModal.addEventListener('click', (e) => {
             if (e.target === paymentModal) closeModal(paymentModal, paymentModalContent);
         });
 
+        // --- Product Modal Logic ---
+        const productModal = document.getElementById('product-modal');
+        const productModalContent = document.getElementById('product-modal-content');
+        const closeProductModalBtn = document.getElementById('close-product-modal');
+        const detailButtons = document.querySelectorAll('.details-btn');
+
+        const modalImg = document.getElementById('modal-img');
+        const modalTitle = document.getElementById('modal-title');
+        const modalPrice = document.getElementById('modal-price');
+        const modalDesc = document.getElementById('modal-desc');
+
+        detailButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const card = button.closest('.product-card');
+                
+                modalImg.src = card.dataset.img;
+                modalTitle.textContent = card.dataset.title;
+                modalPrice.innerHTML = `${card.dataset.price} <span class="text-sm font-semibold text-slate-300">جم</span>`;
+                modalDesc.textContent = card.dataset.desc;
+
+                openModal(productModal, productModalContent);
+            });
+        });
+
+        closeProductModalBtn.addEventListener('click', () => closeModal(productModal, productModalContent));
+        productModal.addEventListener('click', (e) => {
+            if (e.target === productModal) closeModal(productModal, productModalContent);
+        });
+
+        // --- Portfolio Project Modal Logic ---
+        const projectModal = document.getElementById('project-modal');
+        const projectModalContent = document.getElementById('project-modal-content');
+        const closeProjectModalBtn = document.getElementById('close-project-modal');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        const projectModalTitle = document.getElementById('project-modal-title');
+        const projectModalDesc = document.getElementById('project-modal-desc');
+        const projectMainMedia = document.getElementById('project-main-media');
+        const projectThumbnails = document.getElementById('project-thumbnails');
+
+        const loadMedia = (src, type, thumbnailElement) => {
+            projectMainMedia.innerHTML = ''; // Clear previous media
+            if (type === 'image') {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = 'w-full h-full object-contain';
+                projectMainMedia.appendChild(img);
+            } else if (type === 'video') {
+                const video = document.createElement('video');
+                video.src = src;
+                video.className = 'w-full h-full object-contain';
+                video.autoplay = true;
+                video.muted = true;
+                video.loop = true;
+                video.controls = true;
+                projectMainMedia.appendChild(video);
+            }
+            // Update active thumbnail
+            document.querySelectorAll('.project-thumbnail.active').forEach(th => th.classList.remove('active'));
+            if(thumbnailElement) thumbnailElement.classList.add('active');
+        };
+
+        portfolioItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const title = item.dataset.title;
+                const desc = item.dataset.desc;
+                const media = JSON.parse(item.dataset.media);
+
+                projectModalTitle.textContent = title;
+                projectModalDesc.textContent = desc;
+                projectThumbnails.innerHTML = ''; // Clear old thumbnails
+
+                if (media && media.length > 0) {
+                    media.forEach((mediaItem, index) => {
+                        const thumb = document.createElement('img');
+                        thumb.src = mediaItem.type === 'image' ? mediaItem.src : 'https://placehold.co/100x100/111827/FFFFFF?text=Video'; // Placeholder for video thumb
+                        thumb.className = 'w-full h-16 object-cover rounded-md project-thumbnail';
+                        
+                        thumb.addEventListener('click', () => loadMedia(mediaItem.src, mediaItem.type, thumb));
+                        
+                        projectThumbnails.appendChild(thumb);
+                        
+                        if (index === 0) {
+                            loadMedia(mediaItem.src, mediaItem.type, thumb);
+                        }
+                    });
+                }
+                
+                openModal(projectModal, projectModalContent);
+            });
+        });
+
+        closeProjectModalBtn.addEventListener('click', () => closeModal(projectModal, projectModalContent));
+        projectModal.addEventListener('click', (e) => {
+            // Stop video when closing modal
+            const videoEl = projectMainMedia.querySelector('video');
+            if (videoEl) videoEl.pause();
+            
+            if (e.target === projectModal) closeModal(projectModal, projectModalContent);
+        });
+
+        // --- Product Sorting Logic ---
+        const sortProductButtons = document.querySelectorAll('.sort-btn');
+
+        sortProductButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const sortBy = button.dataset.sort;
+                const buttonGroup = button.parentElement;
+                const productGrid = buttonGroup.nextElementSibling;
+                const products = Array.from(productGrid.querySelectorAll('.product-card'));
+
+                // Update active button
+                buttonGroup.querySelector('.active').classList.remove('active');
+                button.classList.add('active');
+
+                let sortedProducts = [];
+
+                if(sortBy === 'default') {
+                    // We need the original order, might need to store it if it's not DOM order
+                    // For now, let's just use the original array.
+                    sortedProducts = products;
+                } else if (sortBy === 'bestseller') {
+                    sortedProducts = products.sort((a, b) => {
+                        const aBest = a.dataset.bestseller === 'true';
+                        const bBest = b.dataset.bestseller === 'true';
+                        return bBest - aBest;
+                    });
+                } else if (sortBy === 'price-desc') {
+                    sortedProducts = products.sort((a, b) => {
+                        return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                    });
+                } else if (sortBy === 'price-asc') {
+                     sortedProducts = products.sort((a, b) => {
+                        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                    });
+                }
+                
+                // Re-append sorted products to the grid
+                productGrid.innerHTML = '';
+                sortedProducts.forEach(product => productGrid.appendChild(product));
+            });
+        });
+
+        // --- Portfolio Scroller Logic ---
+        const portfolioContainer = document.getElementById('portfolio-container');
+        const portfolioScrollLeftBtn = document.getElementById('portfolio-scroll-left-btn');
+        const portfolioScrollRightBtn = document.getElementById('portfolio-scroll-right-btn');
+
+        if (portfolioContainer && portfolioScrollLeftBtn && portfolioScrollRightBtn) {
+            const scrollAmount = portfolioContainer.offsetWidth * 0.8; 
+
+            portfolioScrollLeftBtn.addEventListener('click', () => {
+                portfolioContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+
+            portfolioScrollRightBtn.addEventListener('click', () => {
+                portfolioContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const textToCopy = element.innerText;
+            
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            
+            textArea.select();
+            document.execCommand('copy');
+            
+            document.body.removeChild(textArea);
+
+            const allCopyButtons = document.querySelectorAll('.copy-btn');
+            allCopyButtons.forEach(btn => btn.innerText = 'نسخ'); 
+
+            const clickedButton = element.nextElementSibling;
+            if(clickedButton && clickedButton.classList.contains('copy-btn')) {
+                clickedButton.innerText = 'تم النسخ!';
+                setTimeout(() => {
+                    clickedButton.innerText = 'نسخ';
+                }, 2000);
+            }
+        }
+
         // --- Global Keydown Listener ---
         document.addEventListener('keydown', (e) => { 
             if (e.key === 'Escape') {
                 if (paymentModal && !paymentModal.classList.contains('hidden')) {
                      closeModal(paymentModal, paymentModalContent);
+                }
+                if (productModal && !productModal.classList.contains('hidden')) {
+                     closeModal(productModal, productModalContent);
+                }
+                if (projectModal && !projectModal.classList.contains('hidden')) {
+                    const videoEl = projectMainMedia.querySelector('video');
+                    if (videoEl) videoEl.pause();
+                    closeModal(projectModal, projectModalContent);
                 }
                 if (aiChatModal && !aiChatModal.classList.contains('hidden')) {
                     closeAiChat();
@@ -715,5 +1157,6 @@
     </script>
 </body>
 </html>
+
 
 
