@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جدار - تصاميم عصرية لجدران ملهمة</title>
+    <title> جدار </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
         }
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #f8fafc; /* slate-50 */
+            background-color: #ffffff; /* white */
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
@@ -35,11 +35,6 @@
         }
         header {
             transition: background-color 0.4s ease-out, box-shadow 0.4s ease-out, backdrop-filter 0.4s ease-out;
-        }
-        header.scrolled {
-             background-color: rgba(248, 250, 252, 0.8); /* slate-50 with opacity */
-             backdrop-filter: blur(8px);
-             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.98); }
@@ -209,101 +204,160 @@
             border-color: #34d399; /* emerald-400 */
             box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
         }
+        
     </style>
 </head>
 <body class="text-slate-700 bg-slate-50">
 
-    <header class="sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#home" id="logo-btn" class="text-center flex-shrink-0">
-                <h1 class="brand-title text-2xl font-black text-slate-800 leading-none">جدار</h1>
-                <p class="text-[10px] text-slate-500 tracking-widest uppercase">للديكورات الحديثة</p>
-            </a>
-            
-            <form id="header-search-form" class="relative search-form hidden md:block flex-grow max-w-xl mx-6">
-                <input type="text" placeholder="ابحث عن منتجات، أقسام..." class="bg-slate-200/60 text-slate-800 placeholder-slate-500 rounded-full py-2 pl-10 pr-4 w-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-                    <i data-feather="search" class="w-5 h-5"></i>
-                </span>
-            </form>
-
-            <nav class="hidden md:flex items-center space-x-6 space-x-reverse flex-shrink-0">
-                <a href="#home" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">الرئيسية</a>
-                <a href="#main-footer" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">تواصل معنا</a>
+    <header class="absolute top-0 left-0 right-0 z-50 p-4">
+        <div class="container mx-auto bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-slate-200/50">
+            <div class="px-6 py-3 flex justify-between items-center">
+                <a href="#home" id="logo-btn" class="text-center flex-shrink-0">
+                    <h1 class="brand-title text-2xl font-black text-slate-800 leading-none">جدار</h1>
+                    <p class="text-[10px] text-slate-500 tracking-widest uppercase">للديكورات الحديثة</p>
+                </a>
                 
-                <div id="auth-section-desktop">
-                    <a href="#" class="open-payment-modal-btn inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-sm font-bold py-2 px-5 rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
-                        <i data-feather="credit-card" class="w-4 h-4"></i>
-                        <span>طرق الدفع</span>
-                    </a>
-                </div>
-                <div id="user-section-desktop" class="hidden items-center space-x-4 space-x-reverse">
-                    <img id="user-avatar-desktop" class="w-10 h-10 rounded-full" src="" alt="User Avatar">
-                    <span id="user-name-desktop" class="font-semibold text-slate-800"></span>
-                    <button id="logout-btn-desktop" class="bg-red-100 text-red-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-red-200 transition-colors">تسجيل الخروج</button>
-                </div>
-            </nav>
-
-            <div class="md:hidden">
-                <button id="mobile-menu-btn" class="text-slate-800 focus:outline-none">
-                    <i data-feather="menu" class="w-7 h-7"></i>
-                </button>
-            </div>
-        </div>
-        
-        <div id="mobile-menu" class="md:hidden bg-slate-50/80 backdrop-blur-md">
-            <div class="container mx-auto px-6 py-4 flex flex-col items-center gap-4">
-                <a href="#home" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">الرئيسية</a>
-                <a href="#main-footer" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">تواصل معنا</a>
-
-                <div id="auth-section-mobile" class="w-full text-center">
-                    <a href="#" class="open-payment-modal-btn inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-sm font-bold py-2 px-5 rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
-                        <i data-feather="credit-card" class="w-4 h-4"></i>
-                        <span>طرق الدفع</span>
-                    </a>
-                </div>
-                <div id="user-section-mobile" class="hidden flex-col items-center gap-4">
-                   <img id="user-avatar-mobile" class="w-12 h-12 rounded-full" src="" alt="User Avatar">
-                   <span id="user-name-mobile" class="font-semibold text-slate-800"></span>
-                   <button id="logout-btn-mobile" class="bg-red-100 text-red-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-red-200 transition-colors">تسجيل الخروج</button>
-               </div>
-
-                <form id="mobile-search-form" class="relative search-form w-full max-w-sm">
-                    <input type="text" placeholder="ابحث عن تصميم..." class="bg-slate-200/60 text-slate-800 placeholder-slate-500 rounded-full py-3 pl-12 pr-4 w-full focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base">
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-                        <i data-feather="search" class="w-6 h-6"></i>
+                <form id="header-search-form" class="relative search-form hidden md:block flex-grow max-w-xl mx-6">
+                    <input type="text" placeholder="ابحث عن منتجات، أقسام..." class="bg-slate-200/60 text-slate-800 placeholder-slate-500 rounded-full py-2 pl-10 pr-4 w-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                        <i data-feather="search" class="w-5 h-5"></i>
                     </span>
                 </form>
+
+                <nav class="hidden md:flex items-center space-x-6 space-x-reverse flex-shrink-0">
+                    <a href="#home" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">الرئيسية</a>
+                    <a href="#main-footer" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">تواصل معنا</a>
+                    
+                    <div id="auth-section-desktop">
+                        <a href="#" class="open-payment-modal-btn inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-sm font-bold py-2 px-5 rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+                            <i data-feather="credit-card" class="w-4 h-4"></i>
+                            <span>طرق الدفع</span>
+                        </a>
+                    </div>
+                    <div id="user-section-desktop" class="hidden items-center space-x-4 space-x-reverse">
+                        <img id="user-avatar-desktop" class="w-10 h-10 rounded-full shadow-lg ring-2 ring-white ring-offset-2 ring-offset-slate-100" src="" alt="User Avatar">
+                        <span id="user-name-desktop" class="font-semibold text-slate-800"></span>
+                        <button id="logout-btn-desktop" class="bg-red-100 text-red-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-red-200 transition-colors">تسجيل الخروج</button>
+                    </div>
+                </nav>
+
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-slate-800 focus:outline-none">
+                        <i data-feather="menu" class="w-7 h-7"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="mobile-menu" class="md:hidden">
+                <div class="container mx-auto px-6 py-4 flex flex-col items-center gap-4">
+                    <a href="#home" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">الرئيسية</a>
+                    <a href="#main-footer" class="text-slate-600 hover:text-slate-900 font-semibold transition duration-300">تواصل معنا</a>
+
+                    <div id="auth-section-mobile" class="w-full text-center">
+                        <a href="#" class="open-payment-modal-btn inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-sm font-bold py-2 px-5 rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+                            <i data-feather="credit-card" class="w-4 h-4"></i>
+                            <span>طرق الدفع</span>
+                        </a>
+                    </div>
+                    <div id="user-section-mobile" class="hidden flex-col items-center gap-4">
+                       <img id="user-avatar-mobile" class="w-12 h-12 rounded-full shadow-lg ring-2 ring-white ring-offset-2 ring-offset-slate-100" src="" alt="User Avatar">
+                       <span id="user-name-mobile" class="font-semibold text-slate-800"></span>
+                       <button id="logout-btn-mobile" class="bg-red-100 text-red-700 text-sm font-bold py-2 px-4 rounded-full hover:bg-red-200 transition-colors">تسجيل الخروج</button>
+                   </div>
+
+                    <form id="mobile-search-form" class="relative search-form w-full max-w-sm">
+                        <input type="text" placeholder="ابحث عن تصميم..." class="bg-slate-200/60 text-slate-800 placeholder-slate-500 rounded-full py-3 pl-12 pr-4 w-full focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                            <i data-feather="search" class="w-6 h-6"></i>
+                        </span>
+                    </form>
+                </div>
             </div>
         </div>
     </header>
 
     <div id="main-content">
         <main>
-            <section id="home" class="relative h-screen min-h-[700px] flex items-center justify-center text-slate-800 overflow-hidden -mt-[88px]">
-                 <div class="absolute inset-0 -z-20">
-                    <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2158&auto=format&fit=crop" alt="خلفية لغرفة معيشة عصرية" class="w-full h-full object-cover">
-                 </div>
-                 <div class="absolute inset-0 bg-gradient-to-t from-slate-50/100 via-slate-50/80 to-transparent -z-10"></div>
-                <div class="relative z-10 container mx-auto px-6 text-center flex flex-col items-center reveal">
-                    <h1 class="font-black text-7xl sm:text-8xl md:text-9xl bg-gradient-to-r from-emerald-500 to-green-600 text-transparent bg-clip-text drop-shadow-md">
-                        جدار
-                    </h1>
-                    <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mt-4 max-w-3xl tracking-tight text-shadow">
-                        حوّل جدرانك إلى تحفة فنية
-                    </p>
-                    <p class="text-base sm:text-lg text-slate-700 max-w-2xl mx-auto mt-4 mb-12 tracking-wide">
-                        اكتشف تشكيلتنا الفريدة من تجاليد الحوائط العصرية. جودة فائقة وتصاميم تلهم الإبداع في كل زاوية من منزلك.
-                    </p>
-                </div>
-                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
-                    <a href="#products-section" class="text-slate-500/80 hover:text-slate-700 transition-colors">
-                        <i data-feather="arrow-down" class="w-8 h-8 animate-bounce"></i>
+            <section id="home" class="relative min-h-screen flex items-center justify-center text-slate-800 overflow-hidden">
+                <!-- Social Links -->
+                <div class="absolute top-1/2 -translate-y-1/2 left-6 md:left-10 z-20 flex flex-col gap-4">
+                    <a href="https://www.facebook.com/gedar.fayoum/" target="_blank" rel="noopener noreferrer" class="group">
+                        <i data-feather="facebook" class="w-6 h-6 text-white group-hover:text-slate-300 group-hover:scale-125 transition-all duration-300"></i>
                     </a>
+                    <a href="https://www.instagram.com/gedar_fayoum/" target="_blank" rel="noopener noreferrer" class="group">
+                        <i data-feather="instagram" class="w-6 h-6 text-white group-hover:text-slate-300 group-hover:scale-125 transition-all duration-300"></i>
+                    </a>
+                </div>
+                <!-- Background Image -->
+                <div class="absolute inset-0 -z-20">
+                    <img src="https://i.postimg.cc/gkcwRG42/99.jpg" alt="خلفية لغرفة معيشة عصرية" class="w-full h-full object-cover">
+                </div>
+                <!-- Overlay Removed -->
+                
+                <div class="relative z-10 container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <!-- Text Content -->
+                    <div class="text-center md:text-right reveal">
+                        <h1 class="font-black text-9xl text-white">
+                            جدار
+                        </h1>
+                        <p class="text-3xl md:text-4xl font-bold text-white mt-4">
+                            حوّل جدرانك إلى تحفة فنية
+                        </p>
+                        <p class="text-lg sm:text-xl text-white max-w-xl mx-auto md:mx-0 mt-8 mb-12 tracking-wide">
+                            اكتشف تشكيلتنا الفريدة من تجاليد الحوائط العصرية. جودة فائقة وتصاميم تلهم الإبداع في كل زاوية من منزلك.
+                        </p>
+                        <div class="flex flex-col items-center md:items-start gap-6">
+                            <a href="#products-section" class="cta-button group inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-lg font-bold py-4 px-8 rounded-full shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transform hover:-translate-y-1 transition-all duration-300 ring-2 ring-white/30">
+                                <span>تصفح المنتجات والشراء</span>
+                                <i data-feather="shopping-cart" class="w-6 h-6 transition-transform duration-300 group-hover:scale-110"></i>
+                            </a>
+                        </div>
+                    </div>
+            
+                    <!-- Image/Graphic Content -->
+                    <div class="relative h-96 flex items-center justify-center">
+                         <div class="absolute w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                         <img src="https://i.postimg.cc/kGB036q5/Picsart-25-09-18-20-14-43-732.jpg" class="relative w-80 h-80 rounded-full object-cover shadow-2xl shadow-emerald-500/40 transition-transform duration-500 hover:scale-105 ring-4 ring-white/30 ring-offset-4 ring-offset-slate-900/20" alt="كرسي عصري أنيق">
+                    </div>
+                </div>
+                
+                <!-- Bottom Features -->
+                <div class="absolute bottom-0 left-0 right-0 z-10 p-6">
+                    <div class="container mx-auto px-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 text-center">
+                             <div class="flex items-center justify-center gap-3 text-white">
+                                <i data-feather="check-circle" class="w-5 h-5 text-white"></i>
+                                <span class="font-semibold text-sm">جودة فائقة</span>
+                            </div>
+                             <div class="flex items-center justify-center gap-3 text-white">
+                                <i data-feather="award" class="w-5 h-5 text-white"></i>
+                                <span class="font-semibold text-sm">تصاميم حصرية</span>
+                            </div>
+                             <div class="flex items-center justify-center gap-3 text-white">
+                                <i data-feather="truck" class="w-5 h-5 text-white"></i>
+                                <span class="font-semibold text-sm">توصيل وتركيب</span>
+                            </div>
+                             <div class="flex items-center justify-center gap-3 text-white">
+                                <i data-feather="users" class="w-5 h-5 text-white"></i>
+                                <span class="font-semibold text-sm">فريق متخصص</span>
+                            </div>
+                            <div class="flex items-center justify-center gap-3 text-white">
+                                <div class="flex -space-x-2 rtl:space-x-reverse">
+                                    <img class="w-8 h-8 border-2 border-white rounded-full" src="https://i.ibb.co/mFtX3dKL/537485347.jpg" alt="User 1">
+                                    <img class="w-8 h-8 border-2 border-white rounded-full" src="https://randomuser.me/api/portraits/women/44.jpg" alt="User 2">
+                                    <img class="w-8 h-8 border-2 border-white rounded-full" src="https://randomuser.me/api/portraits/men/75.jpg" alt="User 3">
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-white text-sm">+1.2k</p>
+                                    <p class="font-semibold text-sm">عملاء سعداء</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
             
-            <section id="products-section" class="py-20 sm:py-24 overflow-hidden bg-slate-50">
+            <section id="products-section" class="py-20 sm:py-24 overflow-hidden">
                 <div class="container mx-auto px-6 reveal">
                     <div class="bg-white/70 backdrop-blur-md rounded-3xl p-4 sm:p-8 md:p-12">
                         <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-4 text-slate-900">تصفح منتجاتنا</h2>
@@ -385,7 +439,7 @@
                 </div>
             </section>
 
-            <section id="portfolio" class="py-20 sm:py-24 bg-slate-100/70 backdrop-blur-md overflow-hidden">
+            <section id="portfolio" class="py-20 sm:py-24 backdrop-blur-md overflow-hidden">
                 <div class="container mx-auto px-6 text-center reveal">
                     <h2 class="text-3xl sm-text-4xl md:text-5xl font-extrabold mb-4 text-slate-900">شاهد إبداعنا على أرض الواقع</h2>
                     <p class="text-slate-600 mb-12 sm:mb-16 max-w-2xl mx-auto">تصفح مجموعة من أحدث مشاريعنا التي نفخر بتنفيذها. كل مشروع يحكي قصة نجاح وجودة.</p>
@@ -755,6 +809,7 @@
         let allProductsForSearch = [];
         let portfolioItems = [];
         let currentPortfolioIndex = -1;
+        let lastScrollPosition = 0;
 
         const toArabicNumerals = (num) => {
             const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -936,20 +991,20 @@
             
             const mainImage = prod.mainImageUrl || (prod.colors && prod.colors.length > 0 && prod.colors[0].imageUrl ? prod.colors[0].imageUrl : 'https://placehold.co/800x600/e2e8f0/475569?text=No+Image');
 
-            let priceHTML = `<p class="text-xl font-bold text-emerald-600">${toArabicNumerals(prod.price)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>`;
+            let priceHTML = `<p class="text-lg font-bold text-emerald-600">${toArabicNumerals(prod.price)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>`;
             if (prod.discount && prod.discount > 0) {
                 const discountedPrice = (prod.price * (1 - prod.discount / 100)).toFixed(2);
                 priceHTML = `
                     <div class="flex items-baseline justify-center gap-2">
-                        <p class="text-base font-medium text-slate-400 line-through">${toArabicNumerals(prod.price)} ج.م</p>
-                        <p class="text-xl font-bold text-emerald-600">${toArabicNumerals(discountedPrice)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>
+                        <p class="text-sm font-medium text-slate-400 line-through">${toArabicNumerals(prod.price)} ج.م</p>
+                        <p class="text-lg font-bold text-emerald-600">${toArabicNumerals(discountedPrice)} <span class="text-sm font-semibold text-slate-500">ج.م</span></p>
                     </div>
                 `;
             }
             
             const unavailableOverlay = !prod.isAvailable 
                 ? `<div class="absolute inset-0 bg-slate-100/80 backdrop-blur-sm flex items-center justify-center z-10">
-                       <span class="text-slate-800 font-bold text-xl border-2 border-slate-800 rounded-md px-4 py-2 bg-white/50">غير متوفر حالياً</span>
+                       <span class="text-slate-800 font-bold text-lg border-2 border-slate-800 rounded-md px-4 py-2 bg-white/50">غير متوفر حالياً</span>
                    </div>` 
                 : '';
             const buttonDisabled = !prod.isAvailable ? 'disabled' : '';
@@ -958,23 +1013,23 @@
                 : 'bg-emerald-500 hover:bg-emerald-600 text-white';
 
             card.innerHTML = `
-                <div class="relative overflow-hidden p-4">
-                    <img src="${mainImage}" alt="${prod.title}" class="w-full h-56 object-contain transition-transform duration-500 group-hover:scale-105">
+                <div class="relative overflow-hidden p-3">
+                    <img src="${mainImage}" alt="${prod.title}" class="w-full h-48 object-contain transition-transform duration-500 group-hover:scale-105">
                     ${unavailableOverlay}
-                    ${prod.discount ? `<span class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">خصم ${toArabicNumerals(prod.discount)}%</span>` : ''}
+                    ${prod.discount ? `<span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">خصم ${toArabicNumerals(prod.discount)}%</span>` : ''}
                 </div>
-                <div class="p-5 pt-0 flex flex-col flex-grow items-center">
-                    <h3 class="product-title text-lg font-bold text-slate-800 mb-2 h-14 flex items-center justify-center">${prod.title}</h3>
-                    <div class="my-4">
+                <div class="p-4 pt-0 flex flex-col flex-grow items-center">
+                    <h3 class="product-title text-base font-bold text-slate-800 mb-2 h-12 flex items-center justify-center">${prod.title}</h3>
+                    <div class="my-3">
                          ${priceHTML}
                     </div>
                     <div class="mt-auto w-full">
-                        <button class="details-btn w-full py-2.5 px-4 rounded-full transition-all duration-300 font-bold ${buttonClasses}" ${buttonDisabled}>
+                        <button class="details-btn w-full py-2 px-4 rounded-full transition-all duration-300 font-bold ${buttonClasses}" ${buttonDisabled}>
                             عرض التفاصيل
                         </button>
-                        <div class="admin-only flex justify-center items-center mt-4 gap-6">
-                            <button class="edit-product-btn text-blue-500 hover:text-blue-700 transition-colors"><i data-feather="edit" class="w-5 h-5 pointer-events-none"></i></button>
-                            <button class="delete-product-btn text-red-500 hover:text-red-700 transition-colors"><i data-feather="trash-2" class="w-5 h-5 pointer-events-none"></i></button>
+                        <div class="admin-only flex justify-center items-center mt-3 gap-5">
+                            <button class="edit-product-btn text-blue-500 hover:text-blue-700 transition-colors"><i data-feather="edit" class="w-4 h-4 pointer-events-none"></i></button>
+                            <button class="delete-product-btn text-red-500 hover:text-red-700 transition-colors"><i data-feather="trash-2" class="w-4 h-4 pointer-events-none"></i></button>
                         </div>
                     </div>
                 </div>
@@ -1009,7 +1064,7 @@
             
             allProductsContainer.innerHTML = `
                 ${allSearchInputHTML}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 product-grid">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 product-grid">
                 </div>
             `;
             categoryProductsDisplay.appendChild(allProductsContainer);
@@ -1062,7 +1117,7 @@
 
                 productContainer.innerHTML = `
                     ${searchInputHTML}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 product-grid">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 product-grid">
                         <div class="add-product-card admin-only group relative bg-transparent border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-2xl overflow-hidden transition-all duration-300 flex items-center justify-center cursor-pointer min-h-[350px]" data-category-id="${cat.pageId}">
                             <div class="text-center text-slate-400 group-hover:text-emerald-500">
                                 <i data-feather="plus-circle" class="w-12 h-12 mx-auto"></i>
@@ -1355,7 +1410,18 @@
             confirmDeleteBtn.addEventListener('click', async () => {
                 if (!isAdmin() || !itemToDelete.id || !itemToDelete.type) return;
                 try {
-                    await deleteDoc(doc(db, itemToDelete.type === 'portfolio' ? "portfolio" : itemToDelete.type + "s", itemToDelete.id));
+                    let collectionPath = '';
+                    if (itemToDelete.type === 'category') {
+                        collectionPath = 'categories';
+                    } else if (itemToDelete.type === 'product') {
+                        collectionPath = 'products';
+                    } else if (itemToDelete.type === 'portfolio') {
+                        collectionPath = 'portfolio';
+                    }
+                    
+                    if (collectionPath) {
+                        await deleteDoc(doc(db, collectionPath, itemToDelete.id));
+                    }
                 } catch (error) { 
                     console.error(`Error deleting ${itemToDelete.type}: `, error); 
                 } finally {
@@ -1384,7 +1450,7 @@
             window.scrollTo(0, 0);
 
             const resultsGrid = document.createElement('div');
-            resultsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 product-grid';
+            resultsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 product-grid';
 
             if (filteredProducts.length > 0) {
                 filteredProducts.forEach(prod => {
@@ -1805,10 +1871,13 @@
         }
 
         function showProductDetailPage(productData) {
+            lastScrollPosition = window.scrollY;
             if(mainPageContent) mainPageContent.classList.add('hidden');
             if(productDetailContainer) productDetailContainer.classList.remove('hidden');
             
             window.scrollTo(0, 0);
+
+            let selectedColor = (productData.colors && productData.colors.length > 0) ? productData.colors[0] : null;
 
             let galleryImages = [];
             const addUniqueImageToGallery = (src) => {
@@ -1827,59 +1896,62 @@
             const mainImageSrc = galleryImages.length > 0 ? galleryImages[0] : (productData.colors && productData.colors[0]?.imageUrl) || 'https://placehold.co/1200x800/e2e8f0/475569?text=No+Image';
 
             const thumbnailsContainerHTML = galleryImages.length > 1 ? `
-                <div class="grid grid-cols-4 sm:grid-cols-5 gap-3" id="product-thumbnails-container">
+                <div class="grid grid-cols-4 sm:grid-cols-5 gap-2" id="product-thumbnails-container">
                     ${galleryImages.map((src, index) => `
-                        <img src="${src}" alt="صورة مصغرة للمنتج" class="thumbnail-img w-full h-24 object-cover rounded-lg cursor-pointer border-2 ${index === 0 ? 'border-emerald-500' : 'border-transparent'} hover:border-emerald-500 transition-colors" data-src="${src}">
+                        <img src="${src}" alt="صورة مصغرة للمنتج" class="thumbnail-img w-full h-20 object-cover rounded-md cursor-pointer border-2 ${index === 0 ? 'border-emerald-500' : 'border-transparent'} hover:border-emerald-500 transition-colors" data-src="${src}">
                     `).join('')}
                 </div>
             ` : '';
 
-            let priceHTML = `<p class="text-4xl font-black text-emerald-600">${toArabicNumerals(productData.price)} <span class="text-lg font-semibold text-slate-500">ج.م</span></p>`;
+            let priceHTML = '';
+            let finalPrice = productData.price;
             if (productData.discount && productData.discount > 0) {
-                const discountedPrice = (productData.price * (1 - productData.discount / 100)).toFixed(2);
+                finalPrice = (productData.price * (1 - productData.discount / 100)).toFixed(2);
                 priceHTML = `
-                    <div class="flex items-baseline gap-3">
-                        <p class="text-2xl font-bold text-slate-400 line-through">${toArabicNumerals(productData.price)} ج.م</p>
-                        <p class="text-4xl font-black text-emerald-600">${toArabicNumerals(discountedPrice)} <span class="text-lg font-semibold text-slate-500">ج.م</span></p>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-xl font-bold text-slate-400 line-through">${toArabicNumerals(productData.price)} ج.م</p>
+                        <p class="text-3xl font-black text-emerald-600">${toArabicNumerals(finalPrice)} <span class="text-base font-semibold text-slate-500">ج.م</span></p>
                     </div>
                 `;
+            } else {
+                 priceHTML = `<p class="text-3xl font-black text-emerald-600">${toArabicNumerals(productData.price)} <span class="text-base font-semibold text-slate-500">ج.م</span></p>`;
             }
 
             const colorsHTML = productData.colors && productData.colors.length > 0 
-                ? productData.colors.map(color => `
-                    <div class="color-swatch group relative ${color.imageUrl ? 'cursor-pointer' : ''}" data-id="${color.code || color.hex}">
-                        <span class="w-10 h-10 block rounded-full border-2 border-slate-300 transition-transform group-hover:scale-110" style="background-color: ${color.hex};"></span>
-                        <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-3 py-1 bg-slate-800 text-white text-xs font-semibold rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 pointer-events-none">
+                ? productData.colors.map((color, index) => `
+                    <div class="color-swatch group relative cursor-pointer" data-color='${JSON.stringify(color)}'>
+                        <span class="w-8 h-8 block rounded-full border-2 ${index === 0 ? 'border-emerald-500 ring-2 ring-emerald-300' : 'border-slate-300'} transition-all group-hover:scale-110" style="background-color: ${color.hex};"></span>
+                        <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-slate-800 text-white text-xs font-semibold rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 pointer-events-none">
                             ${color.code || color.hex}
                             <div class="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
                         </div>
                     </div>
                 `).join('')
-                : '<p class="text-slate-500">لا توجد ألوان محددة.</p>';
+                : '<p class="text-slate-500 text-sm">لا توجد ألوان محددة.</p>';
 
             const pageHTML = `
-                <section id="page-product-detail" class="min-h-screen py-16 text-slate-800">
+                <section id="page-product-detail" class="min-h-screen py-12 text-slate-800">
                     <div class="container mx-auto px-6">
-                        <div class="mb-8">
+                        <div class="mb-6">
                              <button class="back-to-products-btn inline-flex items-center space-x-2 space-x-reverse text-slate-500 hover:text-slate-800 font-semibold transition-colors" data-category-id="${productData.categoryId}">
                                 <i data-feather="arrow-right" class="w-5 h-5"></i>
                                 <span>العودة للمنتجات</span>
                             </button>
                         </div>
                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                            <div class="flex flex-col gap-4 lg:sticky top-24">
-                                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-lg">
-                                    <img id="main-product-image" src="${mainImageSrc}" alt="صورة المنتج الرئيسية" class="w-full h-auto object-contain max-h-[70vh] transition-opacity duration-300">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                            <div class="flex flex-col gap-3 lg:sticky top-24">
+                                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-lg">
+                                    <img id="main-product-image" src="${mainImageSrc}" alt="صورة المنتج الرئيسية" class="w-full h-auto object-contain max-h-[60vh] transition-opacity duration-300">
                                 </div>
                                 ${thumbnailsContainerHTML}
                             </div>
-                            <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl p-8 md:p-10">
-                                <span class="text-emerald-600 font-semibold mb-2 block">${productData.type}</span>
-                                <h1 class="text-3xl lg:text-4xl font-extrabold text-slate-900 mb-4">${productData.title}</h1>
-                                <div class="mb-6">${priceHTML}</div>
+                            <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-6 md:p-8">
+                                <span class="text-emerald-600 font-semibold mb-1 block text-sm">${productData.type}</span>
+                                <h1 class="text-2xl lg:text-3xl font-extrabold text-slate-900 mb-3">${productData.title}</h1>
+                                <div class="mb-4">${priceHTML}</div>
 
-                                <div class="space-y-3 text-sm text-slate-800 border-y border-slate-200 py-4 mb-6">
+                                <div class="space-y-2 text-sm text-slate-800 border-y border-slate-200 py-3 mb-4">
                                     <div class="flex justify-between items-center">
                                         <span class="font-semibold text-slate-500">الحالة:</span>
                                         <span class="font-bold px-2 py-0.5 rounded-full ${productData.isAvailable ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}">${productData.isAvailable ? 'متوفر' : 'غير متوفر'}</span>
@@ -1903,56 +1975,56 @@
                                     </div>
                                 </div>
                                 
-                                <div class="mb-8">
-                                    <h3 class="text-xl font-bold text-slate-900 mb-2">عن المنتج</h3>
-                                    <p class="text-slate-600 leading-relaxed break-words product-description-text">${productData.desc}</p>
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-bold text-slate-900 mb-2">عن المنتج</h3>
+                                    <p class="text-slate-600 leading-relaxed break-words product-description-text text-sm">${productData.desc}</p>
                                 </div>
 
-                                <div class="mb-8">
-                                    <h3 class="text-xl font-bold text-slate-900 mb-4">الألوان والأكواد المتاحة</h3>
-                                    <div class="flex flex-wrap items-center gap-4" id="product-colors-container">
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-bold text-slate-900 mb-3">الألوان والأكواد المتاحة</h3>
+                                    <div class="flex flex-wrap items-center gap-3" id="product-colors-container">
                                         ${colorsHTML}
                                     </div>
                                 </div>
 
                                 <div class="mt-auto">
-                                <a href="https://wa.me/201014175070?text=${encodeURIComponent(`أرغب في طلب منتج: ${productData.title}`)}" target="_blank" class="w-full bg-gradient-to-r from-emerald-500 to-green-500 text-white py-4 px-8 rounded-full hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-300 text-lg font-bold shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-3">
-                                        <i data-feather="shopping-cart" class="w-6 h-6"></i>
+                                <a id="whatsapp-order-btn" href="#" target="_blank" class="w-full bg-gradient-to-r from-emerald-500 to-green-500 text-white py-3 px-6 rounded-full hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-300 text-base font-bold shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                                        <i data-feather="shopping-cart" class="w-5 h-5"></i>
                                         <span>اطلب الآن عبر واتساب</span>
                                     </a>
                                 </div>
 
-                                <div class="mt-8 border-t border-slate-200 pt-6 space-y-5 text-sm">
-                                    <div class="flex items-center gap-4">
-                                        <div class="bg-slate-100 text-emerald-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">
-                                            <i data-feather="shield" class="w-5 h-5"></i>
+                                <div class="mt-6 border-t border-slate-200 pt-5 space-y-4 text-sm">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-slate-100 text-emerald-600 rounded-full h-8 w-8 flex-shrink-0 flex items-center justify-center">
+                                            <i data-feather="shield" class="w-4 h-4"></i>
                                         </div>
                                         <div>
                                             <h4 class="font-bold text-slate-800">إرجاع مجاني</h4>
                                             <p class="text-xs text-slate-500">تطبق الشروط والأحكام</p>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-4">
-                                        <div class="bg-slate-100 text-emerald-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">
-                                            <i data-feather="eye-off" class="w-5 h-5"></i>
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-slate-100 text-emerald-600 rounded-full h-8 w-8 flex-shrink-0 flex items-center justify-center">
+                                            <i data-feather="eye-off" class="w-4 h-4"></i>
                                         </div>
                                         <div>
                                             <h4 class="font-bold text-slate-800">تسوق بخصوصية</h4>
                                             <p class="text-xs text-slate-500">نضمن خصوصية بياناتك.</p>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-4">
-                                        <div class="bg-slate-100 text-emerald-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center">
-                                            <i data-feather="briefcase" class="w-5 h-5"></i>
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-slate-100 text-emerald-600 rounded-full h-8 w-8 flex-shrink-0 flex items-center justify-center">
+                                            <i data-feather="briefcase" class="w-4 h-4"></i>
                                         </div>
                                         <div>
                                             <h4 class="font-bold text-slate-800">البائع</h4>
                                             <p class="text-xs text-slate-500">Gedar</p>
                                         </div>
                                     </div>
-                                     <div class="flex items-start gap-4">
-                                         <div class="bg-slate-100 text-emerald-600 rounded-full h-10 w-10 flex-shrink-0 flex items-center justify-center mt-1">
-                                            <i data-feather="file-text" class="w-5 h-5"></i>
+                                     <div class="flex items-start gap-3">
+                                         <div class="bg-slate-100 text-emerald-600 rounded-full h-8 w-8 flex-shrink-0 flex items-center justify-center mt-1">
+                                            <i data-feather="file-text" class="w-4 h-4"></i>
                                         </div>
                                         <div>
                                             <h4 class="font-bold text-slate-800">شروط سياسة الإسترجاع</h4>
@@ -1976,6 +2048,25 @@
             if (!detailPage) return;
 
             const mainImage = detailPage.querySelector('#main-product-image');
+            const whatsappBtn = detailPage.querySelector('#whatsapp-order-btn');
+
+            const updateWhatsAppLink = () => {
+                if (!whatsappBtn) return;
+                
+                let message = `مرحباً، أرغب في طلب المنتج التالي:\n\n`;
+                message += `*الاسم:* ${productData.title}\n`;
+                if (productData.productCode) {
+                    message += `*الكود العام:* ${productData.productCode}\n`;
+                }
+                if (selectedColor && selectedColor.code) {
+                    message += `*كود اللون المختار:* ${selectedColor.code}\n`;
+                }
+                message += `*السعر:* ${toArabicNumerals(finalPrice)} ج.م`;
+                
+                whatsappBtn.href = `https://wa.me/201014175070?text=${encodeURIComponent(message)}`;
+            };
+
+            updateWhatsAppLink();
             
             detailPage.addEventListener('click', e => {
                 const backBtn = e.target.closest('.back-to-products-btn');
@@ -1988,6 +2079,8 @@
                     
                     const categoryToSelect = categoryTabs.querySelector(`[data-page="${backBtn.dataset.categoryId}"]`);
                     if(categoryToSelect) categoryToSelect.click();
+                    
+                    window.scrollTo({ top: lastScrollPosition, behavior: 'instant' });
                 }
                 
                 const thumbnail = e.target.closest('.thumbnail-img');
@@ -2004,16 +2097,21 @@
 
                 const colorSwatch = e.target.closest('.color-swatch');
                 if (colorSwatch) {
-                    const colorId = colorSwatch.dataset.id;
-                    const colorData = productData.colors.find(c => (c.code || c.hex) === colorId);
-                    if (colorData && colorData.imageUrl) {
+                    selectedColor = JSON.parse(colorSwatch.dataset.color);
+                    
+                    if (selectedColor.imageUrl && mainImage) {
                          mainImage.style.opacity = '0';
                         setTimeout(() => {
-                            mainImage.src = colorData.imageUrl;
+                            mainImage.src = selectedColor.imageUrl;
                             mainImage.style.opacity = '1';
                         }, 300);
                         detailPage.querySelectorAll('.thumbnail-img').forEach(t => t.classList.remove('border-emerald-500'));
                     }
+                    
+                    detailPage.querySelectorAll('.color-swatch span').forEach(s => s.classList.remove('border-emerald-500', 'ring-2', 'ring-emerald-300'));
+                    colorSwatch.querySelector('span').classList.add('border-emerald-500', 'ring-2', 'ring-emerald-300');
+
+                    updateWhatsAppLink();
                 }
             });
         }
@@ -2033,11 +2131,6 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if(header) header.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
         const aiFab = document.getElementById('ai-fab');
         function closeAiChat() {
             if(aiChatContainer) aiChatContainer.classList.add('translate-y-full');
