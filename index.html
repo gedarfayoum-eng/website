@@ -460,7 +460,8 @@
         let isDataLoaded = false; // NEW: To handle direct link loading state
         // NEW: Global interval for countdowns
         let countdownInterval = null;
-        
+        let bannerScrollTimers = {}; // متغير لتخزين مؤقتات الحركة التلقائية
+
         // NEW: Hero Settings State (Initialized Empty)
         let HERO_SETTINGS = {
             mainImage: "",
@@ -471,35 +472,35 @@
             discountValue: "",
             logoUrl: "",
             logoSize: "100",
-            // Image Configuration (NEW)
+            // Image Configuration
             imageBaseUrl: "",
             imageDefaultExt: ".webp",
-            // Footer/Header Banner Settings
+            // Header Banner Settings (Separate Mobile/Desktop)
             footerBannerUrl: "",
-            footerBannerHeight: "200",
-            footerBannerWidth: "100", 
+            fbHeightDesktop: "300", fbHeightMobile: "150",
+            fbWidthDesktop: "90", fbWidthMobile: "95",
+            fbRadiusDesktop: "2rem", fbRadiusMobile: "1rem",
             showFooterBanner: false,
-            // Category Banner Settings
+            // Category Banner Settings (Separate Mobile/Desktop)
             categoryBannerUrl: "",
-            categoryBannerHeight: "200",
-            categoryBannerWidth: "100",
+            catBanHeightDesktop: "250", catBanHeightMobile: "120",
+            catBanWidthDesktop: "90", catBanWidthMobile: "95",
+            catBanRadiusDesktop: "1.5rem", catBanRadiusMobile: "0.8rem",
             showCategoryBanner: false,
-            // NEW: Best Seller Banner Settings
+            // Other Banners
             bestSellerBannerUrl: "",
             bestSellerBannerHeight: "200",
             bestSellerBannerWidth: "100",
             showBestSellerBanner: false,
-            // NEW: Featured Banner Settings
             featuredBannerUrl: "",
             featuredBannerHeight: "200",
             featuredBannerWidth: "100",
             showFeaturedBanner: false,
-            // Hero Visibility Settings
             showHeroMobile: true,
             showHeroDesktop: true
         };
         let currentView = 'home';
-        let currentAdminTab = 'dashboard'; // متغير جديد لتحديد القسم النشط في لوحة التحكم
+        let currentAdminTab = 'dashboard';
         let currentOrderTab = 'active'; 
         let currentProductId = null;
         let currentEditProduct = null;
@@ -843,6 +844,54 @@
         window.scrollSlider = (dir) => {
             const s = document.getElementById('related-slider');
             if(s) s.scrollBy({ left: dir === 'right' ? 220 : -220, behavior: 'smooth' });
+        };
+
+        // NEW: Generic Banner Scroll Function (Updated for RTL Robustness)
+        window.scrollBanner = (id, direction) => {
+            const slider = document.getElementById(id);
+            if (!slider) return;
+            
+            const width = slider.clientWidth;
+            // direction: -1 (Left Arrow/Next in RTL), 1 (Right Arrow/Prev in RTL)
+            slider.scrollBy({ left: direction * width, behavior: 'smooth' });
+        };
+
+        // NEW: Auto Scroll Logic
+        window.startBannerAutoScroll = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            
+            // Clear existing timer to prevent duplicates
+            if (bannerScrollTimers[id]) clearInterval(bannerScrollTimers[id]);
+
+            bannerScrollTimers[id] = setInterval(() => {
+                const element = document.getElementById(id);
+                if (!element) {
+                    clearInterval(bannerScrollTimers[id]);
+                    return;
+                }
+
+                // Logic for infinite scrolling effect
+                const maxScroll = element.scrollWidth - element.clientWidth;
+                // In RTL, scrollLeft is typically negative or 0 at start. 
+                // We use Math.abs to handle browser differences in RTL scroll behavior.
+                const currentScroll = Math.abs(element.scrollLeft);
+                
+                // If we reached the end (with small tolerance), go back to start
+                if (currentScroll >= maxScroll - 10) {
+                    element.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    // Move Next (Negative left in RTL)
+                    element.scrollBy({ left: -element.clientWidth, behavior: 'smooth' });
+                }
+            }, 4000); // 4 seconds interval
+        };
+
+        window.stopBannerAutoScroll = (id) => {
+            if (bannerScrollTimers[id]) {
+                clearInterval(bannerScrollTimers[id]);
+                delete bannerScrollTimers[id];
+            }
         };
         
         window.scrollFeatured = (dir) => {
@@ -1483,7 +1532,6 @@
             const navBrand = document.getElementById('navbar-brand');
             const footerBrand = document.getElementById('footer-brand');
             const bannerContainer = document.getElementById('header-banner-container'); // Updated ID
-            const mainContent = document.getElementById('main-content'); // Get main content to adjust padding
             
             const logoUrl = HERO_SETTINGS.logoUrl;
             const size = HERO_SETTINGS.logoSize || 100;
@@ -1507,23 +1555,131 @@
                 }
             }
 
-            // Update Header Banner
+            // Update Header Banner (Slider Logic with Responsive Styles)
             if (bannerContainer) {
                 if (HERO_SETTINGS.showFooterBanner && HERO_SETTINGS.footerBannerUrl) {
                     bannerContainer.classList.remove('hidden');
                     
-                    // Logic to reduce padding of main content views if banner is present to avoid double spacing
-                    // We add a class to body or main to handle this via CSS if needed, 
-                    // but for now, the banner simply pushes content down.
-                    // Note: Views like Hero have 'pt-20'. With the banner margin, this creates extra space.
-                    // We can visually accept this or try to counteract it negatively.
+                    const rawUrls = HERO_SETTINGS.footerBannerUrl.split(/\r?\n/).filter(url => url.trim() !== '');
                     
-                    bannerContainer.innerHTML = `
-                        <div class="w-full bg-stone-50 flex justify-center overflow-hidden">
-                            <img src="${HERO_SETTINGS.footerBannerUrl}" 
-                                 style="height: ${HERO_SETTINGS.footerBannerHeight || 200}px; width: ${HERO_SETTINGS.footerBannerWidth || 100}%; object-fit: cover;" 
-                                 alt="Promo Banner" class="shadow-sm">
+                    // Infinite Loop Logic: Triple the array
+                    let displayUrls = [];
+                    if (rawUrls.length > 0) {
+                        if (rawUrls.length === 1) {
+                            displayUrls = rawUrls; 
+                        } else {
+                            displayUrls = [...rawUrls, ...rawUrls, ...rawUrls];
+                        }
+                    }
+
+                    const sliderId = 'header-banner-slider';
+                    
+                    // Retrieve settings (with fallbacks)
+                    const hDesk = HERO_SETTINGS.fbHeightDesktop || HERO_SETTINGS.footerBannerHeight || 300;
+                    const hMob = HERO_SETTINGS.fbHeightMobile || 150;
+                    // Width settings now control the slide width relative to viewport
+                    const wDesk = HERO_SETTINGS.fbWidthDesktop || HERO_SETTINGS.footerBannerWidth || 90;
+                    const wMob = HERO_SETTINGS.fbWidthMobile || 95;
+                    
+                    const rDesk = HERO_SETTINGS.fbRadiusDesktop || HERO_SETTINGS.footerBannerRadius || '2rem';
+                    const rMob = HERO_SETTINGS.fbRadiusMobile || '1rem';
+
+                    // Inject Dynamic CSS for this specific banner
+                    const styleId = 'header-banner-style';
+                    let styleEl = document.getElementById(styleId);
+                    if(!styleEl) {
+                        styleEl = document.createElement('style');
+                        styleEl.id = styleId;
+                        document.head.appendChild(styleEl);
+                    }
+                    
+                    // Responsive CSS logic (Gallery Style)
+                    styleEl.innerHTML = `
+                        #header-banner-wrapper { 
+                            width: 100%; 
+                            padding: 10px 0;
+                        }
+                        
+                        /* Mobile Gallery Style */
+                        .header-banner-slide { 
+                            height: ${hMob}px;
+                            width: ${wMob}%;
+                            min-width: ${wMob}%;
+                            margin: 0 6px;
+                            border-radius: ${rMob};
+                            scroll-snap-align: center;
+                            transition: transform 0.5s ease;
+                            opacity: 1;
+                            transform: scale(0.96);
+                        }
+                        .header-banner-slide:hover { transform: scale(1); }
+                        
+                        /* Desktop Gallery Style */
+                        @media (min-width: 768px) {
+                            #header-banner-wrapper { 
+                                padding: 20px 0;
+                            }
+                            .header-banner-slide { 
+                                height: ${hDesk}px;
+                                width: ${wDesk}%;
+                                min-width: ${wDesk}%; /* Use user setting for width */
+                                margin: 0 15px;
+                                border-radius: ${rDesk};
+                                opacity: 1;
+                                transform: scale(0.98);
+                            }
+                            .header-banner-slide:hover { transform: scale(1); }
+                        }
+
+                        #${sliderId} {
+                            padding-inline: 0;
+                            scrollbar-width: none;
+                            -ms-overflow-style: none;
+                        }
+                        #${sliderId}::-webkit-scrollbar { display: none; }
+                    `;
+
+                    if (displayUrls.length > 0) {
+                        bannerContainer.innerHTML = `
+                        <div class="w-full flex justify-center py-4 bg-stone-50" onmouseenter="stopBannerAutoScroll('${sliderId}')" onmouseleave="startBannerAutoScroll('${sliderId}')">
+                            <div id="header-banner-wrapper" class="relative group transition-all duration-300">
+                                
+                                <!-- Slider Container -->
+                                <div id="${sliderId}" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth h-full items-center">
+                                    ${displayUrls.map((url, idx) => `
+                                        <div id="header-slide-${idx}" class="header-banner-slide flex-shrink-0 relative overflow-hidden shadow-sm border border-stone-200/50 bg-white">
+                                            <img src="${url.trim()}" class="w-full h-full object-cover" alt="Banner">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                
+                                <!-- Navigation Buttons -->
+                                ${rawUrls.length > 1 ? `
+                                <button onclick="scrollBanner('${sliderId}', -1)" class="absolute top-1/2 left-4 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-stone-800 shadow-lg hover:bg-white hover:scale-110 transition-all opacity-0 group-hover:opacity-100 z-20 border border-stone-100">
+                                    <i data-lucide="chevron-left" size="24"></i>
+                                </button>
+                                <button onclick="scrollBanner('${sliderId}', 1)" class="absolute top-1/2 right-4 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-stone-800 shadow-lg hover:bg-white hover:scale-110 transition-all opacity-0 group-hover:opacity-100 z-20 border border-stone-100">
+                                    <i data-lucide="chevron-right" size="24"></i>
+                                </button>
+                                ` : ''}
+                            </div>
                         </div>`;
+                        
+                        // Centering Logic
+                        if (rawUrls.length > 1) {
+                            setTimeout(() => {
+                                const slider = document.getElementById(sliderId);
+                                const startIndex = rawUrls.length; 
+                                const targetSlide = document.getElementById(`header-slide-${startIndex}`);
+                                
+                                if (targetSlide && slider) {
+                                    targetSlide.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+                                    startBannerAutoScroll(sliderId);
+                                }
+                            }, 500);
+                        }
+                    }
+                    lucide.createIcons();
                 } else {
                     bannerContainer.classList.add('hidden');
                     bannerContainer.innerHTML = '';
@@ -1531,35 +1687,61 @@
             }
         }
 
-        // --- NEW: Prepare Edit ---
-        window.prepareEditCategory = (name, image) => {
+        // --- NEW: Handle Save Hero Settings (Updated for Split Settings) ---
+        window.handleSaveHeroSettings = async (e) => {
+            e.preventDefault();
             if (!user || user.email !== ADMIN_EMAIL) return showToast("غير مصرح");
-            currentEditCategoryName = name;
-            currentAdminTab = 'categories'; // Switch to categories tab
-            renderView(); 
-        };
 
-        window.cancelEditCategory = () => {
-            currentEditCategoryName = null;
-            renderView();
-        };
+            // Helpers
+            const getVal = (name) => e.target[name] ? e.target[name].value.trim() : '';
+            const getCheck = (name) => e.target[name] ? e.target[name].checked : false;
 
-        window.handleDeleteProduct = async (id) => {
-            if (!user || user.email !== ADMIN_EMAIL) return showToast("غير مصرح");
-            if (!confirm("هل أنت متأكد من رغبتك في حذف هذا المنتج نهائياً؟")) return;
             try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
-                showToast("تم حذف المنتج بنجاح");
-            } catch (err) { console.error(err); showToast("حدث خطأ أثناء الحذف"); }
-        };
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'metadata', 'hero'), {
+                    // Standard Fields
+                    mainImage: getVal('heroMain'),
+                    secondaryImage: getVal('heroSec'),
+                    priceLabel: getVal('heroPriceLabel'),
+                    priceValue: getVal('heroPriceValue'),
+                    discountLabel: getVal('heroDiscLabel'),
+                    discountValue: getVal('heroDiscValue'),
+                    logoUrl: getVal('siteLogo'),
+                    logoSize: getVal('logoSize'),
+                    imageBaseUrl: getVal('imgBaseUrl'),
+                    imageDefaultExt: getVal('imgExt'),
+                    
+                    // Header Banner (Split Settings)
+                    footerBannerUrl: getVal('fbUrl'),
+                    showFooterBanner: getCheck('fbShow'),
+                    fbHeightDesktop: getVal('fbHeightDesk'), fbHeightMobile: getVal('fbHeightMob'),
+                    fbWidthDesktop: getVal('fbWidthDesk'), fbWidthMobile: getVal('fbWidthMob'),
+                    fbRadiusDesktop: getVal('fbRadiusDesk'), fbRadiusMobile: getVal('fbRadiusMob'),
 
-        window.handleEditProduct = (id) => {
-            if (!user || user.email !== ADMIN_EMAIL) return showToast("غير مصرح");
-            const p = PRODUCTS.find(x => x.id === id);
-            if (p) {
-                currentEditProduct = p;
-                currentAdminTab = 'products'; // Switch to products tab
-                setView('admin');
+                    // Category Banner (Split Settings)
+                    categoryBannerUrl: getVal('catBanUrl'),
+                    showCategoryBanner: getCheck('catBanShow'),
+                    catBanHeightDesktop: getVal('catBanHeightDesk'), catBanHeightMobile: getVal('catBanHeightMob'),
+                    catBanWidthDesktop: getVal('catBanWidthDesk'), catBanWidthMobile: getVal('catBanWidthMob'),
+                    catBanRadiusDesktop: getVal('catBanRadiusDesk'), catBanRadiusMobile: getVal('catBanRadiusMob'),
+
+                    // Other Banners (Simple)
+                    bestSellerBannerUrl: getVal('bsBanUrl'),
+                    bestSellerBannerHeight: getVal('bsBanHeight'),
+                    bestSellerBannerWidth: getVal('bsBanWidth'),
+                    showBestSellerBanner: getCheck('bsBanShow'),
+                    
+                    featuredBannerUrl: getVal('ftBanUrl'),
+                    featuredBannerHeight: getVal('ftBanHeight'),
+                    featuredBannerWidth: getVal('ftBanWidth'),
+                    showFeaturedBanner: getCheck('ftBanShow'),
+                    
+                    showHeroMobile: getCheck('heroShowMobile'),
+                    showHeroDesktop: getCheck('heroShowDesktop')
+                }, { merge: true });
+                showToast("تم تحديث إعدادات الموقع والواجهة بنجاح");
+            } catch(err) {
+                console.error(err);
+                showToast("حدث خطأ أثناء الحفظ");
             }
         };
 
@@ -3116,9 +3298,7 @@
 
         // NEW: Render Category Bar (Stories Style)
         function renderCategoryBar(c) {
-            // Only render if we have categories, but we always render the "All" button at least
-            
-            // UPDATE: قمت بتغيير pt-10 إلى pt-32 لزيادة المسافة العلوية وضمان عدم التداخل مع الهيدر
+            // ... (keep stories html) ...
             c.innerHTML += `
             <div class="pt-32 pb-4 container mx-auto px-6 fade-in-up group/cat" style="animation-delay: 0.3s;">
                 <div class="flex items-center gap-2 mb-6">
@@ -3162,19 +3342,131 @@
                 </div>
             </div>`;
 
-            // NEW: Render Category Banner (If Enabled)
+            // NEW: Render Category Banner (Infinite Gallery Style)
             if (HERO_SETTINGS.showCategoryBanner && HERO_SETTINGS.categoryBannerUrl) {
-                 c.innerHTML += `
-                    <div class="container mx-auto px-6 mt-4 fade-in-up" style="animation-delay: 0.4s;">
-                        <div class="w-full flex justify-center overflow-hidden rounded-2xl shadow-sm border border-stone-100">
-                            <img src="${HERO_SETTINGS.categoryBannerUrl}" 
-                                 style="height: ${HERO_SETTINGS.categoryBannerHeight || 200}px; width: ${HERO_SETTINGS.categoryBannerWidth || 100}%; object-fit: cover;" 
-                                 alt="Category Promo Banner">
+                const rawUrls = HERO_SETTINGS.categoryBannerUrl.split(/\r?\n/).filter(url => url.trim() !== '');
+                
+                let displayUrls = [];
+                if (rawUrls.length > 0) {
+                    if (rawUrls.length === 1) {
+                        displayUrls = rawUrls; 
+                    } else {
+                        // تكرار الصور لضمان التمرير اللانهائي
+                        displayUrls = [...rawUrls, ...rawUrls, ...rawUrls];
+                    }
+                }
+
+                const sliderId = 'category-banner-slider';
+                
+                // Settings - استقبال القيم من لوحة التحكم
+                const hDesk = HERO_SETTINGS.catBanHeightDesktop || HERO_SETTINGS.categoryBannerHeight || 250;
+                const hMob = HERO_SETTINGS.catBanHeightMobile || 120;
+                // هنا نستخدم القيم التي تحددها أنت بدقة
+                const wDesk = HERO_SETTINGS.catBanWidthDesktop || HERO_SETTINGS.categoryBannerWidth || 50; 
+                const wMob = HERO_SETTINGS.catBanWidthMobile || 85;
+                
+                const rDesk = HERO_SETTINGS.catBanRadiusDesktop || HERO_SETTINGS.categoryBannerRadius || '1.5rem';
+                const rMob = HERO_SETTINGS.catBanRadiusMobile || '0.8rem';
+
+                // Dynamic CSS
+                const styleId = 'cat-banner-style';
+                let styleEl = document.getElementById(styleId);
+                if(!styleEl) {
+                    styleEl = document.createElement('style');
+                    styleEl.id = styleId;
+                    document.head.appendChild(styleEl);
+                }
+                
+                // تم إزالة min-width الثابت (50%) واستبداله بالنسبة المئوية التي تحددها في الإعدادات
+                styleEl.innerHTML = `
+                    #cat-banner-wrapper { 
+                        width: 100%; 
+                        padding: 10px 0;
+                    }
+                    
+                    /* Mobile Gallery */
+                    .cat-banner-slide { 
+                        height: ${hMob}px; 
+                        width: ${wMob}%; 
+                        min-width: ${wMob}%; /* احترام الإعدادات في الموبايل */
+                        margin: 0 6px; 
+                        border-radius: ${rMob};
+                        scroll-snap-align: center;
+                        transition: transform 0.5s ease;
+                        opacity: 1;
+                        transform: scale(0.95);
+                    }
+                    .cat-banner-slide:hover { transform: scale(1); }
+                    
+                    /* Desktop Gallery */
+                    @media (min-width: 768px) {
+                        #cat-banner-wrapper { padding: 20px 0; }
+                        .cat-banner-slide { 
+                            height: ${hDesk}px; 
+                            width: ${wDesk}%; 
+                            min-width: ${wDesk}%; /* التعديل الجوهري: الآن يعتمد كلياً على الإعدادات */
+                            margin: 0 15px;
+                            border-radius: ${rDesk};
+                            opacity: 1;
+                            transform: scale(0.95);
+                        }
+                        .cat-banner-slide:hover { transform: scale(1); }
+                    }
+                    
+                    #${sliderId} {
+                        padding-inline: 0; 
+                        /* إخفاء شريط التمرير */
+                        scrollbar-width: none; 
+                        -ms-overflow-style: none;
+                    }
+                    #${sliderId}::-webkit-scrollbar { 
+                        display: none; 
+                    }
+                `;
+
+                if (displayUrls.length > 0) {
+                    c.innerHTML += `
+                    <div class="container mx-auto px-0 mt-4 fade-in-up" style="animation-delay: 0.4s;">
+                        <div class="w-full flex justify-center" onmouseenter="stopBannerAutoScroll('${sliderId}')" onmouseleave="startBannerAutoScroll('${sliderId}')">
+                            <div id="cat-banner-wrapper" class="relative group bg-transparent transition-all duration-300">
+                                
+                                <!-- Slider Container -->
+                                <div id="${sliderId}" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth h-full items-center">
+                                    ${displayUrls.map((url, idx) => `
+                                        <div id="cat-slide-${idx}" class="cat-banner-slide flex-shrink-0 relative overflow-hidden shadow-md border border-stone-100 bg-white group/slide">
+                                            <img src="${url.trim()}" class="w-full h-full object-cover transition-transform duration-700 group-hover/slide:scale-105" alt="Category Banner">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                
+                                <!-- Nav Buttons -->
+                                ${rawUrls.length > 1 ? `
+                                <button onclick="scrollBanner('${sliderId}', -1)" class="absolute top-1/2 left-4 md:left-10 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-stone-800 shadow-xl hover:bg-stone-900 hover:text-white hover:scale-110 transition-all opacity-0 group-hover:opacity-100 z-20 border border-stone-200">
+                                    <i data-lucide="chevron-left" size="24"></i>
+                                </button>
+                                <button onclick="scrollBanner('${sliderId}', 1)" class="absolute top-1/2 right-4 md:right-10 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-stone-800 shadow-xl hover:bg-stone-900 hover:text-white hover:scale-110 transition-all opacity-0 group-hover:opacity-100 z-20 border border-stone-200">
+                                    <i data-lucide="chevron-right" size="24"></i>
+                                </button>
+                                ` : ''}
+                            </div>
                         </div>
                     </div>`;
+                    
+                    if (rawUrls.length > 1) {
+                        setTimeout(() => {
+                            const slider = document.getElementById(sliderId);
+                            const startIndex = rawUrls.length; 
+                            const targetSlide = document.getElementById(`cat-slide-${startIndex}`);
+                            
+                            if (targetSlide && slider) {
+                                targetSlide.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+                                startBannerAutoScroll(sliderId);
+                            }
+                        }, 500); 
+                    }
+                }
             }
 
-            // Start Auto Scroll
             setTimeout(() => startAutoScroll('category-scroll-container'), 1000);
         }
 
@@ -3732,24 +4024,46 @@ ${trackingUrl}
                                             </label>
                                         </div>
                                         
-                                        <div class="space-y-4">
+                                        <div class="space-y-6">
                                             <div>
-                                                <label class="text-xs font-bold text-stone-500 uppercase mb-2 block">رابط صورة البانر</label>
-                                                <input name="fbUrl" value="${HERO_SETTINGS.footerBannerUrl || ''}" class="w-full border border-stone-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-orange-600 outline-none dir-ltr bg-white" placeholder="https://...">
+                                                <label class="text-xs font-bold text-stone-500 uppercase mb-2 block">رابط صور البانر (كل رابط في سطر)</label>
+                                                <textarea name="fbUrl" rows="3" class="w-full border border-stone-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-orange-600 outline-none dir-ltr bg-white custom-scrollbar" placeholder="https://image1.jpg&#10;https://image2.jpg">${HERO_SETTINGS.footerBannerUrl || ''}</textarea>
                                             </div>
-                                            <div class="grid grid-cols-2 gap-6">
-                                                <div>
-                                                    <label class="text-xs font-bold text-stone-500 uppercase mb-2 block">الارتفاع (Height px)</label>
-                                                    <div class="relative">
-                                                        <input name="fbHeight" type="number" value="${HERO_SETTINGS.footerBannerHeight || '200'}" class="w-full border border-stone-200 p-3 pl-10 rounded-xl text-sm focus:ring-2 focus:ring-orange-600 outline-none dir-ltr bg-white" placeholder="200">
-                                                        <span class="absolute left-3 top-3.5 text-stone-400 text-xs font-bold">px</span>
+                                            
+                                            <!-- Desktop Settings -->
+                                            <div class="bg-white p-4 rounded-xl border border-stone-200">
+                                                <h4 class="font-bold text-stone-800 mb-3 flex items-center gap-2"><i data-lucide="monitor" size="14"></i> إعدادات الكمبيوتر</h4>
+                                                <div class="grid grid-cols-3 gap-4">
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">الارتفاع (px)</label>
+                                                        <input name="fbHeightDesk" type="number" value="${HERO_SETTINGS.fbHeightDesktop || HERO_SETTINGS.footerBannerHeight || '300'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">العرض (%)</label>
+                                                        <input name="fbWidthDesk" type="number" value="${HERO_SETTINGS.fbWidthDesktop || HERO_SETTINGS.footerBannerWidth || '90'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">الحواف (Radius)</label>
+                                                        <input name="fbRadiusDesk" value="${HERO_SETTINGS.fbRadiusDesktop || HERO_SETTINGS.footerBannerRadius || '2rem'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <label class="text-xs font-bold text-stone-500 uppercase mb-2 block">العرض (Width %)</label>
-                                                    <div class="relative">
-                                                        <input name="fbWidth" type="number" value="${HERO_SETTINGS.footerBannerWidth || '100'}" class="w-full border border-stone-200 p-3 pl-10 rounded-xl text-sm focus:ring-2 focus:ring-orange-600 outline-none dir-ltr bg-white" placeholder="100">
-                                                        <span class="absolute left-3 top-3.5 text-stone-400 text-xs font-bold">%</span>
+                                            </div>
+
+                                            <!-- Mobile Settings -->
+                                            <div class="bg-white p-4 rounded-xl border border-stone-200">
+                                                <h4 class="font-bold text-stone-800 mb-3 flex items-center gap-2"><i data-lucide="smartphone" size="14"></i> إعدادات الموبايل</h4>
+                                                <div class="grid grid-cols-3 gap-4">
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">الارتفاع (px)</label>
+                                                        <input name="fbHeightMob" type="number" value="${HERO_SETTINGS.fbHeightMobile || '150'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">العرض (%)</label>
+                                                        <input name="fbWidthMob" type="number" value="${HERO_SETTINGS.fbWidthMobile || '95'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">الحواف (Radius)</label>
+                                                        <input name="fbRadiusMob" value="${HERO_SETTINGS.fbRadiusMobile || '1rem'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
                                                     </div>
                                                 </div>
                                             </div>
@@ -3766,24 +4080,46 @@ ${trackingUrl}
                                             </label>
                                         </div>
                                         
-                                        <div class="space-y-4">
+                                        <div class="space-y-6">
                                             <div>
-                                                <label class="text-xs font-bold text-stone-500 uppercase mb-2 block">رابط صورة البانر</label>
-                                                <input name="catBanUrl" value="${HERO_SETTINGS.categoryBannerUrl || ''}" class="w-full border border-stone-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-green-600 outline-none dir-ltr bg-white" placeholder="https://...">
+                                                <label class="text-xs font-bold text-stone-500 uppercase mb-2 block">رابط صور البانر (كل رابط في سطر)</label>
+                                                <textarea name="catBanUrl" rows="3" class="w-full border border-stone-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-green-600 outline-none dir-ltr bg-white custom-scrollbar" placeholder="https://image1.jpg&#10;https://image2.jpg">${HERO_SETTINGS.categoryBannerUrl || ''}</textarea>
                                             </div>
-                                            <div class="grid grid-cols-2 gap-6">
-                                                <div>
-                                                    <label class="text-xs font-bold text-stone-500 uppercase mb-2 block">الارتفاع (Height px)</label>
-                                                    <div class="relative">
-                                                        <input name="catBanHeight" type="number" value="${HERO_SETTINGS.categoryBannerHeight || '200'}" class="w-full border border-stone-200 p-3 pl-10 rounded-xl text-sm focus:ring-2 focus:ring-green-600 outline-none dir-ltr bg-white" placeholder="200">
-                                                        <span class="absolute left-3 top-3.5 text-stone-400 text-xs font-bold">px</span>
+
+                                            <!-- Desktop Settings -->
+                                            <div class="bg-white p-4 rounded-xl border border-stone-200">
+                                                <h4 class="font-bold text-stone-800 mb-3 flex items-center gap-2"><i data-lucide="monitor" size="14"></i> إعدادات الكمبيوتر</h4>
+                                                <div class="grid grid-cols-3 gap-4">
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">الارتفاع (px)</label>
+                                                        <input name="catBanHeightDesk" type="number" value="${HERO_SETTINGS.catBanHeightDesktop || HERO_SETTINGS.categoryBannerHeight || '250'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">العرض (%)</label>
+                                                        <input name="catBanWidthDesk" type="number" value="${HERO_SETTINGS.catBanWidthDesktop || HERO_SETTINGS.categoryBannerWidth || '90'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">الحواف (Radius)</label>
+                                                        <input name="catBanRadiusDesk" value="${HERO_SETTINGS.catBanRadiusDesktop || HERO_SETTINGS.categoryBannerRadius || '1.5rem'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <label class="text-xs font-bold text-stone-500 uppercase mb-2 block">العرض (Width %)</label>
-                                                    <div class="relative">
-                                                        <input name="catBanWidth" type="number" value="${HERO_SETTINGS.categoryBannerWidth || '100'}" class="w-full border border-stone-200 p-3 pl-10 rounded-xl text-sm focus:ring-2 focus:ring-green-600 outline-none dir-ltr bg-white" placeholder="100">
-                                                        <span class="absolute left-3 top-3.5 text-stone-400 text-xs font-bold">%</span>
+                                            </div>
+
+                                            <!-- Mobile Settings -->
+                                            <div class="bg-white p-4 rounded-xl border border-stone-200">
+                                                <h4 class="font-bold text-stone-800 mb-3 flex items-center gap-2"><i data-lucide="smartphone" size="14"></i> إعدادات الموبايل</h4>
+                                                <div class="grid grid-cols-3 gap-4">
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">الارتفاع (px)</label>
+                                                        <input name="catBanHeightMob" type="number" value="${HERO_SETTINGS.catBanHeightMobile || '120'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">العرض (%)</label>
+                                                        <input name="catBanWidthMob" type="number" value="${HERO_SETTINGS.catBanWidthMobile || '95'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
+                                                    </div>
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-stone-500 uppercase block mb-1">الحواف (Radius)</label>
+                                                        <input name="catBanRadiusMob" value="${HERO_SETTINGS.catBanRadiusMobile || '0.8rem'}" class="w-full border border-stone-200 p-2 rounded-lg text-sm text-center">
                                                     </div>
                                                 </div>
                                             </div>
