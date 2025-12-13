@@ -3046,6 +3046,146 @@
             }
         };
 
+        // --- 🆕 FIXED: Modification Request Logic (إصلاح طلب التعديل) ---
+        window.toggleModModal = (show) => {
+            const backdrop = document.getElementById('mod-modal-backdrop');
+            const modal = document.getElementById('mod-modal');
+            if (show) {
+                backdrop.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+                modal.classList.add('scale-100');
+            } else {
+                backdrop.classList.add('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+                modal.classList.remove('scale-100');
+            }
+        };
+
+        window.openModRequestModal = (orderId) => {
+            document.getElementById('mod-order-id').value = orderId;
+            toggleModModal(true);
+        };
+
+        window.handleSubmitModRequest = async (e) => {
+            e.preventDefault();
+            const orderId = e.target.orderId.value;
+            const message = e.target.message.value.trim();
+
+            if (!message) return showToast("يرجى كتابة تفاصيل التعديل");
+
+            try {
+                const btn = e.target.querySelector('button');
+                const originalText = btn.innerText;
+                btn.disabled = true;
+                btn.innerText = "جاري الإرسال...";
+
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId), {
+                    modificationRequest: {
+                        message: message,
+                        status: 'pending',
+                        createdAt: Date.now()
+                    },
+                    // إضافة للسجل الزمني
+                    statusHistory: arrayUnion({
+                        status: 'modification_requested',
+                        timestamp: Date.now(),
+                        note: `طلب العميل تعديل: ${message}`
+                    })
+                });
+
+                showToast("تم إرسال طلب التعديل للإدارة بنجاح");
+                toggleModModal(false);
+                e.target.reset();
+                btn.disabled = false;
+                btn.innerText = originalText;
+                
+                // تحديث الواجهة فوراً إذا كنا في صفحة التتبع
+                const resultContainer = document.getElementById('tracking-result');
+                if (resultContainer && resultContainer.innerHTML !== "") {
+                    // إعادة جلب الطلب لتحديث الحالة الظاهرة
+                    const docSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId));
+                    if(docSnap.exists()){
+                         const order = { id: docSnap.id, ...docSnap.data() };
+                         renderTrackingTimeline(resultContainer, order);
+                    }
+                }
+
+            } catch (err) {
+                console.error(err);
+                showToast("حدث خطأ أثناء الإرسال");
+                e.target.querySelector('button').disabled = false;
+                e.target.querySelector('button').innerText = "إرسال الطلب للإدارة";
+            }
+        };
+        // -----------------------------------------------------------
+
+        // --- 1️⃣2️⃣ FIXED: Admin Edit Order Logic (إصلاح تعديل الطلب) ---
+        
+        window.toggleEditOrderModal = (show) => {
+            const backdrop = document.getElementById('edit-order-modal-backdrop');
+            const modal = document.getElementById('edit-order-modal');
+            if (show) {
+                backdrop.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+                modal.classList.add('scale-100');
+            } else {
+                backdrop.classList.add('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+                modal.classList.remove('scale-100');
+            }
+        };
+
+        window.openEditOrderModal = (id) => {
+            if (!user || user.email !== ADMIN_EMAIL) return showToast("غير مصرح");
+            
+            const order = ALL_ORDERS.find(o => o.id === id);
+            if (!order) return showToast("الطلب غير موجود");
+
+            const form = document.getElementById('edit-order-form');
+            form.orderId.value = order.id;
+            form.customerName.value = order.customer.name;
+            form.customerPhone.value = order.customer.phone;
+            form.customerAddress.value = order.customer.address;
+            form.totalAmount.value = order.totalAmount;
+
+            toggleEditOrderModal(true);
+        };
+
+        window.handleUpdateOrder = async (e) => {
+            e.preventDefault();
+            if (!user || user.email !== ADMIN_EMAIL) return showToast("غير مصرح");
+
+            const id = e.target.orderId.value;
+            const name = e.target.customerName.value.trim();
+            const phone = e.target.customerPhone.value.trim();
+            const address = e.target.customerAddress.value.trim();
+            const total = parseFloat(e.target.totalAmount.value);
+
+            if (!name || !phone || !address || isNaN(total)) {
+                return showToast("يرجى التأكد من صحة البيانات");
+            }
+
+            try {
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', id), {
+                    'customer.name': name,
+                    'customer.phone': phone,
+                    'customer.address': address,
+                    'totalAmount': total,
+                    statusHistory: arrayUnion({
+                        status: 'edited',
+                        timestamp: Date.now(),
+                        note: 'تم تعديل بيانات الطلب يدوياً بواسطة المدير'
+                    })
+                });
+                showToast("✅ تم تحديث بيانات الطلب بنجاح");
+                toggleEditOrderModal(false);
+            } catch(err) {
+                console.error(err);
+                showToast("❌ فشل تحديث الطلب");
+            }
+        };
+        // -----------------------------------------------------------
+
         // NEW: Handle Order Actions
         window.handleOrderAction = async (id, action) => {
             if (!user || user.email !== ADMIN_EMAIL) return showToast("غير مصرح");
