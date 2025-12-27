@@ -91,6 +91,27 @@
         .custom-scrollbar-modern::-webkit-scrollbar-thumb:hover {
             background-color: #78716c; /* stone-500 */
         }
+
+        /* --- 🎅 Christmas Snow Effect --- */
+        .snowflake {
+            position: fixed;
+            top: -20px;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            z-index: 99999;
+            pointer-events: none;
+            user-select: none;
+            animation: snowfall linear infinite;
+            will-change: transform;
+        }
+        
+        @keyframes snowfall {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.9; }
+            25% { transform: translateY(25vh) rotate(90deg) translateX(10px); }
+            50% { transform: translateY(50vh) rotate(180deg) translateX(-10px); }
+            75% { transform: translateY(75vh) rotate(270deg) translateX(10px); }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(0); opacity: 0.2; }
+        }
     </style>
 </head>
 <!-- تم إضافة flex و min-h-screen هنا لإصلاح مشكلة الجليتش -->
@@ -3387,10 +3408,6 @@
                     const rawMobUrls = (HERO_SETTINGS.footerBannerUrlMobile || '').split(/\r?\n/).filter(u => u.trim());
                     const mobUrls = rawMobUrls.length > 0 ? rawMobUrls : deskUrls;
 
-                    // Infinite Loop Logic (Triple)
-                    const displayDesk = deskUrls.length > 1 ? [...deskUrls, ...deskUrls, ...deskUrls] : deskUrls;
-                    const displayMob = mobUrls.length > 1 ? [...mobUrls, ...mobUrls, ...mobUrls] : mobUrls;
-
                     // IDs
                     const sliderDeskId = 'header-slider-desktop';
                     const sliderMobId = 'header-slider-mobile';
@@ -3398,8 +3415,6 @@
                     // Settings
                     const hDesk = HERO_SETTINGS.fbHeightDesktop || 300;
                     const hMob = HERO_SETTINGS.fbHeightMobile || 150;
-                    const wDesk = HERO_SETTINGS.fbWidthDesktop || 90;
-                    const wMob = HERO_SETTINGS.fbWidthMobile || 95;
                     const rDesk = HERO_SETTINGS.fbRadiusDesktop || '2rem';
                     const rMob = HERO_SETTINGS.fbRadiusMobile || '1rem';
 
@@ -3412,59 +3427,112 @@
                         document.head.appendChild(styleEl);
                     }
                     
+                    // UPDATE: CSS للبانر بنظام التلاشي (Fade)
                     styleEl.innerHTML = `
-                        .header-banner-slide-desk { 
-                            height: ${hDesk}px; width: ${wDesk}%; min-width: ${wDesk}%; margin: 0 15px; border-radius: ${rDesk};
-                            opacity: 1; transform: scale(0.98); transition: transform 0.5s ease;
+                        /* حاوية البانر */
+                        .banner-fade-container {
+                            position: relative;
+                            width: 100%;
+                            overflow: hidden;
                         }
-                        .header-banner-slide-desk:hover { transform: scale(1); }
 
-                        .header-banner-slide-mob { 
-                            height: ${hMob}px; width: ${wMob}%; min-width: ${wMob}%; margin: 0 6px; border-radius: ${rMob};
-                            opacity: 1; transform: scale(0.96); transition: transform 0.5s ease;
+                        /* الشريحة (مشتركة) */
+                        .banner-fade-slide {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            opacity: 0;
+                            transition: opacity 1.5s ease-in-out; /* مدة الانتقال: 1.5 ثانية (بطيء) */
+                            z-index: 1;
                         }
-                        .header-banner-slide-mob:hover { transform: scale(1); }
+
+                        /* الشريحة النشطة */
+                        .banner-fade-slide.active {
+                            opacity: 1;
+                            z-index: 2;
+                        }
+
+                        /* تخصيص الصور للكمبيوتر */
+                        .banner-img-desk {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            border-radius: ${rDesk};
+                        }
+
+                        /* تخصيص الصور للموبايل */
+                        .banner-img-mob {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: fill;
+                            border-radius: ${rMob};
+                        }
                     `;
 
                     // Generate HTML
-                    // We render TWO containers: one for mobile (md:hidden), one for desktop (hidden md:block)
+                    // تم تغيير الهيكل ليدعم التموضع المطلق (Absolute Positioning)
                     
                     bannerContainer.innerHTML = `
-                    <div class="w-full py-4 bg-white">
+                    <div class="w-full py-4 bg-white dir-ltr"> 
                         
-                        <!-- Mobile Slider (md:hidden) -->
-                        <div class="md:hidden relative group" onmouseenter="stopBannerAutoScroll('${sliderMobId}')" onmouseleave="startBannerAutoScroll('${sliderMobId}')">
-                            <div id="${sliderMobId}" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth h-full items-center">
-                                ${displayMob.map((url, idx) => `
-                                    <div id="mob-slide-${idx}" class="header-banner-slide-mob flex-shrink-0 relative overflow-hidden shadow-sm border border-stone-200/50 bg-white">
-                                        <img src="${url.trim()}" class="w-full h-full object-fill" alt="Banner">
+                        <!-- Mobile Fade Slider -->
+                        <div class="md:hidden relative group w-full banner-fade-container" 
+                             style="height: ${hMob}px;"
+                             id="${sliderMobId}"
+                             onmouseenter="stopBannerAutoFade('${sliderMobId}')" 
+                             onmouseleave="startBannerAutoFade('${sliderMobId}')">
+                            
+                            ${mobUrls.map((url, idx) => `
+                                <div class="banner-fade-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+                                    <div class="w-full h-full relative overflow-hidden shadow-sm border border-stone-100 bg-stone-100" style="border-radius: ${rMob};">
+                                        <img src="${url.trim()}" class="banner-img-mob" alt="Banner">
                                     </div>
-                                `).join('')}
+                                </div>
+                            `).join('')}
+                            
+                            <!-- Dots Indicator -->
+                            ${mobUrls.length > 1 ? `
+                            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                                ${mobUrls.map((_, i) => `<div class="w-1.5 h-1.5 rounded-full ${i === 0 ? 'bg-white w-4' : 'bg-white/50'} backdrop-blur-sm shadow-sm transition-all duration-500" id="${sliderMobId}-dot-${i}"></div>`).join('')}
                             </div>
+                            ` : ''}
                         </div>
 
-                        <!-- Desktop Slider (hidden md:block) -->
-                        <div class="hidden md:block relative group" onmouseenter="stopBannerAutoScroll('${sliderDeskId}')" onmouseleave="startBannerAutoScroll('${sliderDeskId}')">
-                            <div id="${sliderDeskId}" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth h-full items-center justify-center">
-                                ${displayDesk.map((url, idx) => `
-                                    <div id="desk-slide-${idx}" class="header-banner-slide-desk flex-shrink-0 relative overflow-hidden shadow-sm border border-stone-200/50 bg-white">
-                                        <img src="${url.trim()}" class="w-full h-full object-cover" alt="Banner">
+                        <!-- Desktop Fade Slider -->
+                        <div class="hidden md:block relative group w-full banner-fade-container" 
+                             style="height: ${hDesk}px;"
+                             id="${sliderDeskId}"
+                             onmouseenter="stopBannerAutoFade('${sliderDeskId}')" 
+                             onmouseleave="startBannerAutoFade('${sliderDeskId}')">
+                            
+                            ${deskUrls.map((url, idx) => `
+                                <div class="banner-fade-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+                                    <div class="w-full h-full relative overflow-hidden shadow-sm border border-stone-100 bg-stone-100" style="border-radius: ${rDesk};">
+                                        <img src="${url.trim()}" class="banner-img-desk" alt="Banner">
                                     </div>
-                                `).join('')}
-                            </div>
-                            <!-- Nav Buttons (Desktop Only) -->
+                                </div>
+                            `).join('')}
+                            
+                            <!-- Nav Buttons -->
                             ${deskUrls.length > 1 ? `
-                            <button onclick="scrollBanner('${sliderDeskId}', -1)" class="absolute top-1/2 left-10 -translate-y-1/2 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-stone-800 shadow-lg hover:scale-110 transition-all opacity-0 group-hover:opacity-100 z-20"><i data-lucide="chevron-left"></i></button>
-                            <button onclick="scrollBanner('${sliderDeskId}', 1)" class="absolute top-1/2 right-10 -translate-y-1/2 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-stone-800 shadow-lg hover:scale-110 transition-all opacity-0 group-hover:opacity-100 z-20"><i data-lucide="chevron-right"></i></button>
+                            <button onclick="fadeBannerStep('${sliderDeskId}', -1)" class="absolute top-1/2 left-6 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-stone-800 shadow-md hover:scale-110 transition-all opacity-0 group-hover:opacity-100 z-20 hover:bg-white"><i data-lucide="chevron-left"></i></button>
+                            <button onclick="fadeBannerStep('${sliderDeskId}', 1)" class="absolute top-1/2 right-6 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-stone-800 shadow-md hover:scale-110 transition-all opacity-0 group-hover:opacity-100 z-20 hover:bg-white"><i data-lucide="chevron-right"></i></button>
                             ` : ''}
                         </div>
 
                     </div>`;
                     
-                    // Init Scroll
+                    // Init State & Auto Play
+                    // نقوم بتهيئة فهارس البانر
+                    window.bannerFadeState = window.bannerFadeState || {};
+                    window.bannerFadeState[sliderMobId] = 0;
+                    window.bannerFadeState[sliderDeskId] = 0;
+
                     setTimeout(() => {
-                        if(mobUrls.length > 1) startBannerAutoScroll(sliderMobId);
-                        if(deskUrls.length > 1) startBannerAutoScroll(sliderDeskId);
+                        if(mobUrls.length > 1) startBannerAutoFade(sliderMobId, mobUrls.length);
+                        if(deskUrls.length > 1) startBannerAutoFade(sliderDeskId, deskUrls.length);
                     }, 500);
 
                     lucide.createIcons();
@@ -3475,80 +3543,154 @@
             }
         }
 
-        // --- NEW: Handle Save Hero Settings (Updated for Split Settings) ---
-        window.handleSaveHeroSettings = async (e) => {
-            e.preventDefault();
-            if (!user || user.email !== ADMIN_EMAIL) return showToast("غير مصرح");
+        // --- NEW: Fade Logic Implementation ---
+        
+        let bannerFadeTimers = {};
 
-            // Helpers
-            const getVal = (name) => e.target[name] ? e.target[name].value.trim() : '';
-            const getCheck = (name) => e.target[name] ? e.target[name].checked : false;
+        // دالة للتبديل اليدوي أو الآلي
+        window.fadeBannerStep = (id, step) => {
+            const container = document.getElementById(id);
+            if(!container) return;
+            
+            const slides = container.querySelectorAll('.banner-fade-slide');
+            const total = slides.length;
+            if(total <= 1) return;
 
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'metadata', 'hero'), {
-                    // Standard Fields
-                    mainImage: getVal('heroMain'),
-                    secondaryImage: getVal('heroSec'),
-                    priceLabel: getVal('heroPriceLabel'),
-                    priceValue: getVal('heroPriceValue'),
-                    discountLabel: getVal('heroDiscLabel'),
-                    discountValue: getVal('heroDiscValue'),
-                    logoUrl: getVal('siteLogo'),
-                    logoSize: getVal('logoSize'),
-                    imageBaseUrl: getVal('imgBaseUrl'),
-                    imageDefaultExt: getVal('imgExt'),
-                    
-                    // Header Banner (Split Settings)
-                    footerBannerUrl: getVal('fbUrl'),
-                    footerBannerUrlMobile: getVal('fbUrlMob'), // 🆕 Save Mobile URL
-                    showFooterBanner: getCheck('fbShow'),
-                    fbHeightDesktop: getVal('fbHeightDesk'), fbHeightMobile: getVal('fbHeightMob'),
-                    fbWidthDesktop: getVal('fbWidthDesk'), fbWidthMobile: getVal('fbWidthMob'),
-                    fbRadiusDesktop: getVal('fbRadiusDesk'), fbRadiusMobile: getVal('fbRadiusMob'),
+            let current = window.bannerFadeState[id] || 0;
+            let next = current + step;
 
-                    // Category Banner (Split Settings)
-                    categoryBannerUrl: getVal('catBanUrl'),
-                    showCategoryBanner: getCheck('catBanShow'),
-                    catBanHeightDesktop: getVal('catBanHeightDesk'), catBanHeightMobile: getVal('catBanHeightMob'),
-                    catBanWidthDesktop: getVal('catBanWidthDesk'), catBanWidthMobile: getVal('catBanWidthMob'),
-                    catBanRadiusDesktop: getVal('catBanRadiusDesk'), catBanRadiusMobile: getVal('catBanRadiusMob'),
+            // Loop logic
+            if (next >= total) next = 0;
+            if (next < 0) next = total - 1;
 
-                    // Other Banners (Simple)
-                    bestSellerBannerUrl: getVal('bsBanUrl'),
-                    bestSellerBannerHeight: getVal('bsBanHeight'),
-                    bestSellerBannerWidth: getVal('bsBanWidth'),
-                    showBestSellerBanner: getCheck('bsBanShow'),
-                    
-                    // Featured Banner (UPDATED: Split Mobile/Desktop Images & Sizes)
-                    featuredBannerUrl: getVal('ftBanUrl'),       // Desktop URL
-                    featuredBannerUrlMobile: getVal('ftBanUrlMob'), // Mobile URL (NEW)
-                    
-                    featuredBannerHeightDesktop: getVal('ftBanHeightDesk'), 
-                    featuredBannerHeightMobile: getVal('ftBanHeightMob'), 
-                    featuredBannerWidthDesktop: getVal('ftBanWidthDesk'), 
-                    featuredBannerWidthMobile: getVal('ftBanWidthMob'),
-                    
-                    // Keep generics just in case
-                    featuredBannerHeight: getVal('ftBanHeightDesk'), 
-                    featuredBannerWidth: getVal('ftBanWidthDesk'),
-                    showFeaturedBanner: getCheck('ftBanShow'),
-                    
-                    // --- NEW: Payment Banner ---
-                    paymentBannerUrl: getVal('payBanUrl'),
-                    showPaymentBanner: getCheck('payBanShow'),
-                    paymentBannerHeight: getVal('payBanHeight'),
-                    paymentBannerWidth: getVal('payBanWidth'),
-                    // --------------------------
+            // Update State
+            window.bannerFadeState[id] = next;
 
-                    showHeroMobile: getCheck('heroShowMobile'),
-                    showHeroDesktop: getCheck('heroShowDesktop'),
-                    showCategoryBar: getCheck('catBarShow') 
-                }, { merge: true });
-                showToast("تم تحديث إعدادات الموقع والواجهة بنجاح");
-            } catch(err) {
-                console.error(err);
-                showToast("حدث خطأ أثناء الحفظ");
+            // Apply Classes
+            slides.forEach((slide, idx) => {
+                if(idx === next) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+
+            // Update Dots (if exist)
+            const dots = container.querySelectorAll(`[id^="${id}-dot-"]`);
+            dots.forEach((dot, idx) => {
+                if(idx === next) {
+                    dot.classList.remove('bg-white/50');
+                    dot.classList.add('bg-white', 'w-4');
+                } else {
+                    dot.classList.add('bg-white/50');
+                    dot.classList.remove('bg-white', 'w-4');
+                }
+            });
+        };
+
+        window.startBannerAutoFade = (id, count) => {
+            // إذا لم يتم تمرير العدد، نحاول حسابه
+            if(!count) {
+                const el = document.getElementById(id);
+                if(el) count = el.querySelectorAll('.banner-fade-slide').length;
+                else return;
             }
+            
+            if(bannerFadeTimers[id]) clearInterval(bannerFadeTimers[id]);
+
+            // كل 3 ثواني (تم التعديل من 4000 إلى 3000)
+            bannerFadeTimers[id] = setInterval(() => {
+                fadeBannerStep(id, 1);
+            }, 3000);
+        };
+
+        window.stopBannerAutoFade = (id) => {
+            if(bannerFadeTimers[id]) {
+                clearInterval(bannerFadeTimers[id]);
+                delete bannerFadeTimers[id];
+            }
+        };
+
+        // NEW: Improved Banner Scroll Function (Smart Direction) - (Legacy kept for other sliders)
+        window.scrollBanner = (id, direction) => {
+            const slider = document.getElementById(id);
+            if (!slider) return;
+            
+            // Detect direction based on scrollHeight
+            if (slider.scrollHeight > slider.clientHeight) {
+                // Vertical
+                const height = slider.clientHeight;
+                slider.scrollBy({ top: direction * height, behavior: 'smooth' });
+            } else {
+                // Horizontal
+                const width = slider.clientWidth;
+                slider.scrollBy({ left: direction * width, behavior: 'smooth' });
+            }
+        };
+
+        // NEW: Improved Auto Scroll Logic (Looping & Vertical Support)
+        window.startBannerAutoScroll = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            
+            if (bannerScrollTimers[id]) clearInterval(bannerScrollTimers[id]);
+
+            // سرعة متوسطة (3 ثواني) مع حركة ناعمة
+            bannerScrollTimers[id] = setInterval(() => {
+                const element = document.getElementById(id);
+                if (!element) {
+                    clearInterval(bannerScrollTimers[id]);
+                    return;
+                }
+
+                // Check vertical
+                if (element.scrollHeight > element.clientHeight) {
+                    const maxScroll = element.scrollHeight - element.clientHeight;
+                    const currentScroll = element.scrollTop;
+                    
+                    if (currentScroll >= maxScroll - 10) {
+                        element.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        element.scrollBy({ top: element.clientHeight, behavior: 'smooth' });
+                    }
+                } else {
+                    // Horizontal fallback
+                    const maxScroll = element.scrollWidth - element.clientWidth;
+                    const currentScroll = Math.abs(element.scrollLeft);
+                    
+                    if (currentScroll >= maxScroll - 10) {
+                        element.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        element.scrollBy({ left: element.clientWidth, behavior: 'smooth' });
+                    }
+                }
+            }, 3000); 
+        };
+
+        // NEW: Improved Auto Scroll Logic (Looping)
+        window.startBannerAutoScroll = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            
+            if (bannerScrollTimers[id]) clearInterval(bannerScrollTimers[id]);
+
+            bannerScrollTimers[id] = setInterval(() => {
+                const element = document.getElementById(id);
+                if (!element) {
+                    clearInterval(bannerScrollTimers[id]);
+                    return;
+                }
+
+                const maxScroll = element.scrollWidth - element.clientWidth;
+                const currentScroll = element.scrollLeft;
+                
+                // If at end, go to start smoothly (or instantly if preferred)
+                if (currentScroll >= maxScroll - 10) {
+                    element.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    element.scrollBy({ left: element.clientWidth, behavior: 'smooth' });
+                }
+            }, 4000); 
         };
 
         window.cancelEdit = () => {
@@ -5797,6 +5939,51 @@
             }
         };
 
+        // --- 🎅 NEW: Christmas Effect Function (تأثير الكريسماس) ---
+        function initChristmasEffect() {
+            // إنشاء حاوية الثلج
+            const container = document.createElement('div');
+            container.id = 'christmas-container';
+            container.style.position = 'fixed';
+            container.style.inset = '0';
+            container.style.pointerEvents = 'none';
+            container.style.zIndex = '99999';
+            container.style.overflow = 'hidden';
+            document.body.appendChild(container);
+
+            const flakes = ['❄', '❅', '❆', '•', '*'];
+
+            // توليد الثلج كل 200 مللي ثانية
+            setInterval(() => {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.innerText = flakes[Math.floor(Math.random() * flakes.length)];
+                
+                // خصائص عشوائية (موقع، سرعة، حجم)
+                const left = Math.random() * 100;
+                const animDuration = Math.random() * 5 + 5 + 's'; // من 5 إلى 10 ثواني
+                const size = Math.random() * 1.2 + 0.5 + 'em'; 
+                const opacity = Math.random() * 0.5 + 0.4;
+
+                flake.style.left = left + '%';
+                flake.style.animationDuration = animDuration;
+                flake.style.fontSize = size;
+                flake.style.opacity = opacity;
+                
+                // ألوان احتفالية نادرة (أحمر، أخضر، ذهبي) وسط الثلج الأبيض
+                const rand = Math.random();
+                if (rand > 0.96) flake.style.color = '#ef4444'; // Red (نادر جداً)
+                else if (rand > 0.93) flake.style.color = '#22c55e'; // Green (نادر)
+                else if (rand > 0.90) flake.style.color = '#fbbf24'; // Gold (نادر)
+                else flake.style.color = '#e0f2fe'; // Ice Blue/White (الأساسي)
+
+                container.appendChild(flake);
+
+                // تنظيف العنصر بعد انتهاء الحركة
+                setTimeout(() => flake.remove(), parseFloat(animDuration) * 1000);
+            }, 200); 
+        }
+
         function renderCategoriesView(c) {
             const html = CATEGORIES.map((cat, index) => {
                 // Escape single quotes for the onclick handler
@@ -7846,6 +8033,7 @@
 
         // Start
         init();
+        initChristmasEffect(); // 🎅 تشغيل تأثير الكريسماس
     </script>
 </body>
 </html>
