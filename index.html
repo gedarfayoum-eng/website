@@ -5,19 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جدار - للديكورات الحديثة</title>
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 
+      ⚠️ إعدادات الـ Production (الوضع النهائي):
+      لتحويل المشروع لنسخة محلية سريعة، قم بتنفيذ الأمر التالي في تيرمينال جهازك:
+      npx tailwindcss -o style.css --minify
+      ثم قم بإلغاء تعليق السطر التالي وحذف سطر السكربت (CDN) بالأسفل.
+    -->
+    <!-- <link href="style.css" rel="stylesheet"> -->
+
+    <!-- Tailwind CSS (مؤقت للمعاينة - احذفه عند استخدام الملف المحلي) -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
     
-    <!-- Google Fonts: Switch to Tajawal for better clarity -->
+    <!-- Google Fonts: Optimized Loading (Tajawal) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- 1. Preload stylesheet for high priority -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap">
+    
+    <!-- 2. Async loading strategy to prevent render blocking -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
+    <!-- 3. Fallback for no-js environments -->
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    </noscript>
     
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
 
     <style>
-        body { font-family: 'Tajawal', sans-serif; }
+        /* --- CRITICAL CSS (للعرض الفوري قبل تحميل المكتبات) --- */
+        /* يضمن هذا القسم ظهور الهيكل الأساسي وشاشة التحميل بشكل صحيح فوراً */
+        
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1c1917;
+            --primary-color: #1c1917;
+        }
+
+        body { 
+            font-family: 'Tajawal', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-align: right;
+        }
+
+        /* Splash Screen Styles (Inlined & Hardcoded for Speed - No Tailwind Dependency) */
+        #splash-screen {
+            position: fixed;
+            top: 0; right: 0; bottom: 0; left: 0;
+            z-index: 9999; /* قيمة عالية جداً لضمان الظهور فوق كل شيء */
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+        }
+
+        #splash-logo {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            /* تم إيقاف النبض */
+            /* animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; */
+        }
+
+        .splash-title {
+            font-size: 4rem; 
+            font-weight: 900;
+            color: #1c1917;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .splash-title span {
+            color: #a8a29e; /* stone-400 */
+            font-size: 5rem;
+            line-height: 0;
+        }
+
+        .splash-subtitle {
+            font-size: 0.875rem;
+            color: #78716c; /* stone-500 */
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+        }
+
+        /* Loading Bar Animation - Critical */
+        .loading-bar-container {
+            margin-top: 2.5rem;
+            width: 12rem;
+            height: 0.25rem;
+            background-color: #f5f5f4;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        
+        .loading-bar-fill {
+            height: 100%;
+            background-color: #1c1917;
+            width: 0;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading { 0% { width: 0; transform: translateX(-100%); } 100% { width: 100%; transform: translateX(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
+
+        /* Prevent Layout Shifts for Main Containers */
+        #main-content {
+            flex-grow: 1;
+            min-height: 80vh; /* حجز مساحة للشاشة الرئيسية */
+            width: 100%;
+        }
+
+        footer {
+            min-height: 300px; /* حجز مساحة للفوتر */
+            contain: content; /* عزل الفوتر لتحسين الأداء */
+        }
+
+        /* --- END CRITICAL CSS --- */
+
+        /* --- EXISTING UTILITY STYLES --- */
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
@@ -122,30 +247,17 @@
 <body class="bg-white text-stone-900 selection:bg-stone-200 overflow-x-hidden flex flex-col min-h-screen">
 
     <!-- 🌟 SPLASH SCREEN (شاشة الدخول) -->
-    <div id="splash-screen" class="fixed inset-0 z-[100] bg-white/80 backdrop-blur-3xl flex flex-col items-center justify-center transition-all duration-700 ease-in-out">
-        <div class="relative">
-            <!-- Background Glow -->
-            <div class="absolute inset-0 bg-stone-200 rounded-full blur-3xl opacity-50 animate-pulse"></div>
-            
-            <!-- Logo Container -->
-            <div id="splash-logo" class="relative z-10 flex flex-col items-center gap-4 transform transition-all duration-700 scale-100">
-                <!-- سيتم حقن الشعار هنا ديناميكياً أو استخدام الافتراضي -->
-                <div class="text-6xl font-black text-stone-900 tracking-tighter flex items-center gap-1 animate-bounce">
-                    جدار<span class="text-stone-400 text-7xl leading-3">.</span>
-                </div>
-                <p class="text-sm text-stone-500 font-bold tracking-[0.3em] uppercase animate-pulse">Decor & Art</p>
-            </div>
+    <!-- تم تبسيط الكلاسات لأننا نعتمد الآن على Critical CSS المضمن -->
+    <div id="splash-screen">
+        <!-- Logo Container -->
+        <div id="splash-logo">
+            <!-- تم إزالة الشعار الثابت والنص الافتراضي، سيظهر فقط الشعار الديناميكي إذا وجد -->
         </div>
         
         <!-- Loading Bar -->
-        <div class="mt-8 w-48 h-1 bg-stone-100 rounded-full overflow-hidden">
-            <!-- تم تعديل مدة الانيميشن من 2s إلى 1s -->
-            <div class="h-full bg-stone-900 animate-[loading_1s_ease-in-out_forwards]"></div>
+        <div class="loading-bar-container">
+            <div class="loading-bar-fill"></div>
         </div>
-
-        <style>
-            @keyframes loading { 0% { width: 0; } 100% { width: 100%; } }
-        </style>
 
         <script>
             // محاولة تحميل الشعار من الكاش فوراً لعرضه في شاشة الترحيب
@@ -154,8 +266,9 @@
                 if (cachedHero) {
                     const settings = JSON.parse(cachedHero);
                     if (settings.logoUrl) {
+                        // FIX: إضافة style لتحديد العرض فوراً ومنع ظهور الصورة بحجمها الأصلي الكبير
                         document.getElementById('splash-logo').innerHTML = `
-                            <img src="${settings.logoUrl}" class="w-32 md:w-40 h-auto object-contain animate-pulse drop-shadow-sm" alt="Logo">
+                            <img src="${settings.logoUrl}" style="width: 150px; max-width: 80vw; margin-bottom: 1rem;" class="object-contain drop-shadow-sm" alt="Logo">
                         `;
                     }
                 }
@@ -167,8 +280,8 @@
                     const splash = document.getElementById('splash-screen');
                     const logo = document.getElementById('splash-logo');
                     if(splash) {
-                        splash.classList.add('opacity-0', 'pointer-events-none');
-                        if(logo) logo.classList.add('scale-150', 'opacity-0'); // Zoom out effect
+                        splash.style.opacity = '0';
+                        splash.style.pointerEvents = 'none';
                         
                         // إزالة العنصر من DOM بعد انتهاء الحركة لتخفيف الصفحة
                         setTimeout(() => splash.remove(), 800);
@@ -188,11 +301,8 @@
         <div class="container mx-auto px-6 py-4 flex justify-between items-center relative">
             
             <!-- Brand Logo (Modern Typography) -->
-            <div id="navbar-brand" onclick="setView('home')" class="cursor-pointer flex flex-col items-start leading-none group z-50 transition-all select-none">
-                <div class="text-3xl font-black tracking-tighter flex items-center gap-0.5 text-stone-900">
-                    جدار<span class="text-stone-400 text-4xl leading-3 animate-pulse">.</span>
-                </div>
-                <span class="text-[0.6rem] text-stone-500 font-bold tracking-[0.2em] uppercase mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -translate-y-2 group-hover:translate-y-0">Decor & Art</span>
+            <!-- تم تفريغ المحتوى لإزالة الشعار الثابت -->
+            <div id="navbar-brand" onclick="setView('home')" class="cursor-pointer flex flex-col items-start leading-none group z-50 transition-all select-none min-h-[40px] flex justify-center">
             </div>
 
             <!-- Desktop Navigation (Centered & Animated) -->
@@ -215,9 +325,13 @@
                                     <span class="text-xs font-bold tracking-[0.2em] uppercase">التصنيفات</span>
                                 </div>
                                 
-                                <!-- List -->
-                                <ul class="space-y-2 flex-1 overflow-y-auto custom-scrollbar pl-2 pr-1" id="mega-menu-categories-list">
+                                <!-- List (Added min-h) -->
+                                <ul class="space-y-2 flex-1 overflow-y-auto custom-scrollbar pl-2 pr-1 min-h-[300px]" id="mega-menu-categories-list">
                                     <!-- Injected via JS -->
+                                    <!-- Placeholder Loading State -->
+                                    <li class="h-10 bg-stone-200/50 rounded-xl animate-pulse"></li>
+                                    <li class="h-10 bg-stone-200/50 rounded-xl animate-pulse"></li>
+                                    <li class="h-10 bg-stone-200/50 rounded-xl animate-pulse"></li>
                                 </ul>
 
                                 <!-- Bottom Action -->
@@ -250,8 +364,12 @@
                                     </button>
                                 </div>
 
-                                <div id="mega-menu-popular-list" class="grid grid-cols-3 gap-6 h-[360px] relative z-10">
+                                <!-- Grid (Already has h-[360px]) -->
+                                <div id="mega-menu-popular-list" class="grid grid-cols-3 gap-6 h-[360px] relative z-10 min-h-[360px]">
                                     <!-- Injected via JS -->
+                                    <div class="bg-stone-100 rounded-[2rem] animate-pulse h-full"></div>
+                                    <div class="bg-stone-100 rounded-[2rem] animate-pulse h-full"></div>
+                                    <div class="bg-stone-100 rounded-[2rem] animate-pulse h-full"></div>
                                 </div>
                             </div>
                         </div>
@@ -365,7 +483,8 @@
     <div id="header-banner-container" class="w-full z-30 transition-all duration-300 hidden mt-[85px] md:mt-[74px]"></div>
 
     <!-- تم إضافة flex-grow هنا لدفع الـ Footer للأسفل دائماً -->
-    <main id="main-content" class="flex-grow"></main>
+    <!-- Added min-h-[80vh] to prevent layout collapse on empty content -->
+    <main id="main-content" class="flex-grow min-h-[80vh]"></main>
 
     <!-- Drawers & Modals -->
     <div id="cart-drawer-backdrop" onclick="toggleCart(false)" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[65] opacity-0 pointer-events-none transition-opacity duration-300"></div>
@@ -385,10 +504,10 @@
         </div>
         
         <!-- 5️⃣ Stepper Placeholder (Cart - Step 1) -->
-        <div id="cart-stepper" class="px-6 pt-6 bg-white"></div>
+        <div id="cart-stepper" class="px-6 pt-6 bg-white min-h-[60px]"></div>
 
-        <!-- Items Container -->
-        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-5 bg-white/30 custom-scrollbar"></div>
+        <!-- Items Container (Added min-h) -->
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-5 bg-white/30 custom-scrollbar min-h-[300px]"></div>
         
         <!-- Modern Footer -->
         <div id="cart-footer" class="p-6 border-t border-stone-100 bg-white space-y-4 hidden z-10 shadow-[0_-10px_60px_-15px_rgba(0,0,0,0.1)]">
@@ -914,7 +1033,8 @@
     </div>
 
     <!-- Modern Light Footer -->
-    <footer class="bg-white text-stone-600 py-16 mt-auto border-t border-stone-200 font-light relative overflow-hidden">
+    <!-- Added contain-content to prevent layout shifts affecting outside -->
+    <footer class="bg-white text-stone-600 py-16 mt-auto border-t border-stone-200 font-light relative overflow-hidden" style="contain: content;">
         <!-- Background Elements (Light Theme) -->
         <div class="absolute top-0 right-0 w-96 h-96 bg-stone-200/40 rounded-full blur-3xl -mr-40 -mt-40 pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 w-64 h-64 bg-stone-200/40 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
@@ -924,20 +1044,19 @@
             <!-- زر الانتقال للأعلى (جديد) -->
             <div class="flex justify-end mb-8">
                 <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="group flex items-center gap-2 bg-white border border-stone-200 hover:border-stone-900 text-stone-500 hover:text-stone-900 px-5 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md">
-                    <span class="text-xs font-bold">للإنتقال للأعلي</span>
+                    <span class="text-xs font-bold">للأعلي</span>
                     <div class="bg-stone-100 group-hover:bg-stone-900 group-hover:text-white rounded-full p-1 transition-colors">
                         <i data-lucide="arrow-up" size="14" class="group-hover:-translate-y-0.5 transition-transform"></i>
                     </div>
                 </button>
             </div>
 
+            <!-- Added min-h to grid items to prevent collapse/shift -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16 border-b border-stone-200 pb-12">
                 <!-- Brand Info -->
                 <div class="space-y-6">
-                    <!-- تم إضافة id="footer-brand" هنا -->
-                    <div id="footer-brand">
-                        <div class="text-3xl font-bold text-stone-900 tracking-tighter flex items-center gap-1">جدار<span class="text-stone-400 text-5xl leading-3">.</span></div>
-                    </div>
+                    <!-- تم إضافة id="footer-brand" هنا مع min-height لحجز المساحة -->
+                    <div id="footer-brand" class="min-h-[60px] flex items-center"></div>
                     <!-- تم تكبير الخط هنا من text-sm إلى text-base -->
                     <p class="text-base leading-relaxed max-w-xs text-stone-500">
                         نحول مساحتك العادية إلى تحفة فنية. وجهتك الأولى لأحدث صيحات الديكور وتجاليد الحوائط في مصر بجودة لا تضاهى.
@@ -1011,9 +1130,9 @@
                 <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-stone-500 mb-6">
                     <p>&copy; 2024 متجر جدار للديكور. جميع الحقوق محفوظة.</p>
                     
-                    <!-- Payment Methods Logos -->
-                    <div class="grayscale hover:grayscale-0 transition-all duration-500 opacity-80 hover:opacity-100">
-                        <img src="https://raw.githubusercontent.com/gedarfayoum-eng/website/refs/heads/main/Images/banner/payment.webp" class="h-16 md:h-24 w-auto object-contain" alt="طرق الدفع المتاحة">
+                    <!-- Payment Methods Logos - Added explicit height/width attributes to img to prevent layout shift -->
+                    <div class="grayscale hover:grayscale-0 transition-all duration-500 opacity-80 hover:opacity-100 h-16 md:h-24 w-auto flex items-center">
+                        <img src="https://raw.githubusercontent.com/gedarfayoum-eng/website/refs/heads/main/Images/banner/payment.webp" class="h-full w-auto object-contain" width="300" height="96" alt="طرق الدفع المتاحة">
                     </div>
                 </div>
 
@@ -1561,17 +1680,8 @@
                 if (snap.exists()) {
                     REAL_WORKS = snap.data().images || [];
                 } else {
-                    // Default images if empty (Increased to show load more functionality)
-                    REAL_WORKS = [
-                        "https://images.unsplash.com/photo-1620626012053-93f268326996?w=600&q=80",
-                        "https://images.unsplash.com/photo-1616486338812-3dadae4b4f9d?w=600&q=80",
-                        "https://images.unsplash.com/photo-1616137466211-f939a420be84?w=600&q=80",
-                        "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&q=80",
-                        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&q=80",
-                        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80",
-                        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=600&q=80",
-                        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80"
-                    ];
+                    // Default images if empty (Removed static data)
+                    REAL_WORKS = [];
                 }
                 if (currentView === 'home') renderView();
             });
@@ -3427,18 +3537,23 @@
                     // استخدام classes للتحكم في الظهور والاختفاء بناءً على الشاشة
                     // md:hidden للموبايل
                     // hidden md:block للكمبيوتر
+                    // LCP FIX: Added fetchpriority="high" and decoding="async"
                     topBanner.innerHTML = `
                         <!-- Mobile Image -->
                         <img src="${imgMob}" 
                              class="block md:hidden object-cover" 
                              style="height: ${hMob}px; width: ${wMob}%; max-width: none;" 
-                             alt="Mobile Offer">
+                             alt="Mobile Offer"
+                             fetchpriority="high"
+                             decoding="async">
                         
                         <!-- Desktop Image -->
                         <img src="${imgDesk}" 
                              class="hidden md:block object-cover" 
                              style="height: ${hDesk}px; width: ${wDesk}%; max-width: none;" 
-                             alt="Desktop Offer">
+                             alt="Desktop Offer"
+                             fetchpriority="high"
+                             decoding="async">
                     `;
                 }
 
@@ -3474,12 +3589,11 @@
 
             if (navBrand) {
                 if (logoUrl) {
-                    navBrand.innerHTML = `<img src="${logoUrl}" style="width: ${size}px; height: auto; max-width: none;" class="object-contain" alt="Logo">`;
+                    // FIX: Removed max-width: none to prevent overflow
+                    navBrand.innerHTML = `<img src="${logoUrl}" style="width: ${size}px; height: auto;" class="object-contain" alt="Logo">`;
                 } else {
-                    navBrand.innerHTML = `
-                        <div class="text-2xl font-bold tracking-tight flex items-center gap-1">جدار<span class="text-stone-400 text-4xl leading-3">.</span></div>
-                        <span class="text-[0.65rem] text-stone-500 font-medium mt-1 tracking-wide">للديكورات الحديثة</span>
-                    `;
+                    // تم إزالة النص الثابت (جدار)
+                    navBrand.innerHTML = '';
                 }
             }
 
@@ -3487,7 +3601,8 @@
                 if (logoUrl) {
                     footerBrand.innerHTML = `<img src="${logoUrl}" style="width: ${parseInt(size) * 1.2}px; height: auto;" class="object-contain" alt="Logo">`;
                 } else {
-                    footerBrand.innerHTML = `<div class="text-3xl font-bold text-stone-900 tracking-tighter flex items-center gap-1">جدار<span class="text-stone-400 text-5xl leading-3">.</span></div>`;
+                    // تم إزالة النص الثابت (جدار)
+                    footerBrand.innerHTML = '';
                 }
             }
 
@@ -3586,7 +3701,10 @@
                             ${mobUrls.map((url, idx) => `
                                 <div class="banner-fade-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
                                     <div class="w-full h-full relative overflow-hidden shadow-sm border border-stone-100 bg-stone-100" style="border-radius: ${rMob};">
-                                        <img src="${url.trim()}" class="banner-img-mob" alt="Banner">
+                                        <!-- LCP FIX: First image eager & high priority, others lazy -->
+                                        <img src="${url.trim()}" class="banner-img-mob" alt="Banner" 
+                                             ${idx === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} 
+                                             decoding="async">
                                     </div>
                                 </div>
                             `).join('')}
@@ -3609,7 +3727,10 @@
                             ${deskUrls.map((url, idx) => `
                                 <div class="banner-fade-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
                                     <div class="w-full h-full relative overflow-hidden shadow-sm border border-stone-100 bg-stone-100" style="border-radius: ${rDesk};">
-                                        <img src="${url.trim()}" class="banner-img-desk" alt="Banner">
+                                        <!-- LCP FIX: First image eager & high priority, others lazy -->
+                                        <img src="${url.trim()}" class="banner-img-desk" alt="Banner"
+                                             ${idx === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} 
+                                             decoding="async">
                                     </div>
                                 </div>
                             `).join('')}
@@ -4949,8 +5070,9 @@
             
             if (validReviews.length === 0) return;
 
+            // Added min-h-[450px] to prevent jump
             c.innerHTML += `
-            <div class="py-16 bg-white border-t border-stone-100 relative group/reviews">
+            <div class="py-16 bg-white border-t border-stone-100 relative group/reviews min-h-[450px]">
                 <div class="container mx-auto px-6">
                     <div class="flex justify-between items-end mb-10 fade-in-up">
                         <div>
@@ -5007,8 +5129,9 @@
             const visibleWorks = REAL_WORKS.slice(0, realWorkLimit);
             const hasMore = REAL_WORKS.length > realWorkLimit;
 
+            // Added min-h-[600px] to container
             c.innerHTML += `
-            <div class="py-24 bg-white relative overflow-hidden">
+            <div class="py-24 bg-white relative overflow-hidden min-h-[600px]">
                 
                 <div class="container mx-auto px-4 md:px-8 relative z-10">
                     
@@ -5408,7 +5531,7 @@
         }
 
         function renderFeatured(c) {
-            // --- NEW: Calculate Spacing Dynamically ---
+            // ... (Variable calculation logic) ...
             // بما أن الهيرو محذوف، نعتبره false دائماً لضمان حساب المسافات بشكل صحيح
             const showHeroMob = false; 
             const showHeroDesk = false;
@@ -5421,8 +5544,6 @@
 
             // Mobile: If Hero & CatBar are hidden
             if (!showHeroMob && !showCatBar) {
-                // If Header Banner exists, it pushes content down, so we need small padding.
-                // If NO Banner, we need to clear the fixed Navbar (approx pt-28).
                 ptMobile = showHeaderBanner ? 'pt-4' : 'pt-28';
             }
 
@@ -5433,9 +5554,10 @@
             // --------------------------------------------------
 
             // 1. Render Best Sellers (Existing Logic)
+            // Added min-h-[400px] to reserve space for slider
             c.innerHTML += `
             <!-- UPDATED: Dynamic Padding based on visibility -->
-            <div class="${ptMobile} ${ptDesktop} pb-2 container mx-auto px-6 border-t border-stone-100">
+            <div class="${ptMobile} ${ptDesktop} pb-2 container mx-auto px-6 border-t border-stone-100 min-h-[400px]">
                 <div class="flex justify-between items-end mb-6">
                     <div>
                         <span class="text-xs font-bold text-green-600 tracking-wider uppercase mb-1 block">خيارات العملاء</span>
@@ -5453,11 +5575,13 @@
 
                     <!-- Slider Container -->
                     <div id="featured-slider" class="flex overflow-x-auto scrollbar-hide snap-x pb-8 pt-4 -mx-3 px-3 scroll-smooth">
-                        ${PRODUCTS.slice(0, 8).map(p => {
+                        ${PRODUCTS.slice(0, 8).map((p, index) => {
+                            // LCP FIX: First 3 items are eager loaded, rest are lazy
+                            const isEager = index < 3;
                             return `
                             <!-- UPDATED: Width is 1/4 on desktop (4 items), 1/3 on tablet, 1/2 on mobile -->
                             <div class="w-1/2 md:w-1/3 lg:w-1/4 flex-shrink-0 snap-start px-3 group cursor-pointer">
-                                ${createProductCard(p)}
+                                ${createProductCard(p, isEager)}
                             </div>
                             `;
                         }).join('')}
@@ -5763,7 +5887,8 @@
                             </div>
 
                             <!-- Products Grid (UPDATED to 3 Columns on Mobile) -->
-                            <div id="shop-products-grid" class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-6"></div>
+                            <!-- Added min-h-[500px] to prevent layout collapse during filtering -->
+                            <div id="shop-products-grid" class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-6 min-h-[500px]"></div>
                             
                             <!-- Empty State -->
                             <div id="shop-empty-state" class="hidden flex flex-col items-center justify-center py-24 bg-white rounded-3xl border border-stone-100 shadow-sm text-center">
@@ -5785,41 +5910,24 @@
 
         // NEW: Render Category Bar (Stories Style)
         function renderCategoryBar(c) {
-            // التحقق من حالة ظهور البانر الإعلاني (تحت الهيدر)
+            // ... (Logic for ptMobile/desktopPt calculation) ...
             const showHeaderBanner = HERO_SETTINGS.showFooterBanner && HERO_SETTINGS.footerBannerUrl;
-
-            // بما أن الهيرو محذوف، نعتبره false دائماً لضمان عدم اختفاء هذا الشريط تحت الهيدر
             const showHeroMob = false;
             const showHeroDesk = false;
             
             // --- حساب المسافة للموبايل ---
-            let mobilePt = 'pt-28'; // الافتراضي: مسافة كبيرة لتعويض الهيدر الثابت
-            
-            if (showHeroMob) {
-                // إذا كان البانر الرئيسي (Hero) ظاهراً
-                mobilePt = 'pt-4'; 
-            } else if (showHeaderBanner) {
-                mobilePt = 'pt-2';
-            } else {
-                mobilePt = 'pt-28';
-            }
+            let mobilePt = 'pt-28'; 
+            if (showHeroMob) { mobilePt = 'pt-4'; } else if (showHeaderBanner) { mobilePt = 'pt-2'; } else { mobilePt = 'pt-28'; }
 
             // --- حساب المسافة للكمبيوتر ---
             let desktopPt = 'md:pt-32'; 
-
-            if (showHeroDesk) {
-                desktopPt = 'md:pt-8'; 
-            } else if (showHeaderBanner) {
-                desktopPt = 'md:pt-4'; 
-            } else {
-                desktopPt = 'md:pt-32'; 
-            }
+            if (showHeroDesk) { desktopPt = 'md:pt-8'; } else if (showHeaderBanner) { desktopPt = 'md:pt-4'; } else { desktopPt = 'md:pt-32'; }
 
             // NEW: Check visibility setting for Category Bar (Circles)
             if (HERO_SETTINGS.showCategoryBar !== false) {
-                // UPDATED: Modern Large Box Design with Scrollbar
+                // UPDATED: Modern Large Box Design with Scrollbar AND min-height
                 c.innerHTML += `
-                <div class="${mobilePt} ${desktopPt} pb-6 container mx-auto px-6 fade-in-up group/cat" style="animation-delay: 0.3s;">
+                <div class="${mobilePt} ${desktopPt} pb-6 container mx-auto px-6 fade-in-up group/cat min-h-[180px]" style="animation-delay: 0.3s;">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
                             <h3 class="font-bold text-stone-900 text-base md:text-xl tracking-tight">تصفح الأقسام</h3>
@@ -5836,11 +5944,14 @@
                         <!-- UPDATED: Added 'custom-scrollbar-modern' class -->
                         <div id="category-scroll-container" class="flex gap-4 overflow-x-auto snap-x pb-4 px-1 scroll-smooth custom-scrollbar-modern">
                             
-                            ${CATEGORIES.map(cat => `
+                            ${CATEGORIES.map((cat, index) => `
                                 <div onclick="filterCategory('${cat.name.replace(/'/g, "\\'")}')" class="flex flex-col items-center gap-2 min-w-[100px] cursor-pointer group snap-start">
                                     <!-- Image Container: 100x100, No Border, Simple Rounded -->
                                     <div class="w-[100px] h-[100px] rounded-xl overflow-hidden bg-stone-100 shadow-sm group-hover:shadow-md group-hover:-translate-y-1 transition-all duration-300 relative">
-                                        <img src="${cat.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" onerror="this.src='https://via.placeholder.com/150?text=${cat.name}'">
+                                        <!-- LCP FIX: Removed loading="lazy" for top categories, added fetchpriority="high" for first 6 -->
+                                        <img src="${cat.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                                             ${index < 6 ? 'fetchpriority="high"' : 'loading="lazy"'}
+                                             onerror="this.src='https://via.placeholder.com/150?text=${cat.name}'">
                                         <!-- Subtle Dark Gradient at bottom for depth -->
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     </div>
@@ -7962,7 +8073,7 @@
         }
         
         // --- Helper Function: Create Small Product Card ---
-        function createSmallProductCard(p) {
+        function createSmallProductCard(p, forceEager = false) {
             // UPDATE: Use helper
             const hasDiscount = isDiscountActive(p);
             const finalPrice = hasDiscount ? (p.price * (1 - p.discount / 100)) : p.price;
@@ -7984,8 +8095,10 @@
                     </div>
                     ` : ''}
 
-                    <!-- Image -->
-                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                    <!-- Image (LCP Fixed) -->
+                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                         ${forceEager ? 'fetchpriority="high"' : 'loading="lazy"'} 
+                         alt="${p.name}">
                     
                     <!-- Add Button -->
                     <div class="absolute bottom-2 left-0 w-full px-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -8004,7 +8117,7 @@
             </div>`;
         }
 
-        function createProductCard(p) {
+        function createProductCard(p, forceEager = false) {
             const isFav = favorites.includes(p.id);
             const isAdmin = user && user.email === ADMIN_EMAIL;
             const hasDiscount = isDiscountActive(p);
@@ -8057,9 +8170,12 @@
                         ` : ''}
                     </div>
 
-                    <!-- Product Image -->
+                    <!-- Product Image (LCP Fixed) -->
+                    <!-- Removed lazy loading if forceEager is true -->
                     <div class="absolute inset-0">
-                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out ${!isInStock ? 'grayscale opacity-80' : ''}" loading="lazy" alt="${p.name}">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out ${!isInStock ? 'grayscale opacity-80' : ''}" 
+                             ${forceEager ? 'fetchpriority="high"' : 'loading="lazy"'} 
+                             alt="${p.name}">
                     </div>
 
                     <!-- Add To Cart Button (Floating) -->
