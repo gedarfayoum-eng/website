@@ -4006,7 +4006,7 @@
                     const hDesk = HERO_SETTINGS.fbHeightDesktop || 300;
                     const hMob = HERO_SETTINGS.fbHeightMobile || 150;
                     const rDesk = HERO_SETTINGS.fbRadiusDesktop || '2rem';
-                    const rMob = HERO_SETTINGS.fbRadiusMobile || '1rem'; // Will be overridden by card style on mobile
+                    // const rMob = HERO_SETTINGS.fbRadiusMobile || '1rem'; // (Unused directly in HTML string)
 
                     // Inject CSS for Desktop Fade Only
                     const styleId = 'header-banner-style';
@@ -4037,7 +4037,41 @@
                         /* Mobile Scroll Snap Utilities */
                         .snap-x-mandatory { scroll-snap-type: x mandatory; }
                         .snap-center { scroll-snap-align: center; }
+                        
+                        /* Video Helper */
+                        .banner-video-iframe {
+                            width: 100%;
+                            height: 100%;
+                            pointer-events: none; /* للسماح بالسحب فوق الفيديو */
+                            border: none;
+                        }
                     `;
+
+                    // Helper to generate media content (Image or Video)
+                    const getMediaContent = (url, idx, isMobile) => {
+                        const cleanUrl = url.trim();
+                        const ytId = getYouTubeID(cleanUrl);
+                        
+                        // UPDATED: Regex to support pmp4, mov and urls with hash (#) or params
+                        const isMp4 = cleanUrl.match(/\.(mp4|webm|pmp4|mov)([?#].*)?$/i);
+
+                        if (ytId) {
+                            // YouTube Embed (Autoplay, Muted, Loop, No Controls)
+                            // playsinline=1 مهم جداً للموبايل عشان يشتغل داخل الصفحة مش Fullscreen
+                            return `<iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytId}&playsinline=1&rel=0&showinfo=0&modestbranding=1" 
+                                    class="banner-video-iframe ${isMobile ? 'scale-[1.35]' : 'scale-110'}" 
+                                    allow="autoplay; encrypted-media" 
+                                    loading="lazy"></iframe>`;
+                        } else if (isMp4) {
+                            // Direct Video File
+                            return `<video src="${cleanUrl}" autoplay loop muted playsinline class="w-full h-full object-cover pointer-events-none"></video>`;
+                        } else {
+                            // Image
+                            const imgClass = isMobile ? "w-full h-full object-cover" : "banner-img-desk";
+                            const radiusStyle = (!isMobile && rDesk) ? `style="border-radius: ${rDesk};"` : "";
+                            return `<img src="${cleanUrl}" class="${imgClass}" ${radiusStyle} alt="بانر ${idx + 1}" loading="${idx===0?'eager':'lazy'}">`;
+                        }
+                    };
 
                     // Generate HTML
                     // Apple Style Mobile Banner: Scrollable Cards
@@ -4054,7 +4088,7 @@
                             ${mobUrls.map((url, idx) => `
                                 <div class="min-w-[93%] w-[93%] snap-center relative rounded-[1.25rem] overflow-hidden shadow-[0_8px_20px_-6px_rgba(0,0,0,0.12)] bg-stone-100 border border-stone-100 aspect-[2.2/1]" 
                                      style="height: ${hMob}px;">
-                                    <img src="${url.trim()}" class="w-full h-full object-cover" alt="بانر ${idx + 1}" loading="${idx===0?'eager':'lazy'}">
+                                    ${getMediaContent(url, idx, true)}
                                 </div>
                             `).join('')}
                             
@@ -4079,9 +4113,7 @@
                             ${deskUrls.map((url, idx) => `
                                 <div class="banner-fade-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
                                     <div class="w-full h-full relative overflow-hidden shadow-sm border border-stone-100 bg-stone-100" style="border-radius: ${rDesk};">
-                                        <img src="${url.trim()}" class="banner-img-desk" alt="بانر إعلاني"
-                                             ${idx === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} 
-                                             decoding="async">
+                                        ${getMediaContent(url, idx, false)}
                                     </div>
                                 </div>
                             `).join('')}
@@ -7533,15 +7565,16 @@
                                         <div class="space-y-6">
                                             <!-- Desktop URLs -->
                                             <div>
-                                                <label for="fb-url-textarea" class="text-xs font-bold text-stone-600 uppercase mb-2 block flex items-center gap-2"><i data-lucide="monitor" size="14"></i> صور الكمبيوتر (رابط في كل سطر)</label>
-                                                <textarea id="fb-url-textarea" name="fbUrl" rows="3" class="w-full border border-stone-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-orange-600 outline-none dir-ltr bg-white custom-scrollbar" placeholder="https://desktop-image.jpg">${HERO_SETTINGS.footerBannerUrl || ''}</textarea>
+                                                <label for="fb-url-textarea" class="text-xs font-bold text-stone-600 uppercase mb-2 block flex items-center gap-2"><i data-lucide="monitor" size="14"></i> صور أو فيديو الكمبيوتر (رابط في كل سطر)</label>
+                                                <textarea id="fb-url-textarea" name="fbUrl" rows="3" class="w-full border border-stone-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-orange-600 outline-none dir-ltr bg-white custom-scrollbar" placeholder="https://image.jpg&#10;https://youtu.be/...">${HERO_SETTINGS.footerBannerUrl || ''}</textarea>
+                                                <p class="text-[9px] text-stone-500 mt-1">يدعم روابط الصور (jpg, png) وروابط فيديو (YouTube, MP4).</p>
                                             </div>
 
                                             <!-- Mobile URLs (NEW) -->
                                             <div>
-                                                <label for="fb-url-mob-textarea" class="text-xs font-bold text-stone-600 uppercase mb-2 block flex items-center gap-2"><i data-lucide="smartphone" size="14"></i> صور الموبايل (رابط في كل سطر)</label>
+                                                <label for="fb-url-mob-textarea" class="text-xs font-bold text-stone-600 uppercase mb-2 block flex items-center gap-2"><i data-lucide="smartphone" size="14"></i> صور أو فيديو الموبايل (رابط في كل سطر)</label>
                                                 <textarea id="fb-url-mob-textarea" name="fbUrlMob" rows="3" class="w-full border border-stone-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-orange-600 outline-none dir-ltr bg-white custom-scrollbar" placeholder="https://mobile-image.jpg (اختياري)">${HERO_SETTINGS.footerBannerUrlMobile || ''}</textarea>
-                                                <p class="text-[9px] text-stone-600 mt-1">إذا ترك فارغاً سيتم استخدام صور الكمبيوتر</p>
+                                                <p class="text-[9px] text-stone-600 mt-1">إذا ترك فارغاً سيتم استخدام روابط الكمبيوتر.</p>
                                             </div>
                                             
                                             <!-- Desktop Settings -->
