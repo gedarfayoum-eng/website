@@ -147,48 +147,7 @@
             --primary-color: #1c1917;
         }
 
-        /* --- MODERN FAST SPLASH SCREEN --- */
-        #splash-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background-color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
-        }
-
-        .splash-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            position: relative;
-        }
-
-        .splash-dots {
-            display: flex;
-            gap: 6px;
-            margin-top: 0.5rem;
-        }
-
-        .splash-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #1c1917;
-            border-radius: 50%;
-            animation: dotBounce 1.4s infinite ease-in-out both;
-        }
-
-        .splash-dot:nth-child(1) { animation-delay: -0.32s; }
-        .splash-dot:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes dotBounce {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
-        }
+        /* REMOVED: Splash Screen Styles */
 
         body { 
             font-family: 'Tajawal', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
@@ -302,67 +261,7 @@
 -->
 <body class="bg-white text-stone-900 selection:bg-stone-200 overflow-x-hidden flex flex-col min-h-screen pt-[85px] md:pt-[84px] pb-[130px] md:pb-0 animate-in fade-in duration-700">
 
-    <!-- 🌟 FAST MODERN SPLASH SCREEN -->
-    <div id="splash-screen">
-        <div class="splash-content">
-            <!-- Logo Container (Filled via JS) -->
-            <div id="splash-logo" class="opacity-0 translate-y-4 transition-all duration-700 ease-out">
-                <!-- Default Placeholder (تم تصغيره) -->
-                <div class="w-16 h-16 bg-stone-50 rounded-2xl flex items-center justify-center text-stone-800 shadow-sm border border-stone-100">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 3v18h18"/>
-                        <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
-                    </svg>
-                </div>
-            </div>
-            
-            <!-- REMOVED: Brand Text (تم حذف النص المكرر "جدار" و "INTERIOR DESIGN") -->
-
-            <!-- Modern Dots Loader -->
-            <div class="splash-dots">
-                <div class="splash-dot"></div>
-                <div class="splash-dot"></div>
-                <div class="splash-dot"></div>
-            </div>
-        </div>
-
-        <script>
-            // 1. محاولة عرض الشعار فوراً من الكاش لسرعة الظهور
-            try {
-                const cachedHero = localStorage.getItem('gedar_hero_cache');
-                if (cachedHero) {
-                    const settings = JSON.parse(cachedHero);
-                    if (settings.logoUrl) {
-                        const logoContainer = document.getElementById('splash-logo');
-                        if(logoContainer) {
-                            // UPDATED: Use inline styles to force size before Tailwind loads
-                            // تم استخدام style مباشر لمنع ظهور اللوجو بحجم كبير قبل تحميل التنسيقات
-                            logoContainer.innerHTML = `<img src="${settings.logoUrl}" style="width: 100px; height: auto; max-height: 100px; object-fit: contain;" alt="Logo">`;
-                            
-                            // تفعيل انيميشن الظهور للشعار
-                            requestAnimationFrame(() => {
-                                logoContainer.classList.remove('opacity-0', 'translate-y-4');
-                            });
-                        }
-                    }
-                }
-            } catch(e) {}
-
-            // 2. إخفاء الشاشة بسرعة بمجرد تحميل الصفحة
-            window.addEventListener('load', () => {
-                // تأخير بسيط جداً (600ms) لضمان أن العين التقطت الشعار، ثم الاختفاء
-                setTimeout(() => {
-                    const splash = document.getElementById('splash-screen');
-                    if(splash) {
-                        splash.style.opacity = '0';
-                        splash.style.visibility = 'hidden';
-                        setTimeout(() => splash.remove(), 600); // إزالة العنصر نهائياً
-                    }
-                }, 600); 
-            });
-        </script>
-    </div>
-    <!-- 🌟 END SPLASH SCREEN -->
+    <!-- REMOVED: Splash Screen HTML & Script -->
 
     <!-- Navigation -->
     <!-- UPDATED: Modern Glassmorphism Header -->
@@ -482,9 +381,14 @@
             <!-- UPDATED: Added md:flex-none to prevent overlapping the center menu on desktop -->
             <div class="flex items-center justify-end gap-2 md:gap-3 z-50 flex-1 md:flex-none w-auto">
                 
-                <!-- Mobile: Package Search Icon -->
-                <button onclick="setView('track-order')" class="md:hidden w-10 h-10 flex items-center justify-center text-stone-900 hover:bg-stone-50 rounded-full transition-colors" aria-label="تتبع الطلب">
-                     <i data-lucide="package-search" size="24"></i>
+                <!-- NEW: Mobile Contact Icon (Replaces Track Order) -->
+                <button onclick="setView('contact')" class="md:hidden w-9 h-9 flex items-center justify-center text-stone-600 hover:text-stone-900 bg-stone-50/50 hover:bg-stone-100 rounded-full transition-all border border-stone-100/50" aria-label="تواصل معنا">
+                    <i data-lucide="phone" size="20"></i>
+                </button>
+
+                <!-- NEW: Mobile Favorites Icon (Next to Contact) -->
+                <button onclick="setView('favorites')" class="md:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-stone-100 text-stone-600 hover:text-red-600 transition-colors bg-stone-50/50 border border-stone-100/50" title="المفضلة" aria-label="المفضلة">
+                    <i data-lucide="heart" size="20"></i>
                 </button>
 
                 <!-- Search (Desktop Only) -->
@@ -623,10 +527,10 @@
             <span class="text-[10px] font-bold leading-none">السلة</span>
         </button>
 
-        <!-- Menu/Account -->
-        <button onclick="toggleMobileMenu()" class="nav-item flex flex-col items-center justify-end gap-1 h-full pb-1 text-stone-400 hover:text-stone-900 transition-all duration-300 group w-14" aria-label="القائمة وحسابي">
-            <i data-lucide="align-left" size="22" class="stroke-[2px] transition-transform duration-300 group-hover:-translate-y-1"></i>
-            <span class="text-[10px] font-bold leading-none">المزيد</span>
+        <!-- Track Order (Replaced 'Menu') -->
+        <button onclick="setView('track-order')" class="nav-item flex flex-col items-center justify-end gap-1 h-full pb-1 text-stone-400 hover:text-stone-900 transition-all duration-300 group w-14" data-view="track-order" aria-label="تتبع طلبك">
+            <i data-lucide="package-search" size="22" class="stroke-[2px] transition-transform duration-300 group-hover:-translate-y-1"></i>
+            <span class="text-[10px] font-bold leading-none">تتبع</span>
         </button>
     </div>
 
@@ -1249,35 +1153,36 @@
     </div>
 
     <!-- Modern Light Footer -->
-    <!-- Added contain-content to prevent layout shifts affecting outside -->
-    <footer class="bg-white text-stone-600 py-16 mt-auto border-t border-stone-200 font-normal relative overflow-hidden" style="contain: content;">
+    <!-- Updated: Compact Mobile Layout & Removed Shopping Links on Mobile -->
+    <footer class="bg-white text-stone-600 py-4 md:py-16 mt-auto border-t border-stone-200 font-normal relative overflow-hidden" style="contain: content;">
         <!-- Background Elements (Light Theme) -->
         <div class="absolute top-0 right-0 w-96 h-96 bg-stone-200/40 rounded-full blur-3xl -mr-40 -mt-40 pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 w-64 h-64 bg-stone-200/40 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
 
-        <div class="container mx-auto px-6 relative z-10">
+        <div class="container mx-auto px-4 md:px-6 relative z-10">
             
             <!-- زر الانتقال للأعلى (جديد) -->
-            <div class="flex justify-end mb-8">
-                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="group flex items-center gap-2 bg-white border border-stone-200 hover:border-stone-900 text-stone-600 hover:text-stone-900 px-5 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md">
-                    <span class="text-xs font-bold">للإنتقال للأعلي</span>
+            <div class="flex justify-end mb-4 md:mb-8">
+                <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="group flex items-center gap-2 bg-white border border-stone-200 hover:border-stone-900 text-stone-600 hover:text-stone-900 px-4 py-2 md:px-5 md:py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md">
+                    <span class="text-[10px] md:text-xs font-bold">للأعلي</span>
                     <div class="bg-stone-100 group-hover:bg-stone-900 group-hover:text-white rounded-full p-1 transition-colors">
-                        <i data-lucide="arrow-up" size="14" class="group-hover:-translate-y-0.5 transition-transform"></i>
+                        <i data-lucide="arrow-up" size="12" class="group-hover:-translate-y-0.5 transition-transform"></i>
                     </div>
                 </button>
             </div>
 
             <!-- Added min-h to grid items to prevent collapse/shift -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16 border-b border-stone-200 pb-12">
+            <!-- UPDATED: Removed border-b on mobile, reduced gap/margin -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-12 mb-4 md:mb-16 md:border-b md:border-stone-200 pb-2 md:pb-12">
                 <!-- Brand Info -->
-                <div class="space-y-6">
+                <div class="space-y-4 md:space-y-6 text-center md:text-right">
                     <!-- تم إضافة id="footer-brand" هنا مع min-height لحجز المساحة -->
-                    <div id="footer-brand" class="min-h-[60px] flex items-center"></div>
+                    <div id="footer-brand" class="min-h-[50px] md:min-h-[60px] flex items-center justify-center md:justify-start"></div>
                     <!-- تم تكبير الخط هنا من text-sm إلى text-base -->
-                    <p class="text-base leading-relaxed max-w-xs text-stone-600">
-                        نحول مساحتك العادية إلى تحفة فنية. وجهتك الأولى لأحدث صيحات الديكور وتجاليد الحوائط في مصر بجودة لا تضاهى.
+                    <p class="text-sm md:text-base leading-relaxed text-stone-600">
+                        نحول مساحتك العادية إلى تحفة فنية. وجهتك الأولى لأحدث صيحات الديكور وتجاليد الحوائط في مصر.
                     </p>
-                    <div class="flex gap-3">
+                    <div class="flex gap-3 justify-center md:justify-start">
                         <!-- UPDATED: Added Distinctive Aria-Labels -->
                         <a href="https://www.facebook.com/gedar.fayoum" target="_blank" class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-[#1877F2] hover:text-white transition-all duration-300 group shadow-sm border border-stone-200 hover:border-[#1877F2] text-stone-600" aria-label="تابع جدار للديكور على فيسبوك" title="تابع جدار للديكور على فيسبوك">
                             <i data-lucide="facebook" size="18" class="group-hover:scale-110 transition-transform"></i>
@@ -1291,8 +1196,8 @@
                     </div>
                 </div>
 
-                <!-- Quick Links -->
-                <div>
+                <!-- Quick Links (Shopping) - HIDDEN ON MOBILE -->
+                <div class="hidden md:block">
                     <h4 class="text-stone-900 font-bold text-lg mb-6 relative w-fit after:content-[''] after:absolute after:-bottom-2 after:right-0 after:w-1/2 after:h-0.5 after:bg-stone-300">التسوق</h4>
                     <!-- تم تكبير الخط هنا من text-sm إلى text-base -->
                     <ul class="space-y-4 text-base">
@@ -1304,37 +1209,34 @@
                 </div>
 
                 <!-- Customer Support -->
-                <div>
-                    <h4 class="text-stone-900 font-bold text-lg mb-6 relative w-fit after:content-[''] after:absolute after:-bottom-2 after:right-0 after:w-1/2 after:h-0.5 after:bg-stone-300">خدمة العملاء</h4>
+                <div class="text-center md:text-right">
+                    <h4 class="text-stone-900 font-bold text-lg mb-4 md:mb-6 relative w-fit mx-auto md:mx-0 after:content-[''] after:absolute after:-bottom-2 after:right-0 after:w-1/2 after:h-0.5 after:bg-stone-300">خدمة العملاء</h4>
                     <!-- تم تكبير الخط هنا من text-sm إلى text-base -->
-                    <ul class="space-y-4 text-base">
-                        <li><button onclick="setView('track-order')" class="hover:text-stone-900 transition-colors flex items-center gap-2 text-orange-600 font-bold group w-full text-right"><i data-lucide="package-search" size="16" class="group-hover:scale-110 transition-transform"></i> تتبع طلبك</button></li>
-                        <li><button onclick="setView('contact')" class="hover:text-stone-900 transition-colors w-full text-right">اتصل بنا</button></li>
-                        <li><button onclick="setView('faq')" class="hover:text-stone-900 transition-colors w-full text-right">الأسئلة الشائعة</button></li>
-                        <li><button onclick="setView('return-policy')" class="hover:text-stone-900 transition-colors w-full text-right">سياسة الاسترجاع</button></li>
+                    <ul class="space-y-3 md:space-y-4 text-sm md:text-base">
+                        <!-- تم إخفاء تتبع الطلب واتصل بنا من الفوتر في الموبايل لتقليل الارتفاع (موجودة في البار العلوي والسفلي) -->
+                        <li class="hidden md:block"><button onclick="setView('track-order')" class="hover:text-stone-900 transition-colors flex items-center justify-center md:justify-start gap-2 text-orange-600 font-bold group w-full"><i data-lucide="package-search" size="16" class="group-hover:scale-110 transition-transform"></i> تتبع طلبك</button></li>
+                        <li class="hidden md:block"><button onclick="setView('contact')" class="hover:text-stone-900 transition-colors w-full">اتصل بنا</button></li>
+                        <li><button onclick="setView('faq')" class="hover:text-stone-900 transition-colors w-full">الأسئلة الشائعة</button></li>
+                        <li><button onclick="setView('return-policy')" class="hover:text-stone-900 transition-colors w-full">سياسة الاسترجاع</button></li>
                     </ul>
                 </div>
 
-                <!-- Contact Details -->
-                <div>
+                <!-- Contact Details (Hidden on Mobile) -->
+                <div class="hidden md:block text-right">
                     <h4 class="text-stone-900 font-bold text-lg mb-6 relative w-fit after:content-[''] after:absolute after:-bottom-2 after:right-0 after:w-1/2 after:h-0.5 after:bg-stone-300">معلومات التواصل</h4>
-                    <!-- تم تكبير الخط هنا من text-sm إلى text-base -->
                     <ul class="space-y-6 text-base">
                         <li class="flex items-start gap-4 group">
                             <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 group-hover:bg-stone-100 transition-colors text-stone-600 group-hover:text-stone-900 border border-stone-200 shadow-sm">
                                 <i data-lucide="map-pin" size="18"></i>
                             </div>
-                            <span class="mt-1 leading-relaxed">الفيوم - نهاية شارع المستشفي العام إتجاه مديرية الأمن<br/><span class="text-stone-600 text-sm">بجوار المغسلة الامريكيه وامام مطعم ابو صلاح</span></span>
+                            <span class="mt-1 leading-relaxed">الفيوم - شارع المستشفي العام<br/><span class="text-stone-500 text-xs">أمام مطعم ابو صلاح</span></span>
                         </li>
                         <li class="flex items-center gap-4 group">
                             <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 group-hover:bg-stone-100 transition-colors text-stone-600 group-hover:text-stone-900 border border-stone-200 shadow-sm">
                                 <i data-lucide="phone" size="18"></i>
                             </div>
-                            <div class="flex flex-col">
+                            <div class="flex flex-col items-start">
                                 <a href="tel:+201014175070" class="dir-ltr font-mono text-xl text-stone-900 font-bold tracking-wide hover:text-blue-600 transition-colors" title="اتصال هاتفي">01014175070</a>
-                                <a href="https://wa.me/201014175070" target="_blank" class="text-sm font-bold text-green-600 hover:text-green-700 flex items-center gap-1 transition-colors">
-                                    <i data-lucide="message-circle" size="14"></i> تواصل عبر واتساب
-                                </a>
                             </div>
                         </li>
                     </ul>
@@ -1342,13 +1244,14 @@
             </div>
 
             <!-- Bottom Bar -->
-            <div class="border-t border-stone-200 pt-8">
+            <div class="pt-0 md:pt-8">
                 <!-- تم تكبير الخط هنا من text-xs إلى text-sm -->
-                <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-stone-600 mb-6">
-                    <p>&copy; 2024 متجر جدار للديكور. جميع الحقوق محفوظة.</p>
+                <!-- UPDATED YEAR: 2026 -->
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm text-stone-600 mb-4 md:mb-6">
+                    <p>&copy; 2026 متجر جدار للديكور.</p>
                     
-                    <!-- Payment Methods Logos - Added explicit height/width attributes to img to prevent layout shift -->
-                    <div class="grayscale hover:grayscale-0 transition-all duration-500 opacity-80 hover:opacity-100 h-16 md:h-24 w-auto flex items-center">
+                    <!-- Payment Methods Logos - Hidden on Mobile -->
+                    <div class="hidden md:flex grayscale hover:grayscale-0 transition-all duration-500 opacity-80 hover:opacity-100 h-12 md:h-24 w-auto items-center">
                         <!-- UPDATED: Replaced GitHub Raw with jsDelivr & Added loading="lazy" -->
                         <img src="https://cdn.jsdelivr.net/gh/gedarfayoum-eng/website@main/Images/banner/payment.webp" loading="lazy" class="h-full w-auto object-contain" width="300" height="96" alt="طرق الدفع">
                     </div>
@@ -1356,10 +1259,10 @@
 
                 <!-- Developer Info (NEW) -->
                 <!-- تم تكبير الخط هنا من text-[10px] إلى text-sm -->
-                <div class="flex justify-center items-center gap-2 text-sm text-stone-600 border-t border-stone-100 pt-4">
-                    <span>معلومات المطور:</span>
+                <div class="flex justify-center items-center gap-2 text-xs md:text-sm text-stone-600 border-t border-stone-100 pt-4">
+                    <span>برمجة:</span>
                     <a href="https://badre.site" target="_blank" class="flex items-center gap-1.5 font-bold hover:text-stone-800 transition-colors group dir-ltr bg-white px-3 py-1 rounded-full border border-stone-100 hover:border-stone-300 hover:shadow-sm" aria-label="زيارة موقع المطور Badr i. Smida">
-                        <i data-lucide="globe" size="14" class="text-stone-600 group-hover:text-blue-600 transition-colors"></i>
+                        <i data-lucide="globe" size="12" class="text-stone-600 group-hover:text-blue-600 transition-colors"></i>
                         <span>Badr i. Smida</span>
                     </a>
                 </div>
@@ -1508,6 +1411,11 @@
             "list-ordered": '<line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>',
             "help-circle": '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
             "home": '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+            
+            // أيقونات مفقودة (تمت إضافتها لإصلاح النجوم والتعليقات)
+            "star": '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+            "quote": '<path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>',
+
             // أيقونات الأقسام الجديدة (Apple Style)
             "gem": '<path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/>',
             "layers": '<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>',
@@ -2132,7 +2040,8 @@
             isDataLoaded = true;
             localStorage.setItem('gedar_products_cache', JSON.stringify(PRODUCTS));
             initialProdsLoaded = true;
-            if (currentView === 'product-details' || currentView === 'home' || currentView === 'shop') renderView();
+            // FIXED: Added 'offers' to the re-render list so offers appear when data loads
+            if (currentView === 'product-details' || currentView === 'home' || currentView === 'shop' || currentView === 'offers') renderView();
         }
 
         // --- 3️⃣ NEW: Auto Cleanup Function (التنظيف الذكي) ---
@@ -3888,6 +3797,67 @@
             }
         };
 
+        // --- 🆕 NEW: Bulk Action Functions ---
+        
+        window.toggleSelectAllProducts = (source) => {
+            const checkboxes = document.querySelectorAll('.product-checkbox');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+        };
+
+        window.applyBulkDiscount = async () => {
+            if (!user || user.email !== ADMIN_EMAIL) return showToast("غير مصرح");
+            
+            // Get checked boxes
+            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+            const ids = Array.from(checkboxes).map(cb => cb.value);
+            
+            if (ids.length === 0) return showToast("يرجى اختيار منتجات من الجدول أولاً");
+            
+            const discountInput = document.getElementById('bulk-discount-input');
+            const dateInput = document.getElementById('bulk-date-input');
+            
+            const discountVal = parseFloat(discountInput.value);
+            const dateVal = dateInput.value;
+            // تحويل التاريخ إلى Timestamp أو null إذا كان فارغاً
+            const expiryTimestamp = dateVal ? new Date(dateVal).getTime() : null;
+
+            if (isNaN(discountVal) || discountVal < 0) return showToast("يرجى تحديد نسبة خصم صحيحة");
+
+            if (!confirm(`هل أنت متأكد من تطبيق خصم ${discountVal}% على ${ids.length} منتج؟`)) return;
+
+            // إظهار حالة التحميل على الزر
+            const btn = document.getElementById('bulk-apply-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'جاري التنفيذ...';
+            btn.disabled = true;
+
+            try {
+                // إنشاء مصفوفة الوعود للتحديث المتوازي
+                const updates = ids.map(id => {
+                    return updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id), {
+                        discount: discountVal,
+                        discountExpiry: expiryTimestamp
+                    });
+                });
+                
+                await Promise.all(updates);
+                
+                showToast(`تم تحديث ${ids.length} منتج بنجاح ✅`);
+                
+                // تصفير الحقول وإعادة الرسم
+                discountInput.value = '';
+                dateInput.value = '';
+                renderView(); 
+                
+            } catch(err) {
+                console.error("Bulk Update Error:", err);
+                showToast("حدث خطأ أثناء التحديث الجماعي");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+
         // NEW: Function to update global branding (Navbar, Footer, & Bottom Banner)
         function updateGlobalBranding() {
             const navBrandDesk = document.getElementById('navbar-brand-desktop');
@@ -3908,7 +3878,8 @@
             
             // --- UPDATED: Logo Sizing Logic (Responsive) ---
             const sizeDesk = HERO_SETTINGS.logoSizeDesktop || HERO_SETTINGS.logoSize || 120;
-            const sizeMob = HERO_SETTINGS.logoSizeMobile || 80;
+            // تم تغيير الحجم الافتراضي هنا من 80 إلى 100
+            const sizeMob = HERO_SETTINGS.logoSizeMobile || 100;
 
             // Inject Dynamic CSS for Logo
             let logoStyle = document.getElementById('dynamic-logo-style');
@@ -3952,14 +3923,53 @@
                 }
             }
 
-            // 3. Mobile Profile Picture (Right)
+            // 3. Mobile Profile Picture (Right) - UPDATED with Auto Toggle Animation
             if (mobProfile) {
-                if (profileUrl) {
-                    mobProfile.innerHTML = `<img src="${profileUrl}" class="profile-pic-img" alt="Profile">`;
-                } else {
-                    // Fallback Icon
-                    mobProfile.innerHTML = `<i data-lucide="user" size="20" class="text-stone-400"></i>`;
-                    lucide.createIcons();
+                // Determine base content (Image or Icon)
+                const imgContent = profileUrl 
+                    ? `<img src="${profileUrl}" class="w-full h-full object-cover" alt="Profile">` 
+                    : `<i data-lucide="user" size="20" class="text-stone-400"></i>`;
+                
+                // Create dual-layer structure for toggling
+                mobProfile.innerHTML = `
+                    <div class="relative w-full h-full">
+                        <!-- Layer 1: Profile Image/Icon -->
+                        <div id="mob-profile-view-1" class="absolute inset-0 flex items-center justify-center transition-all duration-500 opacity-100 scale-100">
+                            ${imgContent}
+                        </div>
+                        <!-- Layer 2: Menu Icon -->
+                        <div id="mob-profile-view-2" class="absolute inset-0 flex items-center justify-center transition-all duration-500 opacity-0 scale-75 bg-stone-50">
+                            <i data-lucide="align-left" size="20" class="text-stone-600"></i>
+                        </div>
+                    </div>
+                `;
+                lucide.createIcons();
+
+                // Initialize Toggler Loop (only once)
+                if (!window.profileTogglerRunning) {
+                    setInterval(() => {
+                        const v1 = document.getElementById('mob-profile-view-1');
+                        const v2 = document.getElementById('mob-profile-view-2');
+                        if (v1 && v2) {
+                            // Toggle classes
+                            if (v1.classList.contains('opacity-100')) {
+                                // Switch to Menu Icon
+                                v1.classList.remove('opacity-100', 'scale-100');
+                                v1.classList.add('opacity-0', 'scale-75');
+                                
+                                v2.classList.remove('opacity-0', 'scale-75');
+                                v2.classList.add('opacity-100', 'scale-100');
+                            } else {
+                                // Switch back to Profile
+                                v2.classList.remove('opacity-100', 'scale-100');
+                                v2.classList.add('opacity-0', 'scale-75');
+                                
+                                v1.classList.remove('opacity-0', 'scale-75');
+                                v1.classList.add('opacity-100', 'scale-100');
+                            }
+                        }
+                    }, 2500); // Toggle every 2.5 seconds
+                    window.profileTogglerRunning = true;
                 }
             }
 
@@ -5525,14 +5535,29 @@
         // --- ⚡ PERFORMANCE FIX: VIEW MANAGER (Prevent Excessive Repaint) ---
         // حل مشكلة إعادة الرسم العنيف: بدلاً من حذف الصفحة، نقوم بإخفاء/إظهار العناصر
         
-        function renderView() {
+        // UPDATED: تحويل الدالة إلى Async لدعم الانتقالات السلسة (Transitions)
+        async function renderView() {
             const main = document.getElementById('main-content');
             const viewId = `view-${currentView}`;
             
-            // 1. إخفاء جميع الصفحات الحالية (بدلاً من حذفها)
-            Array.from(main.children).forEach(child => {
-                child.classList.add('hidden');
-            });
+            // 🆕 1. Transition OUT (إخفاء الصفحة الحالية بتأثير بصري)
+            const currentActive = Array.from(main.children).find(c => !c.classList.contains('hidden'));
+            
+            // إذا كانت هناك صفحة نشطة وهي ليست الصفحة الجديدة، نقوم بإخفائها بتدريج
+            if (currentActive && currentActive.id !== viewId) {
+                // إضافة كلاسات الحركة للخروج (تلاشي + هبوط بسيط)
+                currentActive.classList.add('transition-all', 'duration-300', 'ease-in-out', 'opacity-0', 'translate-y-4');
+                
+                // انتظار انتهاء الحركة (300ms) محاكاة لـ AJAX Latency
+                await new Promise(resolve => setTimeout(resolve, 250));
+                
+                // إخفاء العنصر تماماً وإزالة كلاسات الحركة للاستخدام المستقبلي
+                currentActive.classList.add('hidden');
+                currentActive.classList.remove('transition-all', 'duration-300', 'ease-in-out', 'opacity-0', 'translate-y-4');
+            }
+
+            // Scroll to top immediately after transition out
+            window.scrollTo({ top: 0, behavior: 'auto' });
 
             // 2. التحكم في البانر (فقط للرئيسية)
             const banner = document.getElementById('header-banner-container');
@@ -5541,16 +5566,16 @@
                 const isHome = currentView === 'home';
                 if (isHome && HERO_SETTINGS.showFooterBanner && HERO_SETTINGS.footerBannerUrl) {
                     banner.classList.remove('hidden');
+                    // Banner Entry Animation
+                    banner.classList.remove('opacity-0', '-translate-y-2');
+                    banner.classList.add('transition-all', 'duration-500', 'opacity-100', 'translate-y-0');
                 } else {
                     banner.classList.add('hidden');
+                    banner.classList.add('opacity-0', '-translate-y-2');
                 }
             }
 
-            // 3. تحديد الصفحات التي يجب إعادة بنائها دائماً (لضمان تحديث البيانات)
-            // - home: لإعادة ضبط السلايدرز
-            // - product-details: لأن الـ ID يتغير
-            // - admin/orders: للأمان وتحديث البيانات
-            // - favorites/offers: لتحديث الأرقام
+            // 3. تحديد الصفحات التي يجب إعادة بنائها دائماً
             const volatileViews = ['home', 'product-details', 'admin', 'orders', 'favorites', 'offers'];
             const isVolatile = volatileViews.includes(currentView);
             
@@ -5562,14 +5587,15 @@
                 if (!viewContainer) {
                     viewContainer = document.createElement('div');
                     viewContainer.id = viewId;
-                    // إضافة أنيميشن ظهور خفيف
-                    viewContainer.className = 'w-full h-full animate-in fade-in duration-300';
                     main.appendChild(viewContainer);
                 } else {
-                    // إذا كان موجوداً لكنه "متطاير" (Volatile)، نفرغه لنعيد تعبئته
+                    // تفريغ المحتوى إذا كانت الصفحة متطايرة
                     viewContainer.innerHTML = '';
-                    viewContainer.classList.remove('hidden');
                 }
+                
+                // إعداد الحالة الأولية للدخول (غير مرئي + مزاح للأسفل قليلاً)
+                viewContainer.className = 'w-full h-full opacity-0 translate-y-8 transition-all duration-500 ease-out hidden';
+                viewContainer.classList.remove('hidden'); // إظهار الهيكل لبدء الرسم
 
                 // استدعاء دالة الرسم المناسبة وتمرير الحاوية الجديدة
                 if (currentView === 'home') {
@@ -5605,17 +5631,35 @@
                     renderFavoritesPage(viewContainer);
                 }
                 
-                // تشغيل الأيقونات للعناصر الجديدة
                 lucide.createIcons();
             } else {
-                // 5. للصفحات الثابتة (Cached): نظهرها فقط (سرعة صاروخية)
+                // 5. للصفحات الثابتة (Cached): إعادة تهيئة الحركة
                 viewContainer.classList.remove('hidden');
                 
-                // حالة خاصة للمتجر: تحديث الشبكة فقط (للفلتر) دون إعادة رسم السايدبار
+                // Reset Animation State (Prepare for Entry)
+                viewContainer.classList.remove('transition-all', 'duration-500', 'ease-out');
+                viewContainer.classList.add('opacity-0', 'translate-y-8');
+                
+                // Force Reflow
+                void viewContainer.offsetWidth; 
+                
+                // Re-apply transition class
+                viewContainer.classList.add('transition-all', 'duration-500', 'ease-out');
+
+                // حالة خاصة للمتجر: تحديث الشبكة فقط (للفلتر)
                 if (currentView === 'shop') {
                     applyShopFilters();
                 }
             }
+            
+            // 🆕 6. Transition IN (تشغيل حركة الدخول)
+            // نستخدم requestAnimationFrame لضمان تطبيق الحركة بعد الرسم
+            requestAnimationFrame(() => {
+                if(viewContainer) {
+                    viewContainer.classList.remove('opacity-0', 'translate-y-8');
+                    viewContainer.classList.add('opacity-100', 'translate-y-0');
+                }
+            });
             
             // ضبط المسافات للموبايل
             setTimeout(adjustMobileLayout, 50);
@@ -5979,25 +6023,38 @@
                         <!-- Updated Grid: Reverted to 3 columns on mobile -->
                         <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4">
                             ${allOffers.map(p => {
-                                // استخدام بطاقة المنتج المحسنة (الموجودة بالأسفل) أو بناء بطاقة مخصصة للعروض هنا
-                                const finalPrice = (p.price * (1 - p.discount / 100)).toFixed(0); // إزالة الكسور للموبايل
+                                // FIXED: Price calculation robustness & Image Optimization & Stock Check
+                                const priceNum = Number(p.price) || 0;
+                                const discountNum = Number(p.discount) || 0;
+                                const finalPrice = (priceNum * (1 - discountNum / 100)).toFixed(0); 
+                                const optimizedImg = optimizeImageUrl(p.image);
+                                const isInStock = p.inStock !== false;
+
                                 return `
-                                <div class="group bg-white rounded-xl border border-red-100 overflow-hidden hover:shadow-lg hover:border-red-200 transition-all h-full flex flex-col relative" onclick="viewProduct('${p.id}')">
+                                <div class="group bg-white rounded-xl border border-red-100 overflow-hidden hover:shadow-lg hover:border-red-200 transition-all h-full flex flex-col relative select-none" onclick="viewProduct('${p.id}')">
                                     
                                     <!-- Discount Badge (Compact) -->
                                     <div class="absolute top-1 right-1 z-10">
                                         <div class="bg-red-600 text-white text-[8px] md:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">
-                                            -${p.discount}%
+                                            -${discountNum}%
                                         </div>
                                     </div>
 
+                                    <!-- Stock Badge if out -->
+                                    ${!isInStock ? `
+                                    <div class="absolute inset-0 bg-white/60 z-20 flex items-center justify-center backdrop-blur-[1px]">
+                                        <div class="bg-stone-800 text-white text-[9px] font-bold px-2 py-1 rounded shadow-sm">
+                                            غير متوفر
+                                        </div>
+                                    </div>` : ''}
+
                                     <!-- Image -->
                                     <div class="relative aspect-[4/5] overflow-hidden bg-stone-100">
-                                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${p.name}">
+                                        <img src="${optimizedImg}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ${!isInStock ? 'grayscale opacity-70' : ''}" alt="${p.name}" loading="lazy">
                                         
                                         <!-- Countdown Overlay (Mobile Optimized) -->
                                         ${p.discountExpiry ? `
-                                        <div class="absolute bottom-0 left-0 w-full bg-white/95 backdrop-blur-sm p-0.5 border-t border-red-100 flex flex-col items-center justify-center">
+                                        <div class="absolute bottom-0 left-0 w-full bg-white/95 backdrop-blur-sm p-0.5 border-t border-red-100 flex flex-col items-center justify-center z-10">
                                             <div class="discount-timer scale-75 origin-center" data-expiry="${p.discountExpiry}"></div>
                                         </div>` : ''}
                                     </div>
@@ -6008,11 +6065,11 @@
                                         <div class="mt-auto pt-1">
                                             <div class="flex flex-col md:flex-row md:items-center md:gap-1.5 mb-1.5">
                                                 <span class="text-sm md:text-xl font-serif text-red-600 font-bold leading-none">${finalPrice}<span class="text-[8px] mr-0.5">ج.م</span></span>
-                                                <span class="text-[9px] md:text-xs text-stone-600 line-through decoration-red-200">${Math.floor(p.price)}</span>
+                                                <span class="text-[9px] md:text-xs text-stone-600 line-through decoration-red-200">${Math.floor(priceNum)}</span>
                                             </div>
                                             
-                                            <button onclick="event.stopPropagation(); addToCart('${p.id}')" class="w-full bg-red-600 hover:bg-red-700 text-white py-1.5 md:py-2.5 rounded-lg font-bold shadow-sm transition-colors flex items-center justify-center gap-1 text-[9px] md:text-xs">
-                                                <i data-lucide="shopping-bag" size="12"></i> <span class="hidden md:inline">إلحق العرض</span><span class="md:hidden">أضف</span>
+                                            <button onclick="event.stopPropagation(); addToCart('${p.id}')" ${!isInStock ? 'disabled' : ''} class="w-full ${isInStock ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-stone-200 text-stone-500 cursor-not-allowed'} py-1.5 md:py-2.5 rounded-lg font-bold shadow-sm transition-colors flex items-center justify-center gap-1 text-[9px] md:text-xs">
+                                                ${isInStock ? `<i data-lucide="shopping-bag" size="12"></i> <span class="hidden md:inline">إلحق العرض</span><span class="md:hidden">أضف</span>` : 'نفذت الكمية'}
                                             </button>
                                         </div>
                                     </div>
@@ -6145,38 +6202,33 @@
 
             // --- 🆕 1. Stories Section (Categories Capsules/Chips) ---
             if (CATEGORIES && CATEGORIES.length > 0) {
-                // Helper for icons
-                const getCatIcon = (name) => {
-                    const n = name.toLowerCase();
-                    if (n.includes('خشب') || n.includes('wood')) return 'panel-top';
-                    if (n.includes('رخام') || n.includes('marble')) return 'gem';
-                    if (n.includes('فوم') || n.includes('foam')) return 'layers';
-                    if (n.includes('مرايا') || n.includes('mirror') || n.includes('زجاج')) return 'sparkles';
-                    if (n.includes('ستيل') || n.includes('steel') || n.includes('معدن')) return 'scissors';
-                    if (n.includes('أدوات') || n.includes('tools')) return 'wrench';
-                    if (n.includes('لوح') || n.includes('panel')) return 'layout-template';
-                    if (n.includes('عرض') || n.includes('offer') || n.includes('خصم')) return 'percent';
-                    if (n.includes('بانل')) return 'layout-dashboard';
-                    return 'package'; // أيقونة افتراضية
-                };
+                // مصفوفة التدريجات اللونية (Gradients)
+                const gradients = [
+                    "bg-gradient-to-br from-orange-50 to-amber-100 border-orange-200 text-orange-900 group-hover:to-orange-200",
+                    "bg-gradient-to-br from-blue-50 to-cyan-100 border-blue-200 text-blue-900 group-hover:to-blue-200",
+                    "bg-gradient-to-br from-emerald-50 to-teal-100 border-emerald-200 text-emerald-900 group-hover:to-emerald-200",
+                    "bg-gradient-to-br from-violet-50 to-purple-100 border-violet-200 text-violet-900 group-hover:to-purple-200",
+                    "bg-gradient-to-br from-rose-50 to-pink-100 border-rose-200 text-rose-900 group-hover:to-rose-200",
+                    "bg-gradient-to-br from-slate-50 to-gray-200 border-slate-200 text-slate-900 group-hover:to-gray-300"
+                ];
 
                 c.innerHTML += `
                 <div class="py-4 bg-white dir-ltr border-b border-stone-50 mb-2">
                     <div class="container mx-auto px-4">
                         <div class="flex gap-3 overflow-x-auto scrollbar-hide px-1 snap-x items-center py-1">
                             
-                            <!-- Static 'All' (Dark Capsule) -->
-                            <button onclick="viewAllProducts()" class="flex items-center gap-2 px-5 py-3 bg-stone-900 text-white rounded-full shadow-md shadow-stone-200 flex-shrink-0 snap-start active:scale-95 transition-all duration-200 border border-stone-900 group select-none">
-                                <i data-lucide="layout-grid" size="18" class="group-hover:rotate-90 transition-transform"></i>
+                            <!-- Static 'All' (Dark Capsule - Text Only) -->
+                            <button onclick="viewAllProducts()" class="flex items-center justify-center px-6 py-3 bg-stone-900 text-white rounded-full shadow-md shadow-stone-200 flex-shrink-0 snap-start active:scale-95 transition-all duration-200 border border-stone-900 group select-none">
                                 <span class="text-xs font-bold leading-none mt-0.5">الكل</span>
                             </button>
 
-                            <!-- Dynamic Categories (Light Capsules) -->
-                            ${CATEGORIES.map(cat => {
-                                const iconName = getCatIcon(cat.name);
+                            <!-- Dynamic Categories (Gradient Capsules - Text Only) -->
+                            ${CATEGORIES.map((cat, index) => {
+                                // اختيار لون متدرج بناءً على الترتيب
+                                const gradientClass = gradients[index % gradients.length];
+                                
                                 return `
-                                <button onclick="filterCategory('${cat.name.replace(/'/g, "\\'")}')" class="flex items-center gap-2 px-5 py-3 bg-white text-stone-600 hover:text-stone-900 hover:bg-stone-50 rounded-full border border-stone-200 shadow-sm flex-shrink-0 snap-start active:scale-95 transition-all duration-200 group whitespace-nowrap select-none hover:border-stone-300">
-                                    <i data-lucide="${iconName}" size="18" class="text-stone-400 group-hover:text-stone-900 transition-colors"></i>
+                                <button onclick="filterCategory('${cat.name.replace(/'/g, "\\'")}')" class="flex items-center justify-center px-6 py-3 ${gradientClass} rounded-full border shadow-sm flex-shrink-0 snap-start active:scale-95 transition-all duration-300 group whitespace-nowrap select-none hover:shadow-md">
                                     <span class="text-xs font-bold leading-none mt-0.5">${cat.name}</span>
                                 </button>
                                 `;
@@ -6212,7 +6264,7 @@
                         }
 
                         return `
-                        <div onclick="viewProduct('${p.id}')" class="group relative w-full bg-white border border-stone-100 rounded-[2rem] p-2 pr-3 flex items-center gap-4 shadow-sm hover:shadow-lg hover:border-stone-200 transition-all duration-300 cursor-pointer overflow-hidden">
+                        <div onclick="viewProduct('${p.id}')" class="group relative w-full bg-white border border-stone-100 rounded-[2rem] p-2 pr-3 flex items-center gap-3 shadow-sm hover:shadow-lg hover:border-stone-200 transition-all duration-300 cursor-pointer overflow-hidden">
                             
                             <!-- Image (Circle) -->
                             <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-stone-50 border border-stone-100 overflow-hidden flex-shrink-0 relative z-10">
@@ -6224,7 +6276,7 @@
                                 <div class="flex items-center justify-between">
                                     <h4 class="font-bold text-stone-900 text-sm md:text-base truncate group-hover:text-stone-700 transition-colors">${p.name}</h4>
                                     <!-- Category Badge Inside Capsule -->
-                                    <span class="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full whitespace-nowrap font-bold border border-stone-200 ml-2">${p.category}</span>
+                                    <span class="text-[10px] bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full whitespace-nowrap font-bold border border-stone-200 ml-2 hidden sm:inline-block">${p.category}</span>
                                 </div>
                                 
                                 <!-- Product Details Snippet -->
@@ -6238,9 +6290,13 @@
                                 </div>
                             </div>
 
-                            <!-- Action Button (Circle Arrow) -->
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-stone-50 group-hover:bg-stone-900 group-hover:text-white flex items-center justify-center transition-all duration-300 text-stone-400 z-10 shadow-sm flex-shrink-0 ml-1">
-                                <i data-lucide="chevron-left" size="20" class="group-hover:-translate-x-0.5 transition-transform"></i>
+                            <!-- Actions Group (Add to Cart Only) -->
+                            <div class="flex flex-col sm:flex-row items-center gap-2 z-20 shrink-0 ml-1">
+                                <!-- Quick Add Button (Updated) -->
+                                <button onclick="event.stopPropagation(); addToCart('${p.id}')" class="h-9 md:h-10 px-3 md:px-4 rounded-full bg-stone-100 hover:bg-stone-900 hover:text-white flex items-center justify-center gap-1.5 transition-all duration-300 text-stone-600 shadow-sm border border-stone-200 active:scale-95 group/btn" aria-label="أضف للسلة">
+                                    <i data-lucide="shopping-bag" size="16"></i>
+                                    <span class="text-[10px] md:text-xs font-bold whitespace-nowrap">إضافة للسلة</span>
+                                </button>
                             </div>
                             
                             <!-- Click Feedback Overlay -->
@@ -6294,12 +6350,13 @@
                                 <i data-lucide="chevron-right" size="24"></i>
                             </button>
 
-                            <!-- Slider Container (Normal Horizontal) -->
-                            <div id="special-slider" class="flex overflow-x-auto scrollbar-hide snap-x pb-8 pt-4 -mx-3 px-3 scroll-smooth">
+                            <!-- Slider Container (Improved Horizontal Scrolling) -->
+                            <!-- UPDATED: Added snap-mandatory, adjusted margins for full-bleed mobile feel -->
+                            <div id="special-slider" class="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-8 pt-4 -mx-6 px-6 md:mx-0 md:px-0 scroll-smooth gap-4 md:gap-0">
                                 ${featuredProducts.map(p => {
                                     return `
-                                    <!-- UPDATED: Width is 1/4 on desktop (4 items), 1/3 on tablet, 1/2 on mobile -->
-                                    <div class="w-1/2 md:w-1/3 lg:w-1/4 flex-shrink-0 snap-start px-3 group cursor-pointer">
+                                    <!-- UPDATED: Fixed width on mobile (280px) for better card feel, fluid on desktop -->
+                                    <div class="min-w-[280px] w-[280px] md:min-w-0 md:w-1/3 lg:w-1/4 flex-shrink-0 snap-center md:snap-start md:px-3 group cursor-pointer transition-transform duration-300 hover:-translate-y-1">
                                         ${createProductCard(p)}
                                     </div>
                                     `;
@@ -7133,12 +7190,13 @@
                                 <div class="flex justify-between items-center mb-8 pb-6 border-b border-stone-100">
                                     <h2 class="font-bold text-2xl flex gap-2 items-center text-stone-900">
                                         <i data-lucide="${isEdit ? 'pen-line' : 'package-plus'}" class="text-blue-600"></i>
-                                        ${isEdit ? `<span class="text-blue-600">تعديل المنتج: ${p.name}</span>` : 'إضافة منتج جديد'}
+                                        ${isEdit ? `<span class="text-blue-600">تعديل المنتج: ${p.name}</span>` : 'إدارة المنتجات'}
                                     </h2>
                                     ${isEdit ? `<button onclick="cancelEdit()" class="text-stone-600 font-bold text-sm hover:text-stone-600 px-4 py-2 hover:bg-white rounded-lg transition-colors">إلغاء وعودة للإضافة</button>` : ''}
                                 </div>
 
-                                <form onsubmit="handleSaveProduct(event)" class="space-y-8">
+                                <!-- Add/Edit Form -->
+                                <form onsubmit="handleSaveProduct(event)" class="space-y-8 mb-12">
                                     <div class="grid md:grid-cols-2 gap-8">
                                         <div class="space-y-4">
                                             <div class="space-y-2">
@@ -7247,6 +7305,102 @@
                                         ${isEdit ? 'حفظ التعديلات' : 'إضافة المنتج للمتجر'}
                                     </button>
                                 </form>
+
+                                <!-- 🆕 SECTION: BULK ACTIONS TOOLBAR -->
+                                <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200 mb-8 shadow-inner">
+                                    <h3 class="font-bold text-stone-900 mb-4 flex items-center gap-2 text-sm">
+                                        <i data-lucide="percent" class="text-stone-600"></i>
+                                        العروض والخصومات الجماعية (Bulk Actions)
+                                    </h3>
+                                    <div class="flex flex-col md:flex-row items-end gap-4">
+                                        <div class="w-full md:w-1/4">
+                                            <label class="text-[10px] font-bold text-stone-600 mb-1 block uppercase">نسبة الخصم %</label>
+                                            <input type="number" id="bulk-discount-input" min="0" max="100" class="w-full p-2.5 rounded-xl border border-stone-300 focus:border-stone-900 outline-none bg-white" placeholder="مثال: 20">
+                                        </div>
+                                        <div class="w-full md:w-1/3">
+                                            <label class="text-[10px] font-bold text-stone-600 mb-1 block uppercase">تاريخ الانتهاء</label>
+                                            <input type="datetime-local" id="bulk-date-input" class="w-full p-2.5 rounded-xl border border-stone-300 focus:border-stone-900 outline-none bg-white dir-ltr text-stone-600 text-sm">
+                                        </div>
+                                        <button id="bulk-apply-btn" onclick="applyBulkDiscount()" class="w-full md:w-auto bg-stone-800 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-stone-900 transition-colors shadow-sm flex items-center justify-center gap-2 text-sm h-[42px] mt-2 md:mt-0">
+                                            <i data-lucide="check-circle" size="16"></i> تطبيق على المحددة
+                                        </button>
+                                    </div>
+                                    <p class="text-[10px] text-stone-500 mt-2 font-medium flex items-center gap-1">
+                                        <i data-lucide="info" size="10"></i>
+                                        اختر المنتجات من الجدول بالأسفل ثم اضغط "تطبيق" لتحديث الخصومات دفعة واحدة.
+                                    </p>
+                                </div>
+
+                                <!-- 🆕 SECTION: PRODUCTS TABLE -->
+                                <div class="border-t border-stone-100 pt-8">
+                                    <div class="flex justify-between items-end mb-4">
+                                        <h3 class="font-bold text-xl text-stone-900">جدول المنتجات (${PRODUCTS.length})</h3>
+                                    </div>
+                                    
+                                    <div class="overflow-x-auto rounded-2xl border border-stone-200 bg-white">
+                                        <table class="w-full text-sm text-right whitespace-nowrap">
+                                            <thead class="bg-stone-50 text-stone-600 font-bold border-b border-stone-200 text-xs uppercase tracking-wider">
+                                                <tr>
+                                                    <th class="p-4 w-10 text-center bg-stone-100/50">
+                                                        <input type="checkbox" onchange="toggleSelectAllProducts(this)" class="w-4 h-4 rounded cursor-pointer accent-stone-900">
+                                                    </th>
+                                                    <th class="p-4 w-16 text-center">الصورة</th>
+                                                    <th class="p-4">اسم المنتج</th>
+                                                    <th class="p-4">القسم</th>
+                                                    <th class="p-4">السعر</th>
+                                                    <th class="p-4">الخصم</th>
+                                                    <th class="p-4">المخزون</th>
+                                                    <th class="p-4 text-center">إجراءات</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-stone-100">
+                                                ${PRODUCTS.length === 0 ? 
+                                                    `<tr><td colspan="8" class="p-8 text-center text-stone-500">لا توجد منتجات مضافة حتى الآن.</td></tr>` 
+                                                    : PRODUCTS.map(prod => {
+                                                        const isExpired = prod.discountExpiry && prod.discountExpiry < Date.now();
+                                                        return `
+                                                        <tr class="hover:bg-stone-50/50 transition-colors group">
+                                                            <td class="p-4 text-center">
+                                                                <input type="checkbox" value="${prod.id}" class="product-checkbox w-4 h-4 rounded cursor-pointer accent-stone-900 border-stone-300">
+                                                            </td>
+                                                            <td class="p-3 text-center">
+                                                                <div class="w-10 h-10 rounded-lg bg-stone-100 border border-stone-200 overflow-hidden mx-auto">
+                                                                    <img src="${prod.image}" class="w-full h-full object-cover" loading="lazy">
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-4 font-bold text-stone-800 max-w-[200px] truncate" title="${prod.name}">${prod.name}</td>
+                                                            <td class="p-4 text-stone-600 text-xs">${prod.category}</td>
+                                                            <td class="p-4 font-mono font-bold text-stone-900">$${prod.price}</td>
+                                                            <td class="p-4">
+                                                                ${prod.discount > 0 ? 
+                                                                    `<span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-red-50 text-red-700 text-xs font-bold border border-red-100">
+                                                                        ${prod.discount}% 
+                                                                        ${isExpired ? '<span class="text-[8px] text-red-400">(منتهي)</span>' : ''}
+                                                                     </span>` 
+                                                                    : '<span class="text-stone-400 text-xs">-</span>'}
+                                                            </td>
+                                                            <td class="p-4">
+                                                                ${prod.inStock !== false ? 
+                                                                    `<span class="text-green-600 text-xs font-bold flex items-center gap-1"><i data-lucide="check" size="10"></i> متوفر</span>` : 
+                                                                    `<span class="text-stone-400 text-xs font-bold flex items-center gap-1"><i data-lucide="x" size="10"></i> نفذ</span>`}
+                                                            </td>
+                                                            <td class="p-4 text-center">
+                                                                <div class="flex items-center justify-center gap-2">
+                                                                    <button onclick="handleEditProduct('${prod.id}')" class="p-1.5 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-100" title="تعديل">
+                                                                        <i data-lucide="pen-line" size="14"></i>
+                                                                    </button>
+                                                                    <button onclick="handleDeleteProduct('${prod.id}')" class="p-1.5 text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors border border-red-100" title="حذف">
+                                                                        <i data-lucide="trash-2" size="14"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    `;
+                                                }).join('')}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         ` : ''}
 
@@ -7357,7 +7511,8 @@
                                                 <div>
                                                     <label for="logo-size-mob-input" class="text-xs font-bold text-stone-600 uppercase mb-2 block">حجم الموبايل (px)</label>
                                                     <div class="relative">
-                                                        <input id="logo-size-mob-input" name="logoSizeMob" type="number" value="${HERO_SETTINGS.logoSizeMobile || '80'}" class="w-full border border-stone-200 p-3 pl-10 rounded-xl text-sm focus:ring-2 focus:ring-stone-900 outline-none dir-ltr bg-white" placeholder="80">
+                                                        <!-- تم تحديث القيمة الافتراضية في لوحة التحكم أيضاً -->
+                                                        <input id="logo-size-mob-input" name="logoSizeMob" type="number" value="${HERO_SETTINGS.logoSizeMobile || '100'}" class="w-full border border-stone-200 p-3 pl-10 rounded-xl text-sm focus:ring-2 focus:ring-stone-900 outline-none dir-ltr bg-white" placeholder="100">
                                                         <span class="absolute left-3 top-3.5 text-stone-600 text-xs font-bold">px</span>
                                                     </div>
                                                 </div>
@@ -7895,6 +8050,9 @@
                 </div>`;
             
             const isFav = favorites.includes(p.id);
+            // NEW: Check Admin Status
+            const isAdmin = user && user.email === ADMIN_EMAIL;
+            
             const images = (p.images && p.images.length > 0) ? p.images : [p.image];
             const features = (p.features && p.features.length > 0) ? p.features : [];
 
@@ -8332,11 +8490,32 @@
                                     
                                     <form id="review-form" onsubmit="handleSubmitReview(event)" class="space-y-4 mt-4 hidden bg-white p-4 rounded-xl border border-stone-200">
                                         <div>
-                                            <label class="block text-xs font-bold text-stone-600 mb-1">التقييم العام</label>
-                                            <div class="flex flex-row-reverse justify-end gap-1 group/rating">
+                                            <label class="block text-xs font-bold text-stone-600 mb-2">التقييم العام</label>
+                                            
+                                            <!-- Rating Stars Container -->
+                                            <div class="rating-container flex flex-row-reverse justify-end gap-1">
+                                                <!-- CSS for Rating Logic -->
+                                                <style>
+                                                    .rating-container:hover label { color: #d6d3d1; /* stone-300 (reset on hover) */ }
+                                                    .rating-container label:hover,
+                                                    .rating-container label:hover ~ label,
+                                                    .rating-container input:checked ~ label {
+                                                        color: #facc15 !important; /* yellow-400 */
+                                                    }
+                                                    .rating-container label:hover svg,
+                                                    .rating-container label:hover ~ label svg,
+                                                    .rating-container input:checked ~ label svg {
+                                                        fill: currentColor;
+                                                    }
+                                                </style>
+
                                                 ${[5,4,3,2,1].map(val => `
-                                                    <input type="radio" name="reviewerRating" value="${val}" id="star${val}" class="peer hidden" ${val===5?'checked':''}>
-                                                    <label for="star${val}" class="cursor-pointer text-stone-600 peer-checked:text-yellow-400 hover:text-yellow-400 peer-hover:text-yellow-400 transition-colors"><i data-lucide="star" class="fill-current w-8 h-8"></i></label>
+                                                    <input type="radio" name="reviewerRating" value="${val}" id="star${val}" class="sr-only" ${val===5?'checked':''}>
+                                                    <label for="star${val}" class="cursor-pointer text-stone-300 transition-colors duration-200 p-1" title="${val} نجوم">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star">
+                                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                                        </svg>
+                                                    </label>
                                                 `).join('')}
                                             </div>
                                         </div>
@@ -8357,11 +8536,19 @@
                             <div class="lg:col-span-8 space-y-6">
                                 <h3 class="font-bold text-xl mb-4">أفضل المراجعات</h3>
                                 ${productReviews.length > 0 ? productReviews.map(r => `
-                                    <div class="flex gap-4 mb-6">
+                                    <div class="flex gap-4 mb-6 group/review relative">
                                         <div class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center font-bold text-stone-600 text-lg flex-shrink-0">${r.userName.charAt(0)}</div>
                                         <div class="flex-1">
-                                            <div class="flex items-center gap-2 mb-1">
-                                                <span class="font-bold text-sm text-stone-900">${r.userName}</span>
+                                            <div class="flex items-center justify-between mb-1">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="font-bold text-sm text-stone-900">${r.userName}</span>
+                                                </div>
+                                                <!-- NEW: Admin Delete Button -->
+                                                ${isAdmin ? `
+                                                <button onclick="if(confirm('هل أنت متأكد من حذف هذا التعليق نهائياً؟')) handleReviewAction('${r.id}', 'delete')" class="text-red-400 hover:text-red-600 transition-colors p-1 opacity-0 group-hover/review:opacity-100 absolute left-0 top-0 bg-white rounded-full shadow-sm border border-red-100" title="حذف التعليق">
+                                                    <i data-lucide="trash-2" size="14"></i>
+                                                </button>
+                                                ` : ''}
                                             </div>
                                             <div class="flex items-center gap-2 mb-2">
                                                 <div class="flex text-yellow-400 text-xs">
