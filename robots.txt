@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gedarfayoum-eng.github.io/website/sitemap.xml
+Sitemap: https://gedarr.com/sitemap.xml
