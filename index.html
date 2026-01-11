@@ -271,10 +271,14 @@
             perspective: 1000px;
         }
 
-        /* تحسين استجابة اللمس للسلايدر */
-        .touch-pan-y {
-            touch-action: pan-y pinch-zoom;
+        /* FIX: تحسين استجابة اللمس للسلايدر الأفقي */
+        /* تم تغيير الاسم من touch-pan-y إلى touch-scroll-x */
+        /* تم تعديل touch-action للسماح بالسحب الأفقي والعمودي معاً */
+        .touch-scroll-x {
+            touch-action: pan-x pan-y; 
             -webkit-overflow-scrolling: touch; /* لنعومة السكرول في iOS */
+            overscroll-behavior-x: contain; /* يمنع سحب الصفحة بالكامل عند نهاية القائمة */
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -4162,8 +4166,8 @@
                     <div class="w-full bg-white dir-ltr pb-2 animate-in fade-in duration-700"> 
                         
                         <!-- Mobile Scroll Slider (Apple Style) -->
-                        <!-- ADDED: gpu-accelerated & touch-pan-y for buttery smooth scroll -->
-                        <div class="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-3 px-4 py-3 gpu-accelerated touch-pan-y" 
+                        <!-- FIX: Replaced touch-pan-y with touch-scroll-x -->
+                        <div class="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-3 px-4 py-3 gpu-accelerated touch-scroll-x" 
                              id="${sliderMobId}"
                              style="scroll-padding: 0 16px;"
                              onscroll="updateBannerScrollDots('${sliderMobId}')">
@@ -6402,8 +6406,8 @@
                 </div>
                 
                 <!-- Horizontal Slider Wrapper -->
-                <!-- ADDED: gpu-accelerated & touch-pan-y -->
-                <div class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 gap-3 mt-4 pb-4 md:px-6 gpu-accelerated touch-pan-y">
+                <!-- FIX: Replaced touch-pan-y with touch-scroll-x -->
+                <div class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 gap-3 mt-4 pb-4 md:px-6 gpu-accelerated touch-scroll-x">
                     ${productChunks.map((chunk, chunkIndex) => `
                         <!-- Vertical Column (3 Items) -->
                         <div class="min-w-[90%] w-[90%] md:min-w-[45%] lg:min-w-[32%] snap-center flex flex-col gap-3">
@@ -6515,8 +6519,8 @@
 
                             <!-- Slider Container (Improved Horizontal Scrolling) -->
                             <!-- UPDATED: Added snap-mandatory, adjusted margins for full-bleed mobile feel -->
-                            <!-- ADDED: gpu-accelerated & touch-pan-y -->
-                            <div id="special-slider" class="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-8 pt-4 -mx-6 px-6 md:mx-0 md:px-0 scroll-smooth gap-4 md:gap-0 gpu-accelerated touch-pan-y">
+                            <!-- FIX: Replaced touch-pan-y with touch-scroll-x -->
+                            <div id="special-slider" class="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-8 pt-4 -mx-6 px-6 md:mx-0 md:px-0 scroll-smooth gap-4 md:gap-0 gpu-accelerated touch-scroll-x">
                                 ${featuredProducts.map(p => {
                                     return `
                                     <!-- UPDATED: Fixed width on mobile (280px) for better card feel, fluid on desktop -->
@@ -6575,8 +6579,8 @@
                         <!-- Products Container: Horizontal Slider on Mobile / Grid on Desktop -->
                         <!-- Mobile: flex + overflow-x-auto (Slider) -->
                         <!-- Desktop: grid (Grid) -->
-                        <!-- ADDED: gpu-accelerated & touch-pan-y -->
-                        <div class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-3 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-6 md:pb-0 md:overflow-visible gpu-accelerated touch-pan-y">
+                        <!-- FIX: Replaced touch-pan-y with touch-scroll-x -->
+                        <div class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-3 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-6 md:pb-0 md:overflow-visible gpu-accelerated touch-scroll-x">
                             ${catProducts.map(p => `
                                 <div class="min-w-[160px] w-[160px] snap-start md:min-w-0 md:w-auto h-full">
                                     ${createProductCard(p)}
