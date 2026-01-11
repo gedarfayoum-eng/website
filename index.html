@@ -257,7 +257,7 @@
         /* تم تغيير الاسم من touch-pan-y إلى touch-scroll-x */
         /* تم تعديل touch-action للسماح بالسحب الأفقي والعمودي معاً */
         .touch-scroll-x {
-            touch-action: pan-y !important; /* هام جداً: يسمح بحركة الصفحة عمودياً ويترك الأفقي للسلايدر */
+            touch-action: pan-x pan-y !important; /* تم التصحيح: تفعيل الحركة الأفقية والعمودية */
             -webkit-overflow-scrolling: touch; /* لنعومة السكرول في iOS */
             overscroll-behavior-x: contain; /* يمنع سحب الصفحة بالكامل عند نهاية القائمة */
             scroll-behavior: smooth;
